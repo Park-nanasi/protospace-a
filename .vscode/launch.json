@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-ProtospaceAApplication<protospace-a>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "in.tech_camp.protospace_a.ProtospaceAApplication",
+      "projectName": "protospace-a",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
