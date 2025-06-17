@@ -981,9 +981,17 @@ div.contents.row .success h3 {
   margin: 10px auto;
 }
 
-form input,
 form textarea {
-  width: 100%;
+  width: 30%;
+  margin: 5px 0 15px;
+  padding: 10px;
+  border: 1px solid #D8D8D8;
+  border-radius: 5px;
+  font-family: "游ゴシック", "YuGothic";
+}
+
+form input {
+  width: 20%;
   margin: 5px 0 15px;
   padding: 10px;
   border: 1px solid #D8D8D8;
@@ -1005,7 +1013,7 @@ form input[type="submit"]:hover {
 
 .container {
   margin: 20px 0;
-  padding: 30px;
+  padding: 10px 30px;
   background-color: rgb(235, 235, 235);
   box-sizing: border-box;
 }
@@ -1016,6 +1024,10 @@ form input[type="submit"]:hover {
   font-weight: normal;
   font-size: 20px;
   color: #666;
+}
+
+.container p {
+  font-weight: bold;
 }
 
 .comments {
@@ -1196,4 +1208,77 @@ form input[type="submit"].logout-btn:hover {
   color: #666;
   text-align: right;
   text-decoration: underline;
+}
+
+.proto_info {
+  text-align: center;             /* 中身を中央揃え */
+  display: flex;
+  flex-direction: column;        /* 縦に並べる */
+  align-items: center;           /* 横方向中央配置 */
+  padding: 30px;
+}
+
+.proto_info img {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+
+.proto_info .title,
+.proto_info .sub-title,
+.proto_info .catchcopy,
+.proto_info .concept,
+.proto_info .author {
+  margin: 10px 0;
+}
+
+.proto_info .title {
+  font-size: 20px;
+  color: rgb(56, 56, 56);
+}
+
+.proto_info .author a{
+  text-decoration: underline;
+  color: #cacaca;
+  font-weight: 700;
+}
+
+.proto_info .sub-title {
+  font-size: 20px;
+  color: rgb(56, 56, 56);
+}
+
+.proto-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.proto-btn {
+  border: 1px solid #cacaca;
+  border-radius: 3px;
+  text-align: center;
+  width: 100px;
+  height: 30px;
+  display: flex;                 /* 子をflex配置 */
+  align-items: center;           /* 縦中央 */
+  justify-content: center;       /* 横中央 */
+  background-color: transparent; /* 背景は透明に */
+  transition: background-color 0.3s;
+}
+
+.proto-btn a.proto-btn-text {
+  font-size: 12px;
+  color: #cacaca;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;           /* 親divと同じ幅 */
+  height: 100%;          /* 親divと同じ高さ */
+  line-height: 30px;     /* 縦中央（代替） */
+}
+
+.proto-btn:hover {
+  background-color: #f5f5f5; /* ホバー時に少し色変えると良い */
 }

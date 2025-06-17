@@ -16,8 +16,18 @@
     <div class="proto_info">
       <h2 class="title">プロトタイプのタイトル</h2>
       <p class="author"><a th:href="@{users/1}">by 田中 太郎</a></p>
+      <div class="proto-btns">
+        <div class="proto-btn">
+          <a class="edit proto-btn-text" th:href="@{/proto/edit}">編集する</a>
+        </div>
+        <div class="proto-btn">
+          <a class="delete proto-btn-text" th:href="@{/proto/delete}">削除する</a>
+        </div>
+      </div>
       <img src="image/prototype1.jpg" alt="プロトタイプ画像">
+      <h2 class="sub-title">キャッチコピー</h2>
       <p class="catchcopy">ここにキャッチコピーが入ります。</p>
+      <h2 class="sub-title">コンセプト</h2>
       <p class="concept">ここにコンセプトが入ります。</p>
     </div>
     <div class="container">
