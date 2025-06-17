@@ -1,9 +1,12 @@
 package in.tech_camp.protospace_a.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,10 +36,17 @@ public class PrototypeController {
   }
 
   @PostMapping("/test")
-  public String createPrototype(@ModelAttribute("prototypeForm") PrototypeForm prototypeForm, Model model) {
+  public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
     // - ログアウト状態で投稿ページに遷移しようとすると、ログインページに遷移すること
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("errors", bindingResult.getAllErrors()
+            .stream()
+            .map(error -> error.getDefaultMessage())
+            .collect(Collectors.toList()));
+        return "tmp/test"; // エラーがある場合は元の画面へ戻る
+    }
 
     // todo プロトタイプの投稿画面作成後
     // - 投稿に必要な情報が入力されていない場合は、投稿できずにそのページに留まること。
@@ -59,5 +69,4 @@ public class PrototypeController {
     // - 正しく投稿できた場合は、トップページへ遷移すること。
     return "tmp/test";
   }
-  
 }

@@ -8,7 +8,12 @@
 <body>
     <h1>Hello, Prototype!</h1>
     <p>これは、Prototypeの挙動を試すページです。</p>
-    <div xmlns:th="http://www.thymeleaf.org" th:fragment="form(actionUrl, prototypeForm)" >
+    <ul>
+    <div xmlns:th="http://www.thymeleaf.org" th:fragment="form(actionUrl, prototypeForm, errors)" >
+        <th:block th:each="error : ${errors}">
+            <li th:text="${error}"></li>
+            </th:block>
+        </ul>
         <form th:action="${actionUrl}" th:method="post" th:object="${prototypeForm}">
             <input type="text" th:field="*{name}" placeholder="name"/>
             <input type="text" th:field="*{catchphrase}" placeholder="catchphrase"/>
