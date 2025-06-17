@@ -16,4 +16,7 @@ public interface PrototypeRepository {
   // todo: user追加（user機能作成後）
   @Select("SELECT name, catchphrase, image FROM prototypes")
   List<PrototypeEntity> getAllPrototypes();
+
+  @Delete("DELETE FROM prototypes WHERE id = #{id}")
+  void deleteByPrototypeId(Integer id); 
 }
