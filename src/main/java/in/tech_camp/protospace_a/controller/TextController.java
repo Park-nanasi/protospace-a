@@ -1,14 +1,18 @@
 package in.tech_camp.protospace_a.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import lombok.AllArgsConstructor;
 
 @Controller
-public class TextController{
-  @GetMapping("/hello")
-  @ResponseBody
-  public String showHello(){
-      return "<h1>Hello World!</h1>";
+@AllArgsConstructor
+public class TextController {
+
+  @GetMapping("/")
+  public String showTopPage(Model model) {
+      // 必要があれば model に属性を追加できます
+      return "proto/index"; // templates/proto/index.html を表示
   }
 }
