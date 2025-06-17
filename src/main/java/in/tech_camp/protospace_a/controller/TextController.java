@@ -15,4 +15,10 @@ public class TextController {
       // 必要があれば model に属性を追加できます
       return "proto/index"; // templates/proto/index.html を表示
   }
+
+  @GetMapping("/detail")
+  public String showProtoDetail(Model model) {
+      // 必要があれば model に属性を追加できます
+      return "proto/detail";
+  }
 }

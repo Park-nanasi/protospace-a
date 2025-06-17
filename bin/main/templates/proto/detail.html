@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+  <title>ProtoSpace</title>
+</head>
+
+<body>
+
+<!-- ヘッダー -->
+<div th:insert="~{header :: header}"></div>
+  
+<div class="main_contents">
+  <div class="proto-detail">
+    <div class="proto_info">
+      <h2 class="title">プロトタイプのタイトル</h2>
+      <p class="author"><a th:href="@{users/1}">by 田中 太郎</a></p>
+      <img src="image/prototype1.jpg" alt="プロトタイプ画像">
+      <p class="catchcopy">ここにキャッチコピーが入ります。</p>
+      <p class="concept">ここにコンセプトが入ります。</p>
+    </div>
+    <div class="container">
+      <p>コメント</p>
+      <!-- th:action="@{/protos/{protoId}/comment(protoId=${proto.id})}" th:object="${commentForm}"
+       th:field="*{text}"-->
+      <form  method="post" >
+        <textarea id="text"  rows="1"></textarea>
+        <input type="submit" value="送信する">
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- フッター -->
+<div th:insert="~{footer :: footer}"></div>
+
+</body>
+</html>

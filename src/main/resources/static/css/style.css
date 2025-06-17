@@ -1006,8 +1006,7 @@ form input[type="submit"]:hover {
 .container {
   margin: 20px 0;
   padding: 30px;
-  box-shadow: 0 0 10px rgba(41, 41, 41, 0.2);
-  background-color: white;
+  background-color: rgb(235, 235, 235);
   box-sizing: border-box;
 }
 
@@ -1186,7 +1185,7 @@ form input[type="submit"].logout-btn:hover {
   margin: 10px 0 5px;
 }
 
-.proto .description {
+.proto .catchcopy {
   font-size: 16px;
   color: #333;
   margin-bottom: 8px;
