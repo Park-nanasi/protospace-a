@@ -13,5 +13,5 @@ public class PrototypeEntity {
   private String image;
   private Timestamp createdAt;
   private Timestamp updatedAt;
-  // private UserEntity user;
+  private UserEntity user;
 }
