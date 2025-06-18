@@ -1,0 +1,16 @@
+<header xmlns:th="http://www.thymeleaf.org" th:fragment="header" class="header">
+  <div class="header-bar">
+    <div class="header_logo">
+      <h1 class="logo_top"><a th:href="@{/}">SHARE THE PROTOTYPE</a></h1>
+      <h1 class="logo_bottom"><a th:href="@{/}">PRO<span class="text_blue">TO</span> SPACE</a></h1>
+    </div>
+    <div class="user-naves">
+      <div class="user-nav">
+        <a class="login user-nav-text" th:href="@{/login}">ログイン</a>
+      </div>
+      <div class="user-nav">
+        <a class="post user-nav-text" th:href="@{/proto/new}">New Proto</a>
+      </div>
+    </div>
+  </div>
+</header>
