@@ -1330,3 +1330,13 @@ form input[type="submit"].logout-btn:hover {
 form input[type="text"] {
   width: 60%;
 }
+
+.comments_list a{
+  color: #aaa;
+  text-decoration: underline;
+}
+
+.comments_list span::before {
+  content: "■";
+  margin-right: 0.5em;
+}
