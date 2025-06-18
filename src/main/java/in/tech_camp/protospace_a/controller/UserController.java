@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.UserForm;
@@ -18,7 +19,6 @@ import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -73,7 +73,7 @@ public class UserController {
 
   @GetMapping("/users/login")
   public String showLogin() {
-      return "footer";
+      return "users/login";
   }
 
   @GetMapping("/login")
@@ -81,8 +81,7 @@ public class UserController {
     if (error != null) {
       model.addAttribute("loginError", "Invalid email or password.");
     }
-    // return "users/login";
-    return "footer";
+    return "users/login";
   }
   
 }
