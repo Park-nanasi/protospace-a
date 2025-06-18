@@ -16,6 +16,8 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -63,7 +65,7 @@ public class PrototypeController {
     prototype.setName(prototype.getName());
     prototype.setConcept(prototype.getConcept());
     prototype.setCatchphrase(prototype.getCatchphrase());
-    prototype.setImages(prototype.getImages());
+    prototype.setImage(prototype.getImage());
 
     try {
       prototypeRepository.insertPrototype(prototype);
@@ -86,5 +88,45 @@ public class PrototypeController {
       return "redirect:/tmp/test";
     }
     return "redirect:/tmp/test";
-  }  
+  }
+
+  
+  @GetMapping("/test/update")
+  public String updatePrototype(Model model) {
+    // createPrototypeの挙動を確認するため
+    PrototypeForm prototypeForm = new PrototypeForm();
+    model.addAttribute("prototypeForm", prototypeForm);
+    return "tmp/update_prototype";
+  }
+
+  @PostMapping("/test/update")
+  public String postMethodName(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("errors", bindingResult.getAllErrors()
+            .stream()
+            .map(error -> error.getDefaultMessage())
+            .collect(Collectors.toList()));
+        return "tmp/prototype";
+    }
+
+    PrototypeEntity prototype = new PrototypeEntity();
+    // test用 / 本来はHTMLからログインユーザーIdが入っている。
+    prototype.setId(1);
+    prototype.setName(prototypeForm.getName());
+    prototype.setConcept(prototypeForm.getConcept());
+    prototype.setCatchphrase(prototypeForm.getCatchphrase());
+    prototype.setImage(prototypeForm.getImage());
+    
+    try {
+      prototypeRepository.updatePrototype(prototype);
+    } catch (Exception e) {
+      System.err.println("Error^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: " + e);
+      return "redirect:/tmp/test";
+    }
+
+    System.out.println("Edit: :" + prototype);
+    return "redirect:/tmp/test";
+  }
+  
+
 }

@@ -10,7 +10,7 @@ public class PrototypeEntity {
   private String name;
   private String catchphrase;
   private String concept;
-  private String images;
+  private String image;
   private Timestamp createdAt;
   private Timestamp updatedAt;
   // private UserEntity user;

@@ -23,5 +23,5 @@ public interface PrototypeRepository {
   void deleteByPrototypeId(Integer id); 
 
   @Update("UPDATE prototypes SET name = #{name}, catchphrase = #{catchphrase}, concept = #{concept}, image = #{image} WHERE id = #{id}")
-  void update(PrototypeEntity prototype);
+  void updatePrototype(PrototypeEntity prototype);
 }
