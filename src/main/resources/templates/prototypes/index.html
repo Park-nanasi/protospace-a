@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+  <title>ProtoSpace</title>
+</head>
+
+<body>
+
+<!-- ヘッダー -->
+<div th:insert="~{header :: header}"></div>
+
+<div class="main_contents">
+  <!-- ユーザー挨拶 -->
+  <div class="greeting">
+    <p>こんにちは、<a th:href="@{users/1}">テスト新井さん</a></p>
+  </div>
+  <div class="protos">
+      <div class="proto" th:each="prototype : ${prototypes}">
+        <img th:src="@{/images/${prototype.image}}" alt="プロトタイプ画像">
+        <h2 class="title" th:text="${prototype.name}"></h2>
+        <p class="catchcopy" th:text="${prototype.concept}"></p>
+        <p class="author" th:text="${prototype.user.username}"><a th:href="@{users/1}"></a></p>
+      </div>
+  </div>
+</div>
+
+<!-- フッター -->
+<div th:insert="~{footer :: footer}"></div>
+
+</body>
+</html>
