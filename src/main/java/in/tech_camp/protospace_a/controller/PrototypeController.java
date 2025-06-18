@@ -31,7 +31,6 @@ public class PrototypeController {
   public String getMethodName() {
       return "tmp/test";
   }
-  
 
   // testディレクトリ内は挙動確認を行っています。
   @GetMapping("/test/prototype")
