@@ -10,8 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.UserForm;
 import in.tech_camp.protospace_a.repository.UserRepository;
@@ -31,8 +33,7 @@ public class UserController {
   @GetMapping("/users/sign_up")
   public String showSignUp(Model model) {
     model.addAttribute("userForm", new UserForm());
-      return "users/signUp";
-      // return "hello";
+      return "tmp/signUp";
   }
   
   @PostMapping("/user")
@@ -49,7 +50,7 @@ public class UserController {
 
       model.addAttribute("errorMessages", errorMessages);
       model.addAttribute("userForm", userForm);
-      return "users/signUp";
+      return "tmp/signUp";
     }
 
     UserEntity userEntity = new UserEntity();
@@ -71,18 +72,33 @@ public class UserController {
     return "redirect:/";
   }
 
+  // ログインに成功した時
   @GetMapping("/users/login")
   public String showLogin() {
-      return "footer";
+      return "tmp/login";
   }
 
+  // 失敗した時の表示
   @GetMapping("/login")
-  public String showLoginWithError(@RequestParam(value = "error") String error, Model model) {
+  public String showLoginWithError(@RequestParam(value = "error", required = false) String error, Model model) {
     if (error != null) {
       model.addAttribute("loginError", "Invalid email or password.");
     }
     // return "users/login";
-    return "footer";
+    return "tmp/login";
+  }
+
+  @GetMapping("/users/{userId}")
+  public String showMypage(@PathVariable("userId") Integer userId, Model model) {
+    UserEntity user = userRepository.findById(userId);
+    List<PrototypeEntity> prototypes = user.getPrototypes();
+
+    model.addAttribute("nickname", user.getUsername());
+    model.addAttribute("profile", user.getProfile());
+    model.addAttribute("role", user.getRole());
+    model.addAttribute("company", user.getCompany());
+    model.addAttribute("prototypes", prototypes);
+    return "tmp/users/mypage";
   }
   
 }
