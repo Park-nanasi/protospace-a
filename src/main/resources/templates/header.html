@@ -4,12 +4,22 @@
       <h1 class="logo_top"><a th:href="@{/}">SHARE THE PROTOTYPE</a></h1>
       <h1 class="logo_bottom"><a th:href="@{/}">PRO<span class="text_blue">TO</span> SPACE</a></h1>
     </div>
-    <div class="user-naves">
+
+    <div class="user-naves" th:if="${#authorization.expression('isAuthenticated()')}">
+      <div class="user-nav">
+        <a class="logout user-nav-text" th:href="@{/logout}">ログアウト</a>
+      </div>
+      <div class="user-nav">
+        <a class="post user-nav-text" th:href="@{/proto/new}">New Proto</a>
+      </div>
+    </div>
+
+    <div class="user-naves" th:if="${#authorization.expression('!isAuthenticated()')}">
       <div class="user-nav">
         <a class="login user-nav-text" th:href="@{/login}">ログイン</a>
       </div>
       <div class="user-nav">
-        <a class="post user-nav-text" th:href="@{/proto/new}">New Proto</a>
+        <a class="signUp user-nav-text" th:href="@{/users/sign_up}">新規登録</a>
       </div>
     </div>
   </div>

@@ -1166,8 +1166,10 @@ form input[type="submit"].logout-btn:hover {
 
 .main_contents {
   padding: 30px 16%;
-  height: 100%;
   background-color: white;
+  flex-grow: 1; /* これが重要：余白を埋めて footer を下に押す */
+  overflow: auto; /* スクロール対応 */
+  min-height: 100%;
 }
 
 .greeting {
@@ -1286,6 +1288,13 @@ form input[type="submit"].logout-btn:hover {
   line-height: 30px;     /* 縦中央（代替） */
 }
 
+.user-nav a.user-nav-text {
+  display: inline-block;
+  width: 100%;           /* 親divと同じ幅 */
+  height: 100%;          /* 親divと同じ高さ */
+  line-height: 30px;     /* 縦中央（代替） */
+}
+
 .proto-btn:hover {
   background-color: #f5f5f5; /* ホバー時に少し色変えると良い */
 }
@@ -1320,4 +1329,14 @@ form input[type="submit"].logout-btn:hover {
 
 form input[type="text"] {
   width: 60%;
+}
+
+.comments_list a{
+  color: #aaa;
+  text-decoration: underline;
+}
+
+.comments_list span::before {
+  content: "■";
+  margin-right: 0.5em;
 }
