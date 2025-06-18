@@ -18,7 +18,7 @@ public interface PrototypeRepository {
   @Insert("INSERT INTO prototypes (name, catchphrase, concept, image) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}) ")
   void insertPrototype(PrototypeEntity prototype);
 
-  @Select("SELECT p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name " +
+  @Select("SELECT p.id, p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name " +
           "FROM prototypes p " +
           "JOIN users u ON p.user_id = u.id " +
           "ORDER BY p.created_at DESC")
@@ -31,6 +31,17 @@ public interface PrototypeRepository {
       @Result(property = "user.username", column = "user_name")
   })
   List<PrototypeEntity> findAllPrototypes();
+
+  
+  @Select("SELECT p.*, u.id AS user_id, u.username AS user_name " +
+          "FROM prototypes p " +
+          "JOIN users u ON p.user_id = u.id " +
+          "WHERE p.id = #{id}")
+  @Results({
+      @Result(property = "user.id", column = "user_id"),
+      @Result(property = "user.username", column = "user_name")
+  })
+  PrototypeEntity findByPrototype(Integer id);
 
   @Delete("DELETE FROM prototypes WHERE id = #{id}")
   void deleteByPrototypeId(Integer id); 
