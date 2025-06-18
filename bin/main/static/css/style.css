@@ -991,15 +991,22 @@ form textarea {
 }
 
 form input {
+  font-size: 15px;
   width: 20%;
   margin: 5px 0 15px;
   padding: 10px;
-  border: 1px solid #D8D8D8;
+  border: 1px solid #dadada;
   border-radius: 5px;
   font-family: "游ゴシック", "YuGothic";
 }
 
+form label {
+  font-weight: 500;
+  color: #000;
+}
+
 form input[type="submit"] {
+  width: 15%;
   background-color: #57C3E9;
   border-radius: 20px;
   color: #fff;
@@ -1281,4 +1288,36 @@ form input[type="submit"].logout-btn:hover {
 
 .proto-btn:hover {
   background-color: #f5f5f5; /* ホバー時に少し色変えると良い */
+}
+
+
+/* 新規登録ページ */
+.container_Form {
+  margin: 20px 0;
+  padding: 10px 30px;
+  box-sizing: border-box;
+}
+
+.container_Form h2 {
+  font-size: 30px;
+  color: black;
+  font-weight:bold;
+
+  padding-bottom: 30px;
+}
+
+.container_Form h3 {
+  margin: 0 0 20px;
+  text-align: center;
+  font-weight: normal;
+  font-size: 10px;
+  color: #666;
+}
+
+.container_Form p {
+  font-weight: bold;
+}
+
+form input[type="text"] {
+  width: 60%;
 }
