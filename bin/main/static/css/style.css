@@ -1166,8 +1166,10 @@ form input[type="submit"].logout-btn:hover {
 
 .main_contents {
   padding: 30px 16%;
-  height: 100%;
   background-color: white;
+  flex-grow: 1; /* これが重要：余白を埋めて footer を下に押す */
+  overflow: auto; /* スクロール対応 */
+  min-height: 100%;
 }
 
 .greeting {
