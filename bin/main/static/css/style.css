@@ -1286,6 +1286,13 @@ form input[type="submit"].logout-btn:hover {
   line-height: 30px;     /* 縦中央（代替） */
 }
 
+.user-nav a.user-nav-text {
+  display: inline-block;
+  width: 100%;           /* 親divと同じ幅 */
+  height: 100%;          /* 親divと同じ高さ */
+  line-height: 30px;     /* 縦中央（代替） */
+}
+
 .proto-btn:hover {
   background-color: #f5f5f5; /* ホバー時に少し色変えると良い */
 }
