@@ -16,6 +16,8 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -25,15 +27,24 @@ public class PrototypeController {
 
   private final PrototypeRepository prototypeRepository;
 
+  
   @GetMapping("/test")
   public String getMethodName() {
-      return "tmp/test";
+    return "tmp/test";
+  }
+  
+  @GetMapping("/test/prototype")
+  public String showAllPrototypes(Model model) {
+    List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
+    model.addAttribute("prototypes", prototypes);
+    System.out.println("prototypes: " + prototypes);
+    return "prototypes/index";
   }
 
   // testディレクトリ内は挙動確認を行っています。
-  @GetMapping("/test/prototype")
-  public String showAllPrototypes(Model model) {
-    List<PrototypeEntity> prototypes =  prototypeRepository.getAllPrototypes();
+  @GetMapping("/test/prototype-post")
+  public String showPrototypePost(Model model) {
+    List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
     System.out.println("prototypes:" + prototypes);
 
     // createPrototypeの挙動を確認するため
@@ -42,7 +53,7 @@ public class PrototypeController {
     return "tmp/prototype";
   }
 
-  @PostMapping("/test/prototype")
+  @PostMapping("/test/prototype-post")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
@@ -63,7 +74,7 @@ public class PrototypeController {
     prototype.setName(prototype.getName());
     prototype.setConcept(prototype.getConcept());
     prototype.setCatchphrase(prototype.getCatchphrase());
-    prototype.setImages(prototype.getImages());
+    prototype.setImage(prototype.getImage());
 
     try {
       prototypeRepository.insertPrototype(prototype);
