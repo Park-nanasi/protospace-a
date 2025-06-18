@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 
@@ -20,4 +21,7 @@ public interface PrototypeRepository {
 
   @Delete("DELETE FROM prototypes WHERE id = #{id}")
   void deleteByPrototypeId(Integer id); 
+
+  @Update("UPDATE prototypes SET name = #{name}, catchphrase = #{catchphrase}, concept = #{concept}, image = #{image} WHERE id = #{id}")
+  void update(PrototypeEntity prototype);
 }
