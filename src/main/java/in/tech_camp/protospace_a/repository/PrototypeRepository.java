@@ -2,6 +2,7 @@ package in.tech_camp.protospace_a.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -16,4 +17,7 @@ public interface PrototypeRepository {
   // todo: user追加（user機能作成後）
   @Select("SELECT name, catchphrase, image FROM prototypes")
   List<PrototypeEntity> getAllPrototypes();
+
+  @Delete("DELETE FROM prototypes WHERE id = #{id}")
+  void deleteByPrototypeId(Integer id); 
 }

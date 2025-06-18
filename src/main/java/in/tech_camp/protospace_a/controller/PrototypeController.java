@@ -9,12 +9,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import lombok.AllArgsConstructor;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -23,8 +27,14 @@ public class PrototypeController {
 
   private final PrototypeRepository prototypeRepository;
 
-  // testディレクトリ内は挙動確認を行っています。
   @GetMapping("/test")
+  public String getMethodName() {
+      return "tmp/test";
+  }
+  
+
+  // testディレクトリ内は挙動確認を行っています。
+  @GetMapping("/test/prototype")
   public String showAllPrototypes(Model model) {
     List<PrototypeEntity> prototypes =  prototypeRepository.getAllPrototypes();
     System.out.println("prototypes:" + prototypes);
@@ -32,10 +42,10 @@ public class PrototypeController {
     // createPrototypeの挙動を確認するため
     PrototypeForm newPrototypeForm = new PrototypeForm();
     model.addAttribute("prototypeForm", newPrototypeForm);
-    return "tmp/test";
+    return "tmp/prototype";
   }
 
-  @PostMapping("/test")
+  @PostMapping("/test/prototype")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
@@ -45,7 +55,7 @@ public class PrototypeController {
             .stream()
             .map(error -> error.getDefaultMessage())
             .collect(Collectors.toList()));
-        return "tmp/test"; // エラーがある場合は元の画面へ戻る
+        return "tmp/prototype";
     }
 
     // todo プロトタイプの投稿画面作成後
@@ -62,11 +72,22 @@ public class PrototypeController {
       prototypeRepository.insertPrototype(prototype);
     } catch (Exception e) {
       System.err.println("Error：" + e);
-      return "tmp/test";
+      return "tmp/prototype";
     }
 
     // todo トップページ作成後
     // - 正しく投稿できた場合は、トップページへ遷移すること。
-    return "tmp/test";
+    return "redirect:/tmp/test";
   }
+
+  @GetMapping("/test/prototype/{prototypeId}/delete")
+  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+    try {
+      prototypeRepository.deleteByPrototypeId(prototypeId);
+    } catch (Exception e) {
+      System.err.println("Error^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: " + e);
+      return "redirect:/tmp/test";
+    }
+    return "redirect:/tmp/test";
+  }  
 }
