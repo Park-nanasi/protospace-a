@@ -40,6 +40,16 @@ public class PrototypeController {
     // commentForm追加する？
     return "prototypes/detail";
   }
-  
+
+  @GetMapping("/prototype/{prototypeId}/delete")
+  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+    try {
+      prototypeRepository.deleteByPrototypeId(prototypeId);
+    } catch (Exception e) {
+      System.err.println("Error: " + e);
+      return "redirect:/";
+    }
+    return "redirect:/";
+  }
 
 }
