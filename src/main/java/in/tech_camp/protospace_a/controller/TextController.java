@@ -21,6 +21,7 @@ public class TextController {
     List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
     model.addAttribute("prototypes", prototypes);
     return "prototypes/index";
+  }
 
 
   @GetMapping("/detail")

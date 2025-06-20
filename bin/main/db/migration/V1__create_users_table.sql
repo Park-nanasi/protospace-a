@@ -1,9 +1,0 @@
-CREATE TABLE users (
-    id SERIAL NOT NULL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    email VARCHAR(128) NOT NULL UNIQUE,
-    password VARCHAR(128) NOT NULL,
-    profile VARCHAR(128) NOT NULL,
-    company VARCHAR(50) NOT NULL,
-    role VARCHAR(50) NOT NULL
-);
