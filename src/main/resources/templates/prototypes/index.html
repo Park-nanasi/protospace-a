@@ -18,7 +18,7 @@
   </div>
   <div class="protos">
       <div class="proto" th:each="prototype : ${prototypes}">
-        <img th:src="@{/images/${prototype.image}}" alt="プロトタイプ画像">
+        <img src="@{'/images/' + ${prototype.image}}" alt="プロトタイプ画像">
         <h2 class="title" th:text="${prototype.name}"></h2>
         <p class="catchcopy" th:text="${prototype.concept}"></p>
         <p class="author" th:text="${prototype.user.username}"><a th:href="@{users/1}"></a></p>

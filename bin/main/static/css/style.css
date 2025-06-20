@@ -337,9 +337,62 @@ textarea {
  * ========================================================================== */
 /*
  * Remove most spacing between table cells. */
+.table {
+    border-collapse: collapse;
+    margin-bottom: 32px;
+    width: 50%;
+}
+
+table, th, td {
+  border: 1px solid rgb(232, 232, 232);
+}
+
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    unicode-bidi: isolate;
+    border-spacing: 2px;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+tr {
+    min-height: 55px;
+    display: table-row;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+td,th {
+  height: 55px;         /* 最小高さを指定 */
+  padding: 8px;
+  vertical-align: top;  /* 追加で上寄せにする場合 */
+  word-break: break-word; /* 長文がセル幅を超えたら改行 */
+  padding-left: 5px;
+}
+
+th {
+    width: 30%;
+    display: table-cell;
+    vertical-align: inherit;
+    font-weight: bold;
+    text-align: start;
+    unicode-bidi: isolate;
+    background-color: #f9f9f9;
+}
+
+td {
+    display: table-cell;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
 }
 
 /* ==========================================================================
@@ -1339,4 +1392,17 @@ form input[type="text"] {
 .comments_list span::before {
   content: "■";
   margin-right: 0.5em;
+}
+
+.user_contents {
+  margin: 20px 0;
+  box-sizing: border-box;
+}
+
+.user_contents h2 {
+  font-size: 30px;
+  color: black;
+  font-weight:bold;
+
+  padding-bottom: 30px;
 }
