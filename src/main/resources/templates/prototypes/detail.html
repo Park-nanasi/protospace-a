@@ -14,7 +14,7 @@
 <div class="main_contents">
   <div class="proto-detail">
     <div class="proto_info">
-      <h2 class="title">プロトタイプのタイトル</h2>
+      <h2 class="title" th:text="${prototype.name}"></h2>
       <!-- todo: ユーザーの詳細画面作成後 -->
       <!-- <a th:href="@{${users/{userId}(userId = ${prototype.user.id})}}">
         <p class="author" th:text="${prototype.user.username}"></p>
