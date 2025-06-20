@@ -27,7 +27,7 @@
         <h2 class="title" th:text="${prototype.name}"></h2>
         <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
         <p class="author">
-          <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
+          <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
         </p>
       </div>
   </div>
