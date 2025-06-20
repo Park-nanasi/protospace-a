@@ -29,4 +29,7 @@ public interface UserRepository {
             many = @Many(select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findByUserId"))
   })
   UserEntity findById(Integer id);
+
+  @Select("SELECT * FROM users WHERE id = #{id}")
+  UserEntity findByUserId(Integer id);
 }

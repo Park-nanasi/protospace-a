@@ -14,7 +14,7 @@
 <div class="main_contents">
   <div class="proto-detail">
     <div class="proto_info">
-      <h2 class="title">プロトタイプのタイトル</h2>
+      <h2 class="title" th:text="${prototype.name}"></h2>
       <!-- todo: ユーザーの詳細画面作成後 -->
       <!-- <a th:href="@{${users/{userId}(userId = ${prototype.user.id})}}">
         <p class="author" th:text="${prototype.user.username}"></p>
@@ -25,7 +25,7 @@
           <a class="edit proto-btn-text" th:href="@{/prototype/${prototype.id}/edit}">編集する</a>
         </div> -->
         <!-- todo: 削除画面の作成後 -->
-        <div class="proto-btn" th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id}">
+        <div class="proto-btn" th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
           <a class="delete proto-btn-text"
             th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">
             削除する
