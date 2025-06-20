@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
@@ -20,7 +21,6 @@ import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -36,7 +36,7 @@ public class TestUserController {
       return "tmp/signUp";
   }
   
-  @PostMapping("test/user")
+  @PostMapping("/test/user")
   public String createUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm, BindingResult result, Model model) {
     userForm.validatePasswordConfirmation(result);
     if (userRepository.existsByEmail(userForm.getEmail())) {
@@ -65,11 +65,10 @@ public class TestUserController {
     try {
       userService.createUserWithEncryptedPassword(userEntity);
     } catch (Exception e) {
-      System.out.println("エラー：" + e);
-      return "redirect:/";
+      System.out.println("Error：" + e);
+      return "redirect:tmp/login";
     }
-
-    return "redirect:/";
+    return "redirect:tmp/login";
   }
 
   // ログインに成功した時

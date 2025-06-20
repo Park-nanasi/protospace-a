@@ -100,7 +100,7 @@ public class UserController {
     model.addAttribute("role", user.getRole());
     model.addAttribute("company", user.getCompany());
     model.addAttribute("prototypes", prototypes);
-    return "users/users/mypage";
+    return "users/user/mypage";
   }
   
 }
