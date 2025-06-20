@@ -25,11 +25,15 @@
           <a class="edit proto-btn-text" th:href="@{/prototype/${prototype.id}/edit}">編集する</a>
         </div> -->
         <!-- todo: 削除画面の作成後 -->
-        <!-- <div class="proto-btn" th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == ${prototype.user.id}}"> -->
-          <a class="delete proto-btn-text" th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
-        <!-- </div> -->
+        <div class="proto-btn" th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
+          <a class="delete proto-btn-text"
+            th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">
+            削除する
+          </a>
+        </div>
+
       </div>
-      <img th:src="@{images/${prototype.image}}" alt="プロトタイプ画像">
+      <img th:src="@{'/images/' + ${prototype.image}}" alt="プロトタイプ画像">
       <h2 class="sub-title" >キャッチコピー</h2>
       <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
       <h2 class="sub-title">コンセプト</h2>
