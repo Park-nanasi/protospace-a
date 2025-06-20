@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 
@@ -20,20 +21,26 @@ public interface PrototypeRepository {
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insertPrototype(PrototypeEntity prototype);
 
-  // // todo: user追加（user機能作成後）
-  // @Select("SELECT name, catchphrase, image, user_id FROM prototypes")
+  @Select("SELECT p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name " +
+          "FROM prototypes p " +
+          "JOIN users u ON p.user_id = u.id " +
+          "ORDER BY p.created_at DESC")
+  @Results({
+      @Result(property = "id", column = "id"),
+      @Result(property = "name", column = "name"),
+      @Result(property = "catchphrase", column = "catchphrase"),
+      @Result(property = "image", column = "image"),
+      @Result(property = "user.id", column = "user_id"),
+      @Result(property = "user.username", column = "user_name")
+  })
+  List<PrototypeEntity> findAllPrototypes();
+
+  // @Select("SELECT p.*, u.id AS user_id, u.username AS user_username FROM prototypes p JOIN users u ON p.user_id = u.id")
   // @Results(value = {
-  //   @Result(property = "user", column = "user_id",
-  //           one = @One(select = "in.tech_camp.prototype_a.repository.UserRepository.findById"))
+  //     @Result(property = "user.id", column = "user_id"),
+  //     @Result(property = "user.username", column = "user_username")
   // })
   // List<PrototypeEntity> getAllPrototypes();
-
-  @Select("SELECT p.*, u.id AS user_id, u.username AS user_username FROM prototypes p JOIN users u ON p.user_id = u.id")
-  @Results(value = {
-      @Result(property = "user.id", column = "user_id"),
-      @Result(property = "user.username", column = "user_username")
-  })
-  List<PrototypeEntity> getAllPrototypes();
   
   @Delete("DELETE FROM prototypes WHERE id = #{id}")
   void deleteByPrototypeId(Integer id); 
@@ -45,10 +52,13 @@ public interface PrototypeRepository {
   })
   PrototypeEntity findById(Integer id);
 
-  @Select("SELECT * FROM prototypes WHERE user_id = #{id}")
+  @Select("SELECT * FROM prototypes WHERE user_id = #{userId}")
   @Results(value = {
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById"))
   })
-  List<PrototypeEntity> findByUserId(Integer id);
+  List<PrototypeEntity> findByUserId(Integer userId);
+
+  @Update("UPDATE prototypes SET name = #{name}, catchphrase = #{catchphrase}, concept = #{concept}, image = #{image} WHERE id = #{id}")
+  void updatePrototype(PrototypeEntity prototype);
 }

@@ -7,12 +7,11 @@ import lombok.Data;
 @Data
 public class PrototypeEntity {
   private Integer id;
-  // private String name;
+  private String name;
   private String catchphrase;
   private String concept;
-  private String images;
+  private String image;
   private Timestamp createdAt;
   private Timestamp updatedAt;
-  private Integer userId;
   private UserEntity user;
 }
