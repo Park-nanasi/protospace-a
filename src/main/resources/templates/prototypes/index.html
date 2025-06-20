@@ -12,13 +12,18 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main_contents">
-  <!-- ユーザー挨拶 -->
+  <!-- todo: ログイン時に表示する画面
+  - 認証の条件分岐
+  - ユーザーのIDを取得して名前適用
+  ユーザー挨拶
   <div class="greeting">
     <p>こんにちは、<a th:href="@{users/1}">テスト新井さん</a></p>
-  </div>
+  </div> -->
   <div class="protos">
       <div class="proto" th:each="prototype : ${prototypes}">
-        <img th:src="@{/images/${prototype.image}}" alt="プロトタイプ画像">
+        <a th:href="@{/prototypes/{prototypeId}(prototypeId=${prototype.id})}" >
+          <img th:src="@{/images/${prototype.image}}" alt="プロトタイプ画像">
+        </a>
         <h2 class="title" th:text="${prototype.name}"></h2>
         <p class="catchcopy" th:text="${prototype.concept}"></p>
         <p class="author" th:text="${prototype.user.username}"><a th:href="@{users/1}"></a></p>
