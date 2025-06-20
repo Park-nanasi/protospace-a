@@ -13,7 +13,6 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>プロトタイプ編集</h2>
-    <!--
     <form th:method="post" th:action="@{/prototypes/{prototypeId}/update(prototypeId = ${prototypeId})}" th:object="${prototypeForm}" enctype="multipart/form-data" class="new_user">
 
       <div class="field">
@@ -33,14 +32,14 @@
 
       <div class="field">
         <label class="image">プロトタイプの画像</label><br />
-        <input th:image="*{image}" type="file" name="image" id="image" accept="image/*" required="required" />
+        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" required="required" />
       </div>
 
       <div class="actions">
         <input type="submit" value="保存する">
       </div>
     </form>
-    プロトタイプ編集機能を繋げた後-->
+    <!-- プロトタイプ編集機能を繋げた後
     <form th:method="post" th:action="@{/proto}" enctype="multipart/form-data" class="new_user">
 
       <div class="field">
@@ -66,7 +65,7 @@
       <div class="actions">
         <input type="submit" value="保存する">
       </div>
-    </form>
+    </form> -->
 
   </div>
 </div>

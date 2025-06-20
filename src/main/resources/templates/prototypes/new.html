@@ -13,6 +13,9 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>新規プロトタイプ投稿</h2>
+    <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
+      <div th:text="${error}"></div>
+    </div>
     <form th:method="post" th:action="@{/prototypes/new}" th:object="${prototypeForm}" enctype="multipart/form-data" class="new_user">
 
       <div class="field">
@@ -30,10 +33,12 @@
         <textarea th:field="*{concept}" class="text_prototype" id="concept" name="concept" required="required" ></textarea>
       </div>
 
+      
+      <!-- todo: 画像の処理
       <div class="field">
         <label class="image">プロトタイプの画像</label><br />
-        <input th:image="*{image}" type="file" name="image" id="image" accept="image/*" required="required" />
-      </div>
+        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" required="required" />
+      </div> -->
 
       <div class="actions">
         <input type="submit" value="保存する">

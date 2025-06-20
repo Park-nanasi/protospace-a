@@ -15,20 +15,13 @@
   <div class="proto-detail">
     <div class="proto_info">
       <h2 class="title" th:text="${prototype.name}"></h2>
-      <p class="author">
-        <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
-      </p>
+      <a class="author" th:text="'by ' + ${prototype.user.username}" th:href="@{users/{userId}(userId = ${prototype.user.id})}"></a>
       <div class="proto-btns">
-        <!-- todo: 編集画面の作成後 -->
-        <!-- <div class="proto-btn" th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == ${prototype.user.id}}">
-          <a class="edit proto-btn-text" th:href="@{/prototype/${prototype.id}/edit}">編集する</a>
-        </div> -->
-        <!-- todo: 削除画面の作成後 -->
-        <div class="proto-btn" th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id}">
-          <a class="delete proto-btn-text"
-            th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">
-            削除する
-          </a>
+        <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
+          <a class="edit proto-btn-text" th:href="@{/prototypes/{prototypeId}/update(prototypeId = ${prototype.id})}">編集する</a>
+        </div>
+        <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
+          <a class="delete proto-btn-text" th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
         </div>
       </div>
       <img th:src="@{'/images/' + ${prototype.image}}" alt="プロトタイプ画像">
