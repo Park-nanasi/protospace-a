@@ -26,6 +26,11 @@ public class TestPrototypeController {
   public String getMethodName() {
     return "tmp/test";
   }
+
+  @GetMapping("/test/edit")
+  public String showEditPage() {
+    return "prototypes/edit";
+  }
   
   @GetMapping("/test/prototypes")
   public String showAllPrototypes(Model model) {
