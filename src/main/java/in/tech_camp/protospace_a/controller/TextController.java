@@ -13,12 +13,12 @@ public class TextController {
   @GetMapping("/")
   public String showTopPage(Model model) {
       // 必要があれば model に属性を追加できます
-      return "proto/index"; // templates/proto/index.html を表示
+      return "prototypes/index"; // templates/proto/index.html を表示
   }
 
   @GetMapping("/detail")
   public String showProtoDetail(Model model) {
       // 必要があれば model に属性を追加できます
-      return "proto/detail";
+      return "prototypes/detail";
   }
 }

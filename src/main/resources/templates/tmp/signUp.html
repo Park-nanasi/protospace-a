@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <h1>Sign Up</h1>
+    <form th:action="@{/user}" th:object="${userForm}" method="post">
+        <div>
+            <label>Email:</label>
+            <input th:field="*{email}" type="email" required/>
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <div>
+            <label>Password:</label>
+            <input th:field="*{password}" type="password" required maxlength="128" minlength="6"/>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+
+        <div>
+            <label>Confirm Password:</label>
+            <input th:field="*{passwordConfirmation}" type="password" required/>
+            <div th:if="${#fields.hasErrors('passwordConfirmation')}" th:errors="*{passwordConfirmation}"></div>
+        </div>
+
+        <div>
+            <label>Username (nickname):</label>
+            <input th:field="*{username}" required maxlength="6"/>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
+
+        <div>
+            <label>Profile:</label>
+            <input th:field="*{profile}" required maxlength="128"/>
+            <div th:if="${#fields.hasErrors('profile')}" th:errors="*{profile}"></div>
+        </div>
+
+        <div>
+            <label>Company:</label>
+            <input th:field="*{company}" required maxlength="50"/>
+            <div th:if="${#fields.hasErrors('company')}" th:errors="*{company}"></div>
+        </div>
+
+        <div>
+            <label>Role:</label>
+            <input th:field="*{role}" required maxlength="50"/>
+            <div th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+
+</html>
