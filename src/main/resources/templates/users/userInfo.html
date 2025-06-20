@@ -12,32 +12,32 @@
 
 <div class="main_contents">
   <div class="user_contents">
-    <h2>名前さんの情報</h2>
+    <h2 th:text="${name} + 'さんの情報'"></h2>
     <table class="table">
       <tbody>
         <tr>
           <th class="table_col1">名前</th>
-          <td class="table_col2">名前</td>
+          <td class="table_col2" th:text="${name}"></td>
         </tr>
 
         <tr>
           <th class="table_col1">プロフィール</th>
-          <td class="table_col2">テストプロフィール</td>
+          <td class="table_col2" th:text="${profile}"></td>
         </tr>
 
         <tr>
           <th class="table_col1">所属</th>
-          <td class="table_col2">テスト所属</td>
+          <td class="table_col2" th:text="${company}"></td>
         </tr>
 
         <tr>
           <th class="table_col1">役職</th>
-          <td class="table_col2">テスト役職</td>
+          <td class="table_col2" th:text="${role}"></td>
         </tr>
       </tbody>
     </table>
 
-    <h2>名前さんのプロトタイプ</h2>
+    <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>
     <div class="protos">
       <div class="proto">
         <a th:href="@{/detail}">
