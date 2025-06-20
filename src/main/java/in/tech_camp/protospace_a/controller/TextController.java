@@ -20,7 +20,6 @@ public class TextController {
     public String showAllPrototypes(Model model) {
     List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
     model.addAttribute("prototypes", prototypes);
-    System.out.println("prototypes: " + prototypes);
     return "prototypes/index";
   }
 
