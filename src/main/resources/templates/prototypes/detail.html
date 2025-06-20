@@ -15,10 +15,9 @@
   <div class="proto-detail">
     <div class="proto_info">
       <h2 class="title" th:text="${prototype.name}"></h2>
-      <!-- todo: ユーザーの詳細画面作成後 -->
-      <!-- <a th:href="@{${users/{userId}(userId = ${prototype.user.id})}}">
-        <p class="author" th:text="${prototype.user.username}"></p>
-      </a> -->
+      <p class="author">
+        <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
+      </p>
       <div class="proto-btns">
         <!-- todo: 編集画面の作成後 -->
         <!-- <div class="proto-btn" th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == ${prototype.user.id}}">
