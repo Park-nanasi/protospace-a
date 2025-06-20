@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.UserForm;
-import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
@@ -26,19 +25,18 @@ import lombok.AllArgsConstructor;
 
 @Controller
 @AllArgsConstructor
-public class UserController {
+public class TestUserController {
 
-  private final PrototypeRepository prototypeRepository;
   private final UserRepository userRepository;
   private final UserService userService;
 
-  @GetMapping("/users/sign_up")
+  @GetMapping("/test/users/sign_up")
   public String showSignUp(Model model) {
     model.addAttribute("userForm", new UserForm());
-      return "users/signUp";
+      return "tmp/signUp";
   }
   
-  @PostMapping("/user")
+  @PostMapping("/test/user")
   public String createUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm, BindingResult result, Model model) {
     userForm.validatePasswordConfirmation(result);
     if (userRepository.existsByEmail(userForm.getEmail())) {
@@ -52,7 +50,7 @@ public class UserController {
 
       model.addAttribute("errorMessages", errorMessages);
       model.addAttribute("userForm", userForm);
-      return "users/signUp";
+      return "tmp/signUp";
     }
 
     UserEntity userEntity = new UserEntity();
@@ -67,40 +65,39 @@ public class UserController {
     try {
       userService.createUserWithEncryptedPassword(userEntity);
     } catch (Exception e) {
-      System.out.println("エラー：" + e);
-      return "redirect:/";
+      System.out.println("Error：" + e);
+      return "redirect:tmp/login";
     }
-
-    return "redirect:/";
+    return "redirect:tmp/login";
   }
 
   // ログインに成功した時
-  @GetMapping("/users/login")
+  @GetMapping("/test/users/login")
   public String showLogin() {
-      return "users/login";
+      return "tmp/login";
   }
 
   // 失敗した時の表示
-  @GetMapping("/login")
+  @GetMapping("/test/login")
   public String showLoginWithError(@RequestParam(value = "error", required = false) String error, Model model) {
     if (error != null) {
       model.addAttribute("loginError", "Invalid email or password.");
     }
     // return "users/login";
-    return "users/login";
+    return "tmp/login";
   }
 
-  @GetMapping("/users/{userId}")
+  @GetMapping("/test/users/{userId}")
   public String showMypage(@PathVariable("userId") Integer userId, Model model) {
     UserEntity user = userRepository.findById(userId);
-    List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
+    List<PrototypeEntity> prototypes = user.getPrototypes();
 
     model.addAttribute("nickname", user.getUsername());
     model.addAttribute("profile", user.getProfile());
     model.addAttribute("role", user.getRole());
     model.addAttribute("company", user.getCompany());
     model.addAttribute("prototypes", prototypes);
-    return "users/user/mypage";
+    return "tmp/users/mypage";
   }
   
 }

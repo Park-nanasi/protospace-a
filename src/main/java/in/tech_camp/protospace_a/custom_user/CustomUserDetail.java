@@ -21,6 +21,10 @@ public class CustomUserDetail implements UserDetails {
         return user.getId();
     }
 
+    public String getNickname() {
+        return user.getUsername();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();

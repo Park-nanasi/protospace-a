@@ -27,7 +27,7 @@ public class TestPrototypeController {
     return "tmp/test";
   }
   
-  @GetMapping("/test/prototype")
+  @GetMapping("/test/prototypes")
   public String showAllPrototypes(Model model) {
     List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
     model.addAttribute("prototypes", prototypes);
@@ -36,18 +36,15 @@ public class TestPrototypeController {
   }
 
   // testディレクトリ内は挙動確認を行っています。
-  @GetMapping("/test/prototype-post")
+  @GetMapping("/test/prototype-new")
   public String showPrototypePost(Model model) {
-    List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
-    System.out.println("prototypes:" + prototypes);
-
     // createPrototypeの挙動を確認するため
     PrototypeForm newPrototypeForm = new PrototypeForm();
     model.addAttribute("prototypeForm", newPrototypeForm);
     return "tmp/prototype";
   }
 
-  @PostMapping("/test/prototype-post")
+  @PostMapping("/test/prototype-new")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
@@ -82,7 +79,7 @@ public class TestPrototypeController {
     return "redirect:/tmp/test";
   }
 
-  @GetMapping("/test/prototype/{prototypeId}/delete")
+  @GetMapping("/test/prototypes/{prototypeId}/delete")
   public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
     try {
       prototypeRepository.deleteByPrototypeId(prototypeId);
@@ -94,7 +91,7 @@ public class TestPrototypeController {
   }
 
   
-  @GetMapping("/test/update")
+  @GetMapping("/test/prototype-update")
   public String updatePrototype(Model model) {
     // createPrototypeの挙動を確認するため
     PrototypeForm prototypeForm = new PrototypeForm();
@@ -102,7 +99,7 @@ public class TestPrototypeController {
     return "tmp/update_prototype";
   }
 
-  @PostMapping("/test/update")
+  @PostMapping("/test/prototype-update")
   public String postMethodName(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
     if (bindingResult.hasErrors()) {
         model.addAttribute("errors", bindingResult.getAllErrors()
@@ -129,5 +126,5 @@ public class TestPrototypeController {
 
     System.out.println("Edit: :" + prototype);
     return "redirect:/tmp/test";
-  }
+  }  
 }
