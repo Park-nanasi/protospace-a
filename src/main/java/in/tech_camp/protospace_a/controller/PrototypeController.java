@@ -39,9 +39,9 @@ public class PrototypeController {
   
 
   // testディレクトリ内は挙動確認を行っています。
-  @GetMapping("/proto/new")
+  @GetMapping("/test/proto/new")
   public String showProtoDetail(Model model) {
-    List<PrototypeEntity> prototypes =  prototypeRepository.getAllPrototypes();
+    List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
     System.out.println("prototypes:" + prototypes);
 
     // createPrototypeの挙動を確認するため
@@ -71,7 +71,7 @@ public class PrototypeController {
     prototype.setName(prototype.getName());
     prototype.setConcept(prototype.getConcept());
     prototype.setCatchphrase(prototype.getCatchphrase());
-    prototype.setImages(prototype.getImages());
+    prototype.setImage(prototype.getImage());
 
     try {
       prototypeRepository.insertPrototype(prototype);
