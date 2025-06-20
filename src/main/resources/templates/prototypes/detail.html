@@ -33,18 +33,25 @@
       <p class="concept" th:text="${prototype.concept}"></p>
     </div>
     <div class="container">
+
+      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessage}"></span>
+
       <p>コメント</p>
-      <!-- todo: コメント機能 -->
-      <!-- th:action="@{/protos/{protoId}/comment(protoId=${proto.id})}" th:object="${commentForm}"
-       th:field="*{text}" -->
-      <form  method="post" >
-        <textarea id="text"  rows="1"></textarea><br />
+      <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" 
+      th:object="${commentForm}" 
+      method="post">
+        <textarea id="text" th:field="*{content}" rows="1"></textarea><br />
         <input type="submit" value="送信する">
       </form>
-      <ul class="comments_lists">
+      <!-- <ul class="comments_lists">
         <li class="comments_list">
-          <p>
-            <span th:text="コメントが入るところです "></span>
+          <p>           
+            <span th:each="comment: ${content}"></span> -->
+
+            <ul class="comments_lists">
+              <li class="comments_list" th:each="comment : ${comments}">
+                <p>
+                  <span th:text="${comment.content}"></span>
             <a th:href="@{/users/1}" th:text="ユーザー名"></a>
           </p>
         </li>

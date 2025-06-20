@@ -14,4 +14,6 @@ public class UserEntity {
   private String company;
   private String role;
   private List<PrototypeEntity> prototypes;
+
+  private List<CommentEntity> comments;
 }
