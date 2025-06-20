@@ -41,7 +41,7 @@ public class PrototypeController {
     return "prototypes/detail";
   }
 
-  @GetMapping("/prototype/{prototypeId}/delete")
+  @GetMapping("/prototypes/{prototypeId}/delete")
   public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
     try {
       prototypeRepository.deleteByPrototypeId(prototypeId);
