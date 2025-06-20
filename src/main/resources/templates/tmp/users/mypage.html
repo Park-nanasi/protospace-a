@@ -28,8 +28,8 @@
                     <strong>コンセプト：</strong>
                     <span th:text="${prototype.concept}"></span>
                 </p>
-                <div th:if="${prototype.images}">
-                    <img th:src="@{${prototype.images}}" alt="イメージ" style="max-width: 200px; max-height: 150px;" />
+                <div th:if="${prototype.image}">
+                    <img th:src="@{${prototype.image}}" alt="イメージ" style="max-width: 200px; max-height: 150px;" />
                 </div>
                 <p>
                     <small>作成日:
