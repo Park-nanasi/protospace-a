@@ -1387,6 +1387,21 @@ form input[type="text"] {
   width: 60%;
 }
 
+form input[type="text_prototype"] {
+  width: 50%;
+  font-size: 15px;
+}
+
+form input[type="file"] {
+  width: 60%;
+  font-size: 15px;
+  border: none;
+}
+
+.text_prototype{
+  width: 50%;
+}
+
 .comments_list a{
   color: #aaa;
   text-decoration: underline;

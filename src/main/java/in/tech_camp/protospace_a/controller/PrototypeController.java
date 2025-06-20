@@ -3,6 +3,7 @@ package in.tech_camp.protospace_a.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
+import in.tech_camp.protospace_a.repository.UserRepository;
+import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -23,7 +27,8 @@ public class PrototypeController {
 
   private final PrototypeRepository prototypeRepository;
 
-  
+  private final UserRepository userRepository;
+
   @GetMapping("/test")
   public String getMethodName() {
     return "tmp/test";
@@ -36,21 +41,25 @@ public class PrototypeController {
     System.out.println("prototypes: " + prototypes);
     return "prototypes/index";
   }
+  
 
   // testディレクトリ内は挙動確認を行っています。
-  @GetMapping("/test/prototype-post")
-  public String showPrototypePost(Model model) {
+  @GetMapping("/test/proto/new")
+  public String showProtoDetail(Model model) {
     List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
     System.out.println("prototypes:" + prototypes);
 
     // createPrototypeの挙動を確認するため
     PrototypeForm newPrototypeForm = new PrototypeForm();
     model.addAttribute("prototypeForm", newPrototypeForm);
-    return "tmp/prototype";
+    return "proto/new";
   }
 
-  @PostMapping("/test/prototype-post")
-  public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+  @PostMapping("/test/prototype")
+  public String createPrototype(@ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm, 
+          BindingResult bindingResult, 
+          @AuthenticationPrincipal CustomUserDetail currentUser,
+          Model model) {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
     // - ログアウト状態で投稿ページに遷移しようとすると、ログインページに遷移すること
@@ -67,6 +76,7 @@ public class PrototypeController {
     // - バリデーションによって投稿ができず、そのページに留まった場合でも、入力済みの項目（画像以外）は消えないこと
 
     PrototypeEntity prototype = new PrototypeEntity();
+    prototype.setUser(userRepository.findById(currentUser.getId()));
     prototype.setName(prototype.getName());
     prototype.setConcept(prototype.getConcept());
     prototype.setCatchphrase(prototype.getCatchphrase());

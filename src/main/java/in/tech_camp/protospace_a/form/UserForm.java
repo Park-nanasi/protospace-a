@@ -20,6 +20,7 @@ public class UserForm {
   private String password;
 
   @NotBlank(message = "Username can't be blank", groups = ValidationPriority1.class)
+  @Length(min = 6, max = 50, message = "Username is too long (maximum is 6 characters)", groups = ValidationPriority2.class)
   private String username;
 
   @NotBlank(message = "Profile can't be blank", groups = ValidationPriority1.class)
