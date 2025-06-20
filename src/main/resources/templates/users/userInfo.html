@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <title>ProtoSpace</title>
+</head>
+
+<body>
+
+<div th:insert="~{header :: header}"></div>
+
+<div class="main_contents">
+  <div class="user_contents">
+    <h2>名前さんの情報</h2>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th class="table_col1">名前</th>
+          <td class="table_col2">名前</td>
+        </tr>
+
+        <tr>
+          <th class="table_col1">プロフィール</th>
+          <td class="table_col2">テストプロフィール</td>
+        </tr>
+
+        <tr>
+          <th class="table_col1">所属</th>
+          <td class="table_col2">テスト所属</td>
+        </tr>
+
+        <tr>
+          <th class="table_col1">役職</th>
+          <td class="table_col2">テスト役職</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>名前さんのプロトタイプ</h2>
+    <div class="protos">
+      <div class="proto">
+        <a th:href="@{/detail}">
+          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
+        </a>  
+        <h3 class="title">タイトル</h2>
+        <p class="catchcopy">キャッチコピー</p>
+        <p class="author">
+          <a th:href="@{/users/1}" th:text="作成者"></a>
+        </p>
+      </div>
+
+      <div class="proto">
+        <a th:href="@{/detail}">
+          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
+        </a>  
+        <h3 class="title">タイトル</h2>
+        <p class="catchcopy">キャッチコピー</p>
+        <p class="author">
+          <a th:href="@{/users/1}" th:text="作成者"></a>
+        </p>
+      </div>
+
+      <div class="proto">
+        <a th:href="@{/detail}">
+          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
+        </a>  
+        <h3 class="title">タイトル</h2>
+        <p class="catchcopy">キャッチコピー</p>
+        <p class="author">
+          <a th:href="@{/users/1}" th:text="作成者"></a>
+        </p>
+      </div>
+
+      <div class="proto">
+        <a th:href="@{/detail}">
+          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
+        </a>  
+        <h3 class="title">タイトル</h2>
+        <p class="catchcopy">キャッチコピー</p>
+        <p class="author">
+          <a th:href="@{/users/1}" th:text="作成者"></a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div th:insert="~{footer :: footer}"></div>
+
+</body>
+</html>
