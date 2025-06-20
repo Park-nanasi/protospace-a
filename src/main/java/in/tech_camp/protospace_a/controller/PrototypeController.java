@@ -90,5 +90,39 @@ public class PrototypeController {
     }
     return "redirect:/";
   }
+  
+  @GetMapping("/prototypes/{prototypeId}/update")
+  public String updatePrototype(Model model) {
+    // createPrototypeの挙動を確認するため
+    PrototypeForm prototypeForm = new PrototypeForm();
+    model.addAttribute("prototypeForm", prototypeForm);
+    return "prototypes/edit";
+  }
 
+  @PostMapping("/prototypes/{prototypeId}/update")
+  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("errors", bindingResult.getAllErrors()
+            .stream()
+            .map(error -> error.getDefaultMessage())
+            .collect(Collectors.toList()));
+        return "prototypes/edit";
+    }
+
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    prototype.setName(prototypeForm.getName());
+    prototype.setConcept(prototypeForm.getConcept());
+    prototype.setCatchphrase(prototypeForm.getCatchphrase());
+    // prototype.setImage(prototypeForm.getImage());
+
+    try {
+      prototypeRepository.updatePrototype(prototype);
+    } catch (Exception e) {
+      System.err.println("Error: " + e);
+      return "redirect:/";
+    }
+
+    System.out.println("Edit: :" + prototype);
+    return "redirect:/";
+  }  
 }
