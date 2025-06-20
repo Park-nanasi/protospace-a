@@ -1,30 +1,16 @@
 package in.tech_camp.protospace_a.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.swing.tree.TreeModel;
-
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
-import in.tech_camp.protospace_a.repository.UserRepository;
-import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -57,14 +43,12 @@ public class PrototypeController {
     return "prototypes/new";
   }
 
-  @PostMapping("/prototypes/new")
+  /*@PostMapping("/prototypes/new")
   public String createPrototype() {
       //TODO: process POST request
       // todo:　プロトタイプ投稿機能の統合
       return entity;
-  }
-  
-  
+  }*/
 
   @GetMapping("/prototypes/{prototypeId}/delete")
   public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {

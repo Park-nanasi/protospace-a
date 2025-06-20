@@ -1,6 +1,6 @@
 package in.tech_camp.protospace_a.entity;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
