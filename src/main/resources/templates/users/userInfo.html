@@ -12,77 +12,44 @@
 
 <div class="main_contents">
   <div class="user_contents">
-    <h2>名前さんの情報</h2>
+    <h2 th:text="${name} + 'さんの情報'"></h2>
     <table class="table">
       <tbody>
         <tr>
           <th class="table_col1">名前</th>
-          <td class="table_col2">名前</td>
+          <td class="table_col2" th:text="${name}"></td>
         </tr>
 
         <tr>
           <th class="table_col1">プロフィール</th>
-          <td class="table_col2">テストプロフィール</td>
+          <td class="table_col2" th:text="${profile}"></td>
         </tr>
 
         <tr>
           <th class="table_col1">所属</th>
-          <td class="table_col2">テスト所属</td>
+          <td class="table_col2" th:text="${company}"></td>
         </tr>
 
         <tr>
           <th class="table_col1">役職</th>
-          <td class="table_col2">テスト役職</td>
+          <td class="table_col2" th:text="${role}"></td>
         </tr>
       </tbody>
     </table>
 
-    <h2>名前さんのプロトタイプ</h2>
+    <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>
+
     <div class="protos">
-      <div class="proto">
-        <a th:href="@{/detail}">
-          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
-        </a>  
-        <h3 class="title">タイトル</h2>
-        <p class="catchcopy">キャッチコピー</p>
+      <div class="proto" th:each="prototype : ${prototypes}">
+        <a th:href="@{'/prototypes/' + ${prototype.id}}">
+          <img th:src="@{'/images/' + ${prototype.image}}" alt="プロトタイプ画像">
+        </a>
+        <h2 class="title" th:text="${prototype.name}"></h2>
+        <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
         <p class="author">
-          <a th:href="@{/users/1}" th:text="作成者"></a>
+          <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
         </p>
       </div>
-
-      <div class="proto">
-        <a th:href="@{/detail}">
-          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
-        </a>  
-        <h3 class="title">タイトル</h2>
-        <p class="catchcopy">キャッチコピー</p>
-        <p class="author">
-          <a th:href="@{/users/1}" th:text="作成者"></a>
-        </p>
-      </div>
-
-      <div class="proto">
-        <a th:href="@{/detail}">
-          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
-        </a>  
-        <h3 class="title">タイトル</h2>
-        <p class="catchcopy">キャッチコピー</p>
-        <p class="author">
-          <a th:href="@{/users/1}" th:text="作成者"></a>
-        </p>
-      </div>
-
-      <div class="proto">
-        <a th:href="@{/detail}">
-          <img th:src="@{/images/prototype1.jpg}" alt="プロトタイプ画像">
-        </a>  
-        <h3 class="title">タイトル</h2>
-        <p class="catchcopy">キャッチコピー</p>
-        <p class="author">
-          <a th:href="@{/users/1}" th:text="作成者"></a>
-        </p>
-      </div>
-
     </div>
   </div>
 </div>

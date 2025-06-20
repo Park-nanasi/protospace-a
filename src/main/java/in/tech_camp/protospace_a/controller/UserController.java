@@ -95,12 +95,12 @@ public class UserController {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
 
-    model.addAttribute("nickname", user.getUsername());
+    model.addAttribute("name", user.getUsername());
     model.addAttribute("profile", user.getProfile());
     model.addAttribute("role", user.getRole());
     model.addAttribute("company", user.getCompany());
     model.addAttribute("prototypes", prototypes);
-    return "users/user/mypage";
+    return "users/userInfo";
   }
   
 }
