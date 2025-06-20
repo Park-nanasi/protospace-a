@@ -17,19 +17,24 @@ import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import lombok.AllArgsConstructor;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
-
-
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
 
   private final PrototypeRepository prototypeRepository;
 
+  
   @GetMapping("/test")
   public String getMethodName() {
-      return "tmp/test";
+    return "tmp/test";
+  }
+  
+  @GetMapping("/test/prototype")
+  public String showAllPrototypes(Model model) {
+    List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
+    model.addAttribute("prototypes", prototypes);
+    System.out.println("prototypes: " + prototypes);
+    return "prototypes/index";
   }
   
 
@@ -80,7 +85,7 @@ public class PrototypeController {
     return "redirect:/";
   }
 
-  @PostMapping("/test/prototype")
+  @PostMapping("/test/prototype-post")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
@@ -101,7 +106,7 @@ public class PrototypeController {
     prototype.setName(prototype.getName());
     prototype.setConcept(prototype.getConcept());
     prototype.setCatchphrase(prototype.getCatchphrase());
-    prototype.setImages(prototype.getImages());
+    prototype.setImage(prototype.getImage());
 
     try {
       prototypeRepository.insertPrototype(prototype);
@@ -124,5 +129,45 @@ public class PrototypeController {
       return "redirect:/tmp/test";
     }
     return "redirect:/tmp/test";
-  }  
+  }
+
+  
+  @GetMapping("/test/update")
+  public String updatePrototype(Model model) {
+    // createPrototypeの挙動を確認するため
+    PrototypeForm prototypeForm = new PrototypeForm();
+    model.addAttribute("prototypeForm", prototypeForm);
+    return "tmp/update_prototype";
+  }
+
+  @PostMapping("/test/update")
+  public String postMethodName(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("errors", bindingResult.getAllErrors()
+            .stream()
+            .map(error -> error.getDefaultMessage())
+            .collect(Collectors.toList()));
+        return "tmp/prototype";
+    }
+
+    PrototypeEntity prototype = new PrototypeEntity();
+    // test用 / 本来はHTMLからログインユーザーIdが入っている。
+    prototype.setId(1);
+    prototype.setName(prototypeForm.getName());
+    prototype.setConcept(prototypeForm.getConcept());
+    prototype.setCatchphrase(prototypeForm.getCatchphrase());
+    prototype.setImage(prototypeForm.getImage());
+    
+    try {
+      prototypeRepository.updatePrototype(prototype);
+    } catch (Exception e) {
+      System.err.println("Error^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: " + e);
+      return "redirect:/tmp/test";
+    }
+
+    System.out.println("Edit: :" + prototype);
+    return "redirect:/tmp/test";
+  }
+  
+
 }
