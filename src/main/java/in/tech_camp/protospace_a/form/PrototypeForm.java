@@ -1,5 +1,7 @@
 package in.tech_camp.protospace_a.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import in.tech_camp.protospace_a.validation.ValidationPriority1;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -13,5 +15,5 @@ public class PrototypeForm {
   @NotBlank(message="Error: Prototype.concept can't blank", groups = ValidationPriority1.class)
   private String concept;
   @NotBlank(message="Error: Prototype.image can't blank", groups = ValidationPriority1.class)
-  private String image;
+  private MultipartFile image;
 }

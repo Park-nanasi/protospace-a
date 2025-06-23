@@ -120,7 +120,7 @@ public class TestPrototypeController {
     prototype.setName(prototypeForm.getName());
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
-    prototype.setImage(prototypeForm.getImage());
+    // prototype.setImage(prototypeForm.getImage());
     
     try {
       prototypeRepository.updatePrototype(prototype);
