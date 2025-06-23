@@ -9,16 +9,6 @@
       "projectName": "protospace-a",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
-    },
-    {
-      "type": "java",
-      "name": "Spring Boot-ProtospaceAApplication<a>",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "mainClass": "in.tech_camp.protospace_a.ProtospaceAApplication",
-      "projectName": "a",
-      "args": "",
-      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }

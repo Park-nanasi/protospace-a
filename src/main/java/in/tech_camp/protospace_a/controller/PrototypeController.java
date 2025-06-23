@@ -24,10 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
+import in.tech_camp.protospace_a.form.CommentForm;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
-import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
 
@@ -48,9 +48,13 @@ public class PrototypeController {
   }
 
   @GetMapping("/prototypes/{prototypeId}")
-  public String showTargetPrototype(@PathVariable("prototypeId") Integer id, Model model) {
-    PrototypeEntity prototype = prototypeRepository.findByPrototype(id);
+  public String showTargetPrototype(@PathVariable("prototypeId") Integer prototypeId, Model model) {
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    CommentForm commentForm = new CommentForm();
     model.addAttribute("prototype", prototype);
+    model.addAttribute("commentForm", commentForm);
+    model.addAttribute("comments", prototype.getComments());
+    
     return "prototypes/detail";
   }
 

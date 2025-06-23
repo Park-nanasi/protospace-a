@@ -1,5 +1,6 @@
 package in.tech_camp.protospace_a.entity;
 
+import java.util.List;
 import java.sql.Timestamp;
 
 import lombok.Data;
@@ -14,4 +15,5 @@ public class PrototypeEntity {
   private Timestamp createdAt;
   private Timestamp updatedAt;
   private UserEntity user;
+  private List<CommentEntity> comments;
 }

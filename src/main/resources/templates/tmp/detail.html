@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>プロトタイプ詳細</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<h1 th:text="${prototype.catchphrase}">Prototype Catchphrase</h1>
+<p><strong>概念:</strong> <span th:text="${prototype.concept}"></span></p>
+<div th:if="${prototype.images}">
+    <img th:src="@{${prototype.images}}" style="max-height:200px;"/>
+</div>
+<hr/>
+<h2>コメント一覧</h2>
+<div th:if="${#lists.isEmpty(prototype.comments)}">
+    <p>まだコメントがありません。</p>
+</div>
+<ul th:if="${!#lists.isEmpty(prototype.comments)}">
+    <li th:each="comment : ${prototype.comments}">
+        <div>
+            <span th:text="${comment.user.username}">ユーザー</span>：
+            <span th:text="${comment.content}">コメント内容</span>
+        </div>
+    </li>
+</ul>
+<hr/>
+<h3>コメントを書く</h3>
+<p th:text="${prototype.id}"></p>
+
+<form th:action="@{/test/prototype/${prototype.id}/comment}" method="post" th:object="${commentForm}">
+    <div>
+        <label>コメント内容:</label>
+        <textarea th:field="*{content}" rows="3" cols="40"></textarea>
+    </div>
+    <div th:if="${errorMessages}">
+        <ul>
+            <li th:each="err : ${errorMessages}" th:text="${err.defaultMessage}"></li>
+        </ul>
+    </div>
+    <button type="submit">コメントする</button>
+</form>
+</body>
+</html>

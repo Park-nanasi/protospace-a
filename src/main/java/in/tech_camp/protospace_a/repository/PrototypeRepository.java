@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.One;
+import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -51,8 +52,11 @@ public interface PrototypeRepository {
 
   @Select("SELECT * FROM prototypes WHERE id = #{id}")
   @Results(value = {
+    @Result(property = "id", column = "id"),
     @Result(property = "user", column = "user_id",
-            one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById"))
+            one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById")),
+    @Result(property = "comments", column = "id",
+            many = @Many(select = "in.tech_camp.protospace_a.repository.CommentRepository.findByPrototypeId"))
   })
   PrototypeEntity findById(Integer id);
 
