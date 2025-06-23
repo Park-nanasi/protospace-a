@@ -20,10 +20,10 @@
         </p>
       <div class="proto-btns">
         <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
-          <a class="edit proto-btn-text" th:href="@{/prototypes/{prototypeId}/update(prototypeId = ${prototype.id})}">編集する</a>
+          <a class="edit proto-btn-text" th:href="@{/prototypes/{prototypeId}/edit(prototypeId = ${prototype.id})}">編集する</a>
         </div>
         <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
-          <a class="delete proto-btn-text" th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
+          <a class="delete proto-btn-text" th:href="@{/prototypes/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
         </div>
       </div>
       <img th:src="@{'/uploads/' + ${prototype.image}}" alt="プロトタイプ画像">

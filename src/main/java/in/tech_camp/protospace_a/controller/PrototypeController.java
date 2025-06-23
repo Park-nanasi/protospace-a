@@ -27,7 +27,7 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
-
+import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
 
@@ -51,8 +51,6 @@ public class PrototypeController {
   public String showTargetPrototype(@PathVariable("prototypeId") Integer id, Model model) {
     PrototypeEntity prototype = prototypeRepository.findByPrototype(id);
     model.addAttribute("prototype", prototype);
-    
-    // commentForm追加する？
     return "prototypes/detail";
   }
 
@@ -65,6 +63,7 @@ public class PrototypeController {
 
   @PostMapping("/prototypes/new")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
       List<String> errorMessages = bindingResult.getAllErrors().stream()
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -88,7 +87,7 @@ public class PrototypeController {
         prototype.setImage(fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
-        return "prototypes/edit";
+        return "prototypes/new";
       }
     }
       // prototype.setImage(prototypeForm.getImage());
@@ -113,10 +112,15 @@ public class PrototypeController {
     return "redirect:/";
   }
   
-  @GetMapping("/prototypes/{prototypeId}/update")
+  @GetMapping("/prototypes/{prototypeId}/edit")
   public String updatePrototype(@PathVariable("prototypeId") Integer prototypeId, Model model) {
     // createPrototypeの挙動を確認するため
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     PrototypeForm prototypeForm = new PrototypeForm();
+    prototypeForm.setName(prototype.getName());
+    prototypeForm.setCatchphrase(prototype.getCatchphrase());
+    prototypeForm.setConcept(prototype.getConcept());
+
     model.addAttribute("prototypeForm", prototypeForm);
     model.addAttribute("prototypeId", prototypeId);
     return "prototypes/edit";
@@ -124,12 +128,13 @@ public class PrototypeController {
 
   @PostMapping("/prototypes/{prototypeId}/update")
   public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+    prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
         model.addAttribute("errors", bindingResult.getAllErrors()
             .stream()
             .map(error -> error.getDefaultMessage())
             .collect(Collectors.toList()));
-        return "prototypes/edit";
+        return "redirect:/prototypes/" + prototypeId + "/edit";
     }
 
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
@@ -147,7 +152,7 @@ public class PrototypeController {
         prototype.setImage(fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
-        return "prototypes/edit";
+        return "redirect:/prototypes/" + prototypeId + "/edit";
       }
     }
 
@@ -157,8 +162,6 @@ public class PrototypeController {
       System.err.println("Error: " + e);
       return "redirect:/";
     }
-
-    System.out.println("Edit: :" + prototype);
     return "redirect:/";
   }  
 }
