@@ -53,7 +53,7 @@
                 <p>
                   <span th:text="${comment.content}"></span>
             <!-- <a th:href="@{/users/1}" th:text="ユーザー名"></a> -->
-                  <a th:href="@{/users/${prototypeId}(prototypeId = ${prototype.id})}" th:text="'by ' + ${comment.user.username}"></a>
+                  <a th:href="@{/users/${userId}(userId=${comment.user.id})}" th:text="'by ' + ${comment.user.username}"></a>
         </p>
           </p>
         </li>
