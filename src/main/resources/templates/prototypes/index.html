@@ -22,7 +22,7 @@
   <div class="protos">
       <div class="proto" th:each="prototype : ${prototypes}">
         <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-          <img th:src="@{'/uploads/' + ${prototype.image}}" alt="プロトタイプ画像">
+          <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
         </a>
         <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
           <h2 class="title" th:text="${prototype.name}"></h2>

@@ -27,7 +27,7 @@
           <a class="proto-btn-text" th:href="@{/prototypes/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
         </div>
       </div>
-      <img th:src="@{'/uploads/' + ${prototype.image}}" alt="プロトタイプ画像">
+      <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
       <h2 class="sub-title" >キャッチコピー</h2>
       <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
       <h2 class="sub-title">コンセプト</h2>
