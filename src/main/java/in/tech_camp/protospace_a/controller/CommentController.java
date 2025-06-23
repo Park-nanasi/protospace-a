@@ -42,14 +42,12 @@ public class CommentController {
       model.addAttribute("prototype", prototype);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("commentForm", commentForm);
-      model.addAttribute("errorMessages", result.getAllErrors());
+      model.addAttribute("errorMessages", "コメントの投稿に失敗しました。");
         return "prototypes/detail";
     }
 
     CommentEntity comment = new CommentEntity();
     UserEntity user = userRepository.findById(currentUser.getId());
-    System.out.println("Prototype: " + prototype);
-    System.out.println("User: " + user);
     comment.setContent(commentForm.getContent());
     comment.setPrototype(prototype);
     comment.setUser(user);
