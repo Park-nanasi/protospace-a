@@ -59,7 +59,7 @@ public class PrototypeController {
   }
 
   @GetMapping("/prototypes/new")
-  public String showPrototypeForm(Model model) {
+  public String showPrototypeForm(@AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeForm prototypeForm = new PrototypeForm();
     model.addAttribute("prototypeForm", prototypeForm);
     return "prototypes/new";

@@ -12,13 +12,13 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main_contents">
-  <!-- todo: ログイン時に表示する画面
-  - 認証の条件分岐
-  - ユーザーのIDを取得して名前適用
-  ユーザー挨拶
   <div class="greeting">
-    <p>こんにちは、<a th:href="@{users/1}">テスト新井さん</a></p>
-  </div> -->
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <p class="author">
+          こんにちは、<a th:href="@{'/users/' + ${#authentication.principal.user.id}}" th:text="${#authentication.principal.user.username} + さん"></a>
+        </p>
+    </div>
+  </div>
   <div class="protos">
       <div class="proto" th:each="prototype : ${prototypes}">
         <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
