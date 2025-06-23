@@ -86,7 +86,6 @@ public class UserController {
     if (error != null) {
       model.addAttribute("loginError", "Invalid email or password.");
     }
-    // return "users/login";
     return "users/login";
   }
 

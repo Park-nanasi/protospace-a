@@ -1,5 +1,11 @@
 package in.tech_camp.protospace_a.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,12 +19,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
+import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
 
@@ -29,6 +38,7 @@ public class PrototypeController {
 
   private final UserRepository userRepository;
   private final PrototypeRepository prototypeRepository;
+  private final ImageUrl imageUrl;
 
   @GetMapping("/")
   public String showAllPrototypes(Model model) {
@@ -41,8 +51,6 @@ public class PrototypeController {
   public String showTargetPrototype(@PathVariable("prototypeId") Integer id, Model model) {
     PrototypeEntity prototype = prototypeRepository.findByPrototype(id);
     model.addAttribute("prototype", prototype);
-    
-    // commentForm追加する？
     return "prototypes/detail";
   }
 
@@ -55,20 +63,33 @@ public class PrototypeController {
 
   @PostMapping("/prototypes/new")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
-      if (bindingResult.hasErrors()) {
-        List<String> errorMessages = bindingResult.getAllErrors().stream()
-              .map(DefaultMessageSourceResolvable::getDefaultMessage)
-              .collect(Collectors.toList());
-        model.addAttribute("errorMessages", errorMessages);
-        model.addAttribute("prototypeForm", prototypeForm);
+    prototypeForm.validatePrototypeForm(bindingResult);
+    if (bindingResult.hasErrors()) {
+      List<String> errorMessages = bindingResult.getAllErrors().stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .collect(Collectors.toList());
+      model.addAttribute("errorMessages", errorMessages);
+      model.addAttribute("prototypeForm", prototypeForm);
+      return "prototypes/new";
+    }
+    PrototypeEntity prototype = new PrototypeEntity();
+    prototype.setName(prototypeForm.getName());
+    prototype.setCatchphrase(prototypeForm.getCatchphrase());
+    prototype.setConcept(prototypeForm.getConcept());
+  
+    MultipartFile imageFile = prototypeForm.getImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        prototype.setImage(fileName);
+      } catch (IOException e) {
+        System.out.println("Error：" + e);
         return "prototypes/new";
       }
-      PrototypeEntity prototype = new PrototypeEntity();
-      prototype.setName(prototypeForm.getName());
-      prototype.setCatchphrase(prototypeForm.getCatchphrase());
-      prototype.setConcept(prototypeForm.getConcept());
-      // todo: 画像の保存先をどうするか
-      prototype.setImage("prototype1.jpg");
+    }
       // prototype.setImage(prototypeForm.getImage());
       prototype.setUser(userRepository.findByUserId(currentUser.getId()));
       try {
@@ -91,29 +112,49 @@ public class PrototypeController {
     return "redirect:/";
   }
   
-  @GetMapping("/prototypes/{prototypeId}/update")
-  public String updatePrototype(Model model) {
+  @GetMapping("/prototypes/{prototypeId}/edit")
+  public String updatePrototype(@PathVariable("prototypeId") Integer prototypeId, Model model) {
     // createPrototypeの挙動を確認するため
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     PrototypeForm prototypeForm = new PrototypeForm();
+    prototypeForm.setName(prototype.getName());
+    prototypeForm.setCatchphrase(prototype.getCatchphrase());
+    prototypeForm.setConcept(prototype.getConcept());
+
     model.addAttribute("prototypeForm", prototypeForm);
+    model.addAttribute("prototypeId", prototypeId);
     return "prototypes/edit";
   }
 
   @PostMapping("/prototypes/{prototypeId}/update")
   public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+    prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
         model.addAttribute("errors", bindingResult.getAllErrors()
             .stream()
             .map(error -> error.getDefaultMessage())
             .collect(Collectors.toList()));
-        return "prototypes/edit";
+        return "redirect:/prototypes/" + prototypeId + "/edit";
     }
 
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     prototype.setName(prototypeForm.getName());
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
-    // prototype.setImage(prototypeForm.getImage());
+
+    MultipartFile imageFile = prototypeForm.getImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        prototype.setImage(fileName);
+      } catch (IOException e) {
+        System.out.println("Error：" + e);
+        return "redirect:/prototypes/" + prototypeId + "/edit";
+      }
+    }
 
     try {
       prototypeRepository.updatePrototype(prototype);
@@ -121,8 +162,6 @@ public class PrototypeController {
       System.err.println("Error: " + e);
       return "redirect:/";
     }
-
-    System.out.println("Edit: :" + prototype);
     return "redirect:/";
   }  
 }
