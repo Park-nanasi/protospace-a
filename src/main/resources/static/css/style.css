@@ -1252,8 +1252,9 @@ form input[type="submit"].logout-btn:hover {
 
 .proto img {
   width: 100%;
-  height: auto;
+  height: 75%;
   margin-bottom: 10px;
+  object-fit:scale-down;
 }
 
 .proto .title {
