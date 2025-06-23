@@ -33,13 +33,13 @@
       <p class="concept" th:text="${prototype.concept}"></p>
     </div>
     <div class="container">
-      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessage}"></span>
+      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span>
       <p>コメント</p>
       <div th:if="${#authorization.expression('isAuthenticated()')}">
       <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" 
         th:object="${commentForm}" 
         method="post">
-        <textarea id="text" th:field="*{content}" rows="1"></textarea>
+        <textarea id="text" th:field="*{content}" rows="1"></textarea><br>
         <input type="submit" value="送信する">
       </form>
     </div>
@@ -47,8 +47,7 @@
         <li class="comments_list" th:each="comment : ${comments}">
           <p>
             <span th:text="${comment.content}"></span>
-            <!-- <a th:href="@{/users/1}" th:text="ユーザー名"></a> -->
-            <a th:href="@{/users/${prototypeId}(prototypeId = ${prototype.id})}" th:text="'by ' + ${comment.user.username}"></a>
+            <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" th:text="'by ' + ${comment.user.username}"></a>
           </p>
         </li>
       </ul>

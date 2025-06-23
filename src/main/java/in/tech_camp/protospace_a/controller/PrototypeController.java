@@ -54,7 +54,7 @@ public class PrototypeController {
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", commentForm);
     model.addAttribute("comments", prototype.getComments());
-    
+    model.addAttribute("errorMessages", null);
     return "prototypes/detail";
   }
 

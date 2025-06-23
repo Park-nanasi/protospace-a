@@ -24,7 +24,9 @@
         <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
           <img th:src="@{'/uploads/' + ${prototype.image}}" alt="プロトタイプ画像">
         </a>
-        <h2 class="title" th:text="${prototype.name}"></h2>
+        <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+          <h2 class="title" th:text="${prototype.name}"></h2>
+        </a>
         <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
         <p class="author">
           <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
