@@ -90,7 +90,7 @@ public class PrototypeController {
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage(fileName);
+        prototype.setImage(imagePath.toAbsolutePath().toString());
       } catch (IOException e) {
         System.out.println("Error：" + e);
         return "prototypes/new";
@@ -165,7 +165,7 @@ public class PrototypeController {
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage(fileName);
+        prototype.setImage(imagePath.toAbsolutePath().toString());
       } catch (IOException e) {
         System.out.println("Error：" + e);
         return "redirect:/prototypes/" + prototypeId + "/edit";
