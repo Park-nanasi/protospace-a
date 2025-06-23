@@ -53,7 +53,9 @@ public class PrototypeController {
     CommentForm commentForm = new CommentForm();
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", commentForm);
-    model.addAttribute("comments", prototype.getComments());
+    if (prototype != null) {
+      model.addAttribute("comments", prototype.getComments());
+    }
     model.addAttribute("errorMessages", null);
     return "prototypes/detail";
   }
