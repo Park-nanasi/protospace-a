@@ -67,6 +67,6 @@ public interface PrototypeRepository {
   })
   List<PrototypeEntity> findByUserId(Integer userId);
 
-  @Update("UPDATE prototypes SET name = #{name}, catchphrase = #{catchphrase}, concept = #{concept}, image = #{image} WHERE id = #{id}")
+  @Update("UPDATE prototypes SET name = #{name}, catchphrase = #{catchphrase}, concept = #{concept}, image = #{image},  updated_at = CURRENT_TIMESTAMP WHERE id = #{id}")
   void updatePrototype(PrototypeEntity prototype);
 }
