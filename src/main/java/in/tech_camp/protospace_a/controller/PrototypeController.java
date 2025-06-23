@@ -54,12 +54,12 @@ public class PrototypeController {
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", commentForm);
     model.addAttribute("comments", prototype.getComments());
-    
+    model.addAttribute("errorMessages", null);
     return "prototypes/detail";
   }
 
   @GetMapping("/prototypes/new")
-  public String showPrototypeForm(Model model) {
+  public String showPrototypeForm(@AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeForm prototypeForm = new PrototypeForm();
     model.addAttribute("prototypeForm", prototypeForm);
     return "prototypes/new";
@@ -106,7 +106,11 @@ public class PrototypeController {
       }
 
   @GetMapping("/prototypes/{prototypeId}/delete")
-  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId, @AuthenticationPrincipal CustomUserDetail currentUser) {
+     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    if (prototype.getUser().getId() != currentUser.getId()) {
+        return "redirect:/";
+    }
     try {
       prototypeRepository.deleteByPrototypeId(prototypeId);
     } catch (Exception e) {
@@ -117,9 +121,12 @@ public class PrototypeController {
   }
   
   @GetMapping("/prototypes/{prototypeId}/edit")
-  public String updatePrototype(@PathVariable("prototypeId") Integer prototypeId, Model model) {
-    // createPrototypeの挙動を確認するため
+  public String updatePrototype(@PathVariable("prototypeId") Integer prototypeId, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    if (prototype.getUser().getId() != currentUser.getId()) {
+        return "redirect:/";
+    }
+
     PrototypeForm prototypeForm = new PrototypeForm();
     prototypeForm.setName(prototype.getName());
     prototypeForm.setCatchphrase(prototype.getCatchphrase());
@@ -131,7 +138,11 @@ public class PrototypeController {
   }
 
   @PostMapping("/prototypes/{prototypeId}/update")
-  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    if (prototype.getUser().getId() != currentUser.getId()) {
+        return "redirect:/";
+    }
     prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
         model.addAttribute("errors", bindingResult.getAllErrors()
@@ -141,7 +152,6 @@ public class PrototypeController {
         return "redirect:/prototypes/" + prototypeId + "/edit";
     }
 
-    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     prototype.setName(prototypeForm.getName());
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
