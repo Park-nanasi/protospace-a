@@ -174,8 +174,8 @@ public class PrototypeController {
       prototypeRepository.updatePrototype(prototype);
     } catch (Exception e) {
       System.err.println("Error: " + e);
-      return "redirect:/";
+      return "redirect:/prototypes/" + prototypeId;
     }
-    return "redirect:/";
-  }  
+    return "redirect:/prototypes/" + prototypeId;
+  }
 }
