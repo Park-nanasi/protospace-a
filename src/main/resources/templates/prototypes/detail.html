@@ -52,9 +52,8 @@
               <li class="comments_list" th:each="comment : ${comments}">
                 <p>
                   <span th:text="${comment.content}"></span>
-            <!-- <a th:href="@{/users/1}" th:text="ユーザー名"></a> -->
-                  <a th:href="@{/users/${prototypeId}(prototypeId = ${prototype.id})}" th:text="'by ' + ${comment.user.username}"></a>
-        </p>
+                  <a th:href="@{/users/{prototypeId}(prototypeId = ${prototype.id})}" th:text="'by ' + ${comment.user.username}"></a>
+                </p>
           </p>
         </li>
       </ul>
