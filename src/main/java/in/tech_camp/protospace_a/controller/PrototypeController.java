@@ -87,10 +87,16 @@ public class PrototypeController {
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
         String uploadDir = imageUrl.getImageUrl();
+
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
+
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage(fileName);
+        prototype.setImage("uploads/" + fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
         return "prototypes/new";
@@ -162,10 +168,14 @@ public class PrototypeController {
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
         String uploadDir = imageUrl.getImageUrl();
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage(fileName);
+        prototype.setImage("uploads/" + fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
         return "redirect:/prototypes/" + prototypeId + "/edit";
