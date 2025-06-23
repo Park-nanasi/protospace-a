@@ -17,7 +17,6 @@ public class PrototypeFormUnitTest {
         form = createValidPrototypeForm();
     }
 
-    // --- 正常系テスト ---
     @Test
     public void 必要な項目がすべて入力されていればバリデーションエラーなし() {
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
@@ -26,7 +25,6 @@ public class PrototypeFormUnitTest {
         assertTrue(!result.hasErrors());
     }
 
-    // --- name テスト ---
     @Test
     public void nameが空ならバリデーションエラー() {
         form.setName("");
@@ -37,7 +35,6 @@ public class PrototypeFormUnitTest {
         assertEquals("Please enter either name", result.getFieldError("name").getDefaultMessage());
     }
 
-    // --- catchphrase テスト ---
     @Test
     public void catchphraseが空ならバリデーションエラー() {
         form.setCatchphrase("");
@@ -48,7 +45,6 @@ public class PrototypeFormUnitTest {
         assertEquals("Please enter either catchphrase", result.getFieldError("catchphrase").getDefaultMessage());
     }
 
-    // --- concept テスト ---
     @Test
     public void conceptが空ならバリデーションエラー() {
         form.setConcept("");
@@ -59,7 +55,6 @@ public class PrototypeFormUnitTest {
         assertEquals("Please enter either concept", result.getFieldError("concept").getDefaultMessage());
     }
 
-    // --- image テスト ---
     @Test
     public void imageがnullならバリデーションエラー() {
         form.setImage(null);

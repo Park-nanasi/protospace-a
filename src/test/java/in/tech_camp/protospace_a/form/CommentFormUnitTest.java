@@ -22,7 +22,6 @@ public class CommentFormUnitTest {
         validator = factory.getValidator();
     }
 
-    // --- content テスト ---
     @Test
     public void contentが空ならバリデーションエラーになる() {
         CommentForm form = new CommentForm();

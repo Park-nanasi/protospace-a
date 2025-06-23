@@ -26,7 +26,23 @@ public class UserFormUnitTest {
         validator = factory.getValidator();
     }
 
-    // --- Email テスト ---
+    @Test
+    public void 入力が全て正しい場合バリデーションエラーにならない() {
+        UserForm form = createValidUserForm();
+
+        // グループ1（必須チェックなど）とグループ2（形式や文字数チェックなど）の両方を検証
+        Set<ConstraintViolation<UserForm>> violationsPriority1 = validator.validate(form, ValidationPriority1.class);
+        Set<ConstraintViolation<UserForm>> violationsPriority2 = validator.validate(form, ValidationPriority2.class);
+
+        assertTrue(violationsPriority1.isEmpty(), "ValidationPriority1でバリデーションエラーが発生しています");
+        assertTrue(violationsPriority2.isEmpty(), "ValidationPriority2でバリデーションエラーが発生しています");
+
+        // パスワード確認の手動バリデーション
+        BindingResult result = new BeanPropertyBindingResult(form, "userForm");
+        form.validatePasswordConfirmation(result);
+        assertTrue(!result.hasFieldErrors("passwordConfirmation"), "パスワード確認でバリデーションエラーが発生しています");
+    }
+
     @Test
     public void emailが空ならバリデーションエラーになる() {
         UserForm form = createValidUserForm();
@@ -47,7 +63,6 @@ public class UserFormUnitTest {
         assertEquals("Email should be valid", violations.iterator().next().getMessage());
     }
 
-    // --- Password テスト ---
     @Test
     public void passwordが空ならバリデーションエラーになる() {
         UserForm form = createValidUserForm();
@@ -82,7 +97,6 @@ public class UserFormUnitTest {
                 result.getFieldError("passwordConfirmation").getDefaultMessage());
     }
 
-    // --- ユーザー名 ---
     @Test
     public void usernameが空ならバリデーションエラーになる() {
         UserForm form = createValidUserForm();
@@ -93,7 +107,6 @@ public class UserFormUnitTest {
         assertEquals("Username can't be blank", violations.iterator().next().getMessage());
     }
 
-    // --- プロフィール ---
     @Test
     public void profileが空ならバリデーションエラーになる() {
         UserForm form = createValidUserForm();
@@ -104,7 +117,6 @@ public class UserFormUnitTest {
         assertEquals("Profile can't be blank", violations.iterator().next().getMessage());
     }
 
-    // --- 所属（company）---
     @Test
     public void companyが空ならバリデーションエラーになる() {
         UserForm form = createValidUserForm();
@@ -115,7 +127,6 @@ public class UserFormUnitTest {
         assertEquals("Company can't be blank", violations.iterator().next().getMessage());
     }
 
-    // --- 役職（role）---
     @Test
     public void roleが空ならバリデーションエラーになる() {
         UserForm form = createValidUserForm();
@@ -126,7 +137,6 @@ public class UserFormUnitTest {
         assertEquals("Role can't be blank", violations.iterator().next().getMessage());
     }
 
-    // --- ヘルパーメソッド ---
     private UserForm createValidUserForm() {
         UserForm form = new UserForm();
         form.setEmail("test@example.com");
