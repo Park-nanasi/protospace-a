@@ -1,5 +1,5 @@
 package in.tech_camp.protospace_a.validation;
 
-public class ValidationPriority2 {
+public interface ValidationPriority2 {
   
 }
