@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -82,6 +83,7 @@ public class PrototypeController {
     prototype.setName(prototypeForm.getName());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
     prototype.setConcept(prototypeForm.getConcept());
+    prototype.setCreated_at(new Timestamp(System.currentTimeMillis()));
   
     MultipartFile imageFile = prototypeForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
@@ -139,6 +141,8 @@ public class PrototypeController {
     prototypeForm.setName(prototype.getName());
     prototypeForm.setCatchphrase(prototype.getCatchphrase());
     prototypeForm.setConcept(prototype.getConcept());
+    prototype.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+
 
     model.addAttribute("prototypeForm", prototypeForm);
     model.addAttribute("prototypeId", prototypeId);
@@ -163,6 +167,7 @@ public class PrototypeController {
     prototype.setName(prototypeForm.getName());
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
+    
 
     MultipartFile imageFile = prototypeForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
