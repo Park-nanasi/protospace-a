@@ -12,9 +12,6 @@ import lombok.Data;
 public class UserForm {
   private String email;
   private String password;
-
-  @NotBlank(message = "Username can't be blank", groups = ValidationPriority1.class)
-  @Length(max = 50, message = "Username is too long", groups = ValidationPriority2.class)
   private String username;
 
   @NotBlank(message = "Profile can't be blank", groups = ValidationPriority1.class)
@@ -30,6 +27,17 @@ public class UserForm {
   @Autowired
   private final UserRepository userRepository;
 
+
+  public void validateUsername(BindingResult result) {
+    if (username == null || username.isEmpty()) {
+        result.rejectValue("username", "username", "ユーザー名を入力してください");
+        return;
+      }
+      
+      if (30 < username.length()) {
+        result.rejectValue("username", "username", "ユーザー名は 30 文字で指定してください");
+      }
+    }
     
   public void validateEmail(BindingResult result) {
     if (email == null || email.isEmpty()) {
