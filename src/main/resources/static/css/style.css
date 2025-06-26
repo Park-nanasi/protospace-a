@@ -1403,17 +1403,6 @@ form input[type="file"] {
   width: 50%;
 }
 
-/* 変更前のコメントリストCSS
-.comments_list a{
-  color: #aaa;
-  text-decoration: underline;
-}
-
-.comments_list span::before {
-  content: "■";
-  margin-right: 0.5em;
-}*/
-
 .comments_list {
   list-style: none;
   margin-bottom: 1em;
@@ -1432,18 +1421,25 @@ form input[type="file"] {
   margin-right: 0.5em;
 }
 
+.comment_author {
+  text-decoration: none;
+  display: inline-block;
+  color: #cacaca;
+}
+
 .comment_box {
   position: relative;
   border: 2px solid #57C3E9;
   background-color: #EAF8FD;
   color: #333;
   border-radius: 4px;
-  max-width: 100%;
+  max-width: 70%;
   min-height: 3em;
   padding: 0.5em 10px;
   word-wrap: break-word;
   overflow: hidden;
   display: flex;
+  justify-content: start;
   align-items: center;
 }
 
@@ -1465,7 +1461,7 @@ form input[type="file"] {
 }
 
 .comment_box:hover .read_more {
-  color: #FFD700; 
+  color: #DAA520; 
 }
 
 .read_more:hover {
@@ -1495,7 +1491,7 @@ form input[type="file"] {
   background-color: white;
   box-sizing: border-box;
   border-top: 1px #d7d7d7 solid;
-}
+  }
 
 .container_comment h3 {
   margin: 0 0 20px;
@@ -1525,4 +1521,52 @@ form input[type="file"] {
   justify-content: center;
   font-size: 13px;
   border-radius: 10px;
+}
+
+.container_comment_detail {
+  margin: 20px 0;
+  padding: 10px 30px;
+  background-color: white;
+  box-sizing: border-box;
+  border: 1px solid rgb(211, 211, 211);
+  border-radius: 10px;
+}
+
+.container_comment_detail h3 {
+  margin: 0 0 20px;
+  text-align: center;
+  font-weight: normal;
+  font-size: 20px;
+  color: #666;
+}
+
+.container_comment_detail p {
+  font-weight: bold;
+}
+
+.comment_title {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: #333 1px solid;
+  font-size: 20px;
+  margin-bottom: 2em;
+  font-weight: bold;
+  color: #000;
+}
+
+.comment_author a{
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-block;
+  color: #d6d6d6;
+}
+
+.comment_text {
+  display: block; 
+  max-width: 100%;
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.5;
+  padding: 10px;
 }

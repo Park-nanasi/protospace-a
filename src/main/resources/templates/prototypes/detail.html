@@ -59,7 +59,7 @@
         <div th:if="${#authorization.expression('isAuthenticated()')}">
           <p>
             <a class="comment_new"
-              th:href="@{/prototypes/{prototypeId}/comment/new(prototypeId=${prototype.id})}"
+              th:href="@{'/prototypes/' + ${prototype.id} + '/comments/new'}"
               th:text="投稿する"></a>
           </p>
         </div>
@@ -73,7 +73,8 @@
           </p>
           <div class="comment_box">
             <span class="comment_content" th:text="${comment.content}"></span>
-            <a class="read_more" th:href="@{/comments/{id}(id=${comment.id})}">詳細を見る</a>
+            <!-- <a class="read_more" th:href="@{/comments/{id}(id=${comment.id})}">詳細を見る</a> -->
+             <a class="read_more" th:href="@{'/prototypes/' + ${prototype.id} + '/comments/' + ${comment.id}}">詳細を見る</a>
           </div>
         </li>
       </ul>

@@ -23,6 +23,21 @@ public interface CommentRepository {
     })
     List<CommentEntity> findByPrototypeId(Integer prototypeId);
 
+  @Select("SELECT c.*, u.id AS user_id, u.username AS user_username " +
+        "FROM comments c " +
+        "JOIN users u ON c.user_id = u.id " +
+        "WHERE c.id = #{id}")
+  @Results(value = {
+      @Result(property = "id", column = "id"),
+      @Result(property = "content", column = "content"),
+      @Result(property = "createdAt", column = "created_at"),
+      @Result(property = "user.id", column = "user_id"),
+      @Result(property = "user.username", column = "user_username"),
+      @Result(property = "prototype", column = "prototype_id",
+              one = @One(select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findById"))
+  })
+  CommentEntity findById(Integer id);
+
     @Insert("INSERT INTO comments (content, user_id, prototype_id, created_at) VALUES (#{content}, #{user.id}, #{prototype.id}, now())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(CommentEntity comment);
