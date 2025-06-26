@@ -13,8 +13,9 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>ユーザーログイン</h2>
-    <p th:if="${loginError}" class="login-error" th:text="${loginError}"></p>
-
+    <div th:if="${loginError}">
+        <span class="error_message">メールアドレスまたはパスワードが正しくありません。</span>
+    </div>
     <form th:method="post" th:action="@{/login}" class="new_user">
 
       <div class="field">
