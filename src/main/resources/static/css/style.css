@@ -1425,3 +1425,8 @@ form input[type="file"] {
 
   padding-bottom: 30px;
 }
+
+.error_message {
+  color: red;
+  font-size: 12px;
+}
