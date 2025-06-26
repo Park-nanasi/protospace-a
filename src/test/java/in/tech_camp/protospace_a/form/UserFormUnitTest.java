@@ -3,21 +3,23 @@ package in.tech_camp.protospace_a.form;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationPriority1;
-import in.tech_camp.protospace_a.validation.ValidationPriority2;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
+@SpringBootTest
 public class UserFormUnitTest {
 
     private Validator validator;
@@ -25,27 +27,25 @@ public class UserFormUnitTest {
     @Autowired
     private UserRepository userRepository;
 
+    private UserForm form;
+    private BindingResult result;
+
     @BeforeEach
     void setup() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
+        form = createValidUserForm();
+        result = new BeanPropertyBindingResult(form, "userForm");
     }
 
     @Test
-    public void 入力が全て正しい場合バリデーションエラーにならない() {
-        UserForm form = createValidUserForm();
-
-        // グループ1（必須チェックなど）とグループ2（形式や文字数チェックなど）の両方を検証
-        Set<ConstraintViolation<UserForm>> violationsPriority1 = validator.validate(form, ValidationPriority1.class);
-        Set<ConstraintViolation<UserForm>> violationsPriority2 = validator.validate(form, ValidationPriority2.class);
-
-        assertTrue(violationsPriority1.isEmpty(), "ValidationPriority1でバリデーションエラーが発生しています");
-        assertTrue(violationsPriority2.isEmpty(), "ValidationPriority2でバリデーションエラーが発生しています");
-
-        // パスワード確認の手動バリデーション
-        BindingResult result = new BeanPropertyBindingResult(form, "userForm");
-        form.validatePassword(result);
-        assertTrue(!result.hasFieldErrors("passwordConfirmation"), "パスワード確認でバリデーションエラーが発生しています");
+    public void 入力が正しい場合成功() {
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("username"));
+        assertFalse(result.hasFieldErrors("email"));
+        assertFalse(result.hasFieldErrors("password"));
+        assertFalse(result.hasFieldErrors("profile"));
     }
 
     @Test
