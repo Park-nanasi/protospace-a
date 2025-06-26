@@ -50,7 +50,12 @@ public class UserForm {
         return;
       }
 
-    if (!email.matches("^[a-z0-9.]+$")) {
+    if (email.chars().filter(c -> c == '@').count() != 1) {
+        result.rejectValue("email", "email", "メールアドレスには @ を1つだけ含めてください");
+        return;
+    }
+    
+    if (!email.matches("^[@a-z0-9.]+$")) {
         result.rejectValue("email", "email", "ASCII 文字 (a-z)、数字 (0-9)、およびピリオド (.) のみが使用できます");
         return;
     }
@@ -68,11 +73,12 @@ public class UserForm {
 
     char lastChar = email.charAt(email.length() - 1);
     if (!Character.isLowerCase(lastChar) && !Character.isDigit(lastChar)) {
-          result.rejectValue("email", "email", "メールアドレスの最後の文字は、ASCII 文字（a-z）または数字（0-9）にする必要があります。");
-      }
+          result.rejectValue("email", "email", "メールアドレスの最後の文字は、ASCII 文字（a-z）または数字（0-9）にする必要があります");
+        return;
+    }
 
     if (userRepository.existsByEmail(email)) {
-      result.rejectValue("email", "null", "このメールアドレスは既に使用されています。別のメールアドレスを作成してください。");
+      result.rejectValue("email", "null", "このメールアドレスは既に使用されています。別のメールアドレスを作成してください");
     }
   }
 
