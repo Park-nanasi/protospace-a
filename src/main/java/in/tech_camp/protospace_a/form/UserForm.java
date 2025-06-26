@@ -13,8 +13,6 @@ public class UserForm {
   private String email;
   private String password;
   private String username;
-
-  @NotBlank(message = "Profile can't be blank", groups = ValidationPriority1.class)
   private String profile;
 
   @NotBlank(message = "Company can't be blank", groups = ValidationPriority1.class)
@@ -93,6 +91,16 @@ public class UserForm {
     
     if (!password.equals(passwordConfirmation)) {
       result.rejectValue("passwordConfirmation", "password", "パスワードが一致しませんでした。もう一度お試しください。");
+    }
+  }
+
+  public void validateProfile(BindingResult result) {
+    if (profile != null || profile.isEmpty()) {
+      result.rejectValue("profile", "profile", "プロフィールを入力してください");
+    }
+
+    if (140 < profile.length()) {
+      result.rejectValue("profile", "profile", "プロフィールの文字数は140字以内で入力してください");
     }
   }
 }
