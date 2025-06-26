@@ -1,5 +1,12 @@
 package in.tech_camp.protospace_a.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.CommentEntity;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
@@ -29,6 +38,7 @@ public class TestCommentController {
   private final CommentRepository commentRepository;
   private final UserRepository userRepository;
 
+  private final ImageUrl imageUrl;
 
   //コメントの詳細ページへアクセス
   @GetMapping("/prototypes/{prototypeId}/comments/{commentId}")
@@ -49,8 +59,65 @@ public class TestCommentController {
   public String showCommentForm(@PathVariable("prototypeId") Integer prototypeId,
                                 @AuthenticationPrincipal CustomUserDetail currentUser,
                                 Model model) {
-    
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", new CommentForm());
     return "comments/new";
   }
+
+  //新規コメントの投稿
+  @PostMapping("/prototypes/{prototypeId}/comments/new")
+  public String createComment(@PathVariable("prototypeId") Integer prototypeId, 
+                            @ModelAttribute("commentForm") @Validated(ValidationOrder.class) CommentForm commentForm,
+                            BindingResult result,
+                            @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    
+
+    if (result.hasErrors()) {
+      model.addAttribute("prototype", prototype);
+      model.addAttribute("comments", prototype.getComments());
+      model.addAttribute("commentForm", commentForm);
+      model.addAttribute("errorMessages", "コメントの投稿に失敗しました。");
+        return "prototypes/detail";
+    }
+
+    CommentEntity comment = new CommentEntity();
+    comment.setContent(commentForm.getContent());
+    comment.setTitle(commentForm.getTitle());
+
+    MultipartFile imageFile = commentForm.getImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
+
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        comment.setImage("/uploads/" + fileName);
+      } catch (IOException e) {
+        System.out.println("Error：" + e);
+        return "/prototypes/{prototypeId}/comments/new";
+      }
+    }
+    
+    comment.setPrototype(prototype);
+
+    UserEntity user = userRepository.findById(currentUser.getId());
+    comment.setUser(user);
+
+    try {
+      commentRepository.insertTest(comment);
+    } catch (Exception e) {
+      System.out.println("Error：" + e);
+      return "redirect:/prototypes/" + prototypeId;
+    }
+
+    return "redirect:/prototypes/" + prototypeId;
+  } 
 }

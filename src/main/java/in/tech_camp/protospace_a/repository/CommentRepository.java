@@ -41,4 +41,8 @@ public interface CommentRepository {
     @Insert("INSERT INTO comments (content, user_id, prototype_id, created_at) VALUES (#{content}, #{user.id}, #{prototype.id}, now())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(CommentEntity comment);
+
+    @Insert("INSERT INTO comments (title, image, content, user_id, prototype_id, created_at) VALUES (#{title}, #{image}, #{content}, #{user.id}, #{prototype.id}, now())")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertTest(CommentEntity comment);
 }

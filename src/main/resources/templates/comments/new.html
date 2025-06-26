@@ -16,7 +16,8 @@
     <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
       <div th:text="${error}"></div>
     </div>
-    <form th:method="post" th:action="@{/prototypes/new}" th:object="${commentForm}" enctype="multipart/form-data" class="new_user">
+    <form th:method="post" th:action="@{/prototypes/{prototypeId}/comments/new(prototypeId=${prototype.id})}" 
+          th:object="${commentForm}" enctype="multipart/form-data" class="new_user">
 
       <div class="field">
         <label class="column-title">コメントタイトル</label><br />
