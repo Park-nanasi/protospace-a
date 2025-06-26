@@ -41,6 +41,7 @@ public class UserForm {
       
       if (30 < username.length()) {
         result.rejectValue("username", "username", "ユーザー名は 30 文字で指定してください");
+        return;
       }
     }
     

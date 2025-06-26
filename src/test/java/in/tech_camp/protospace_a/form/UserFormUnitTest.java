@@ -192,13 +192,29 @@ public class UserFormUnitTest {
     }
 
     @Test
-    public void usernameが空ならバリデーションエラーになる() {
-        UserForm form = createValidUserForm();
+    public void usernameが空の場合エラー() {
         form.setUsername("");
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("username"));
+        assertEquals("ユーザー名を入力してください", result.getFieldError("username").getDefaultMessage());
+    }
 
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
-        assertEquals(1, violations.size());
-        assertEquals("Username can't be blank", violations.iterator().next().getMessage());
+    @Test
+    public void usernameの文字数が30文字の場合成功() {
+        form.setUsername("あ".repeat(30));
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("username"));
+    }
+
+    @Test
+    public void usernameの文字数が31文字の場合エラー() {
+        form.setUsername("あ".repeat(31));
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("username"));
+        assertEquals("ユーザー名は 30 文字で指定してください", result.getFieldError("username").getDefaultMessage());
     }
 
     @Test
