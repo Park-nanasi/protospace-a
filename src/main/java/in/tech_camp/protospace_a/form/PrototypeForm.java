@@ -13,14 +13,27 @@ public class PrototypeForm {
   private MultipartFile image;
 
   public void validatePrototypeForm(BindingResult result) {
-    if ((name == null || name.isEmpty())) {
-      result.rejectValue("name", "error.Prototype", "Please enter either name");
-    } else if (catchphrase == null || catchphrase.isEmpty()) {
+    validateName(result);
+    if (catchphrase == null || catchphrase.isEmpty()) {
       result.rejectValue("catchphrase", "error.Prototype", "Please enter either catchphrase");
     } else if (concept == null || concept.isEmpty()) {
       result.rejectValue("concept", "error.Prototype", "Please enter either concept");
     } else if (image == null || image.isEmpty()) {
       result.rejectValue("image", "error.Prototype", "Please enter either image");
+    }
+  }
+  
+  public void validateName(BindingResult result) {
+    if ((name == null || name.isEmpty())) {
+      result.rejectValue("name", "error.Prototype", "プロトタイプ名を入力してください");
+      return;
+    }
+
+    if (50 < name.length()) {
+      result.rejectValue("name", "name", "プロトタイプ名は 50 文字以内で設定してください");
+    }
+  }
+
     }
   }
 }
