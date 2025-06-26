@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <title>ProtoSpace</title>
+</head>
+
+<body>
+
+<div th:insert="~{header :: header}"></div>
+
+<div class="main_contents">
+  <div class="container_Form">
+    <h2>コメント投稿</h2>
+    <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
+      <div th:text="${error}"></div>
+    </div>
+    <form th:method="post" th:action="@{/prototypes/new}" th:object="${commentForm}" enctype="multipart/form-data" class="new_user">
+
+      <div class="field">
+        <label class="column-title">コメントタイトル</label><br />
+        <input th:field="*{title}" type="title" id="title" name="title" autofocus="autofocus" required="required" />
+      </div>
+
+      <div class="field">
+        <label class="column-content">コメント内容</label><br />
+        <textarea rows="10" th:field="*{content}" class="longText" id="content" name="content" required="required" ></textarea>
+      </div>
+
+      <div class="field">
+        <label class="image">添付画像</label><br />
+        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" required="required" />
+      </div>
+
+      <div class="actions">
+        <input type="submit" value="保存する">
+      </div>
+    </form>
+  </div>
+</div>
+
+<div th:insert="~{footer :: footer}"></div>
+
+</body>
+</html>
