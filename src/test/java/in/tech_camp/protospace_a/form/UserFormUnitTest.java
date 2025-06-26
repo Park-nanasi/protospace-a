@@ -245,7 +245,6 @@ public class UserFormUnitTest {
 
     @Test
     public void companyが空ならバリデーションエラーになる() {
-        UserForm form = createValidUserForm();
         form.setCompany("");
 
         Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
@@ -255,7 +254,6 @@ public class UserFormUnitTest {
 
     @Test
     public void roleが空ならバリデーションエラーになる() {
-        UserForm form = createValidUserForm();
         form.setRole("");
 
         Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
