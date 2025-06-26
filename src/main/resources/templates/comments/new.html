@@ -13,20 +13,19 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>コメント投稿</h2>
-    <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
-      <div th:text="${error}"></div>
-    </div>
     <form th:method="post" th:action="@{/prototypes/{prototypeId}/comments/new(prototypeId=${prototype.id})}" 
           th:object="${commentForm}" enctype="multipart/form-data" class="new_user">
 
       <div class="field">
         <label class="column-title">コメントタイトル</label><br />
         <input th:field="*{title}" type="title" id="title" name="title" autofocus="autofocus" required="required" />
+        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
       </div>
 
       <div class="field">
         <label class="column-content">コメント内容</label><br />
         <textarea rows="10" th:field="*{content}" class="longText" id="content" name="content" required="required" ></textarea>
+        <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error-message"></div>
       </div>
 
       <div class="field">

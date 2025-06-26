@@ -78,8 +78,8 @@ public class TestCommentController {
       model.addAttribute("prototype", prototype);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("commentForm", commentForm);
-      model.addAttribute("errorMessages", "コメントの投稿に失敗しました。");
-        return "prototypes/detail";
+      model.addAttribute("errorMessages", result.getAllErrors());
+        return "comments/new";
     }
 
     CommentEntity comment = new CommentEntity();
@@ -102,7 +102,7 @@ public class TestCommentController {
         comment.setImage("/uploads/" + fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
-        return "/prototypes/{prototypeId}/comments/new";
+        return "comments/new";
       }
     }
     

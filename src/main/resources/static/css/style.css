@@ -1037,6 +1037,10 @@ div.contents.row .success h3 {
   margin: 10px auto;
 }
 
+.error-message {
+  color: red;
+}
+
 form textarea {
   width: 30%;
   margin: 5px 0 15px;
