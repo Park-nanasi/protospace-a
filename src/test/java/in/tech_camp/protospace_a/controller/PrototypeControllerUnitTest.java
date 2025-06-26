@@ -19,6 +19,7 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
+import in.tech_camp.protospace_a.form.SearchForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,6 +63,26 @@ public class PrototypeControllerUnitTest {
 
         // モデルに設定された属性が期待通りか検証
         assertThat(model.getAttribute("prototypes"), is(expectedPrototypes));
+    }
+
+     @Test
+    public void 検索フォームで検索すると検索結果がモデルに含まれ検索ビューが返ること() {
+        SearchForm searchForm = new SearchForm();
+        searchForm.setName("テスト");
+
+        PrototypeEntity p = new PrototypeEntity();
+        p.setId(100);
+        p.setName("テストプロトタイプ");
+        List<PrototypeEntity> expected = Arrays.asList(p);
+
+        when(prototypeRepository.findByNameContaining("テスト")).thenReturn(expected);
+
+        Model model = new ExtendedModelMap();
+        String resultView = prototypeController.searchPrototypes(searchForm, model);
+
+        assertThat(resultView, is("prototypes/search"));
+        assertThat(model.getAttribute("prototypes"), is(expected));
+        assertThat(((SearchForm)model.getAttribute("searchForm")).getName(), is("テスト"));
     }
 }
 
