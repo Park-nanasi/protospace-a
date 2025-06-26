@@ -9,6 +9,9 @@ public class CommentEntity {
   private Integer id;
   private String content;
   private UserEntity user;
-  private PrototypeEntity prototype;
   private Timestamp createdAt;
+  private String title;
+  private String image;
+
+  private PrototypeEntity prototype;
 }

@@ -6,6 +6,11 @@ import lombok.Data;
 
 @Data
 public class CommentForm {
-  @NotBlank(message = "Comment can't be blank", groups = ValidationPriority1.class)
+  @NotBlank(message = "コメントのタイトルを入力してください。", groups = ValidationPriority1.class)
+  private String title;
+
+  @NotBlank(message = "コメント内容を入力してください。", groups = ValidationPriority1.class)
   private String content;
+
+  private String image;
 }
