@@ -38,7 +38,7 @@ public class TestUserController {
   
   @PostMapping("/test/user")
   public String createUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm, BindingResult result, Model model) {
-    userForm.validatePasswordConfirmation(result);
+    userForm.validateUserForm(result);
     if (userRepository.existsByEmail(userForm.getEmail())) {
       result.rejectValue("email", "null", "Email already exists");
     }

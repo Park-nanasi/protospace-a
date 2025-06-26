@@ -39,7 +39,7 @@ public class UserFormUnitTest {
 
         // パスワード確認の手動バリデーション
         BindingResult result = new BeanPropertyBindingResult(form, "userForm");
-        form.validatePasswordConfirmation(result);
+        form.validatePassword(result);
         assertTrue(!result.hasFieldErrors("passwordConfirmation"), "パスワード確認でバリデーションエラーが発生しています");
     }
 
@@ -90,7 +90,7 @@ public class UserFormUnitTest {
         form.setPasswordConfirmation("different");
 
         BindingResult result = new BeanPropertyBindingResult(form, "userForm");
-        form.validatePasswordConfirmation(result);
+        form.validatePassword(result);
 
         assertTrue(result.hasFieldErrors("passwordConfirmation"));
         assertEquals("Password confirmation doesn't match Password",
