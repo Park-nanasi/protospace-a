@@ -27,7 +27,7 @@
         <div class="container_comment">
           <div class="container_comment_detail">
             <div class="comment_title">
-              <p>コメントタイトル</p>
+              <p th:text="${comment.title}"></p>
               <p class="comment_author">
                 <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" 
                   th:text="'by ' + ${comment.user.username}"></a>

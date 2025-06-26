@@ -72,7 +72,7 @@
               th:text="${comment.user.username}"></a>
           </p>
           <div class="comment_box">
-            <span class="comment_content" th:text="${comment.content}"></span>
+            <span class="comment_name" th:text="${comment.title}"></span>
             <!-- <a class="read_more" th:href="@{/comments/{id}(id=${comment.id})}">詳細を見る</a> -->
              <a class="read_more" th:href="@{'/prototypes/' + ${prototype.id} + '/comments/' + ${comment.id}}">詳細を見る</a>
           </div>

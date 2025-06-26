@@ -1452,7 +1452,7 @@ form input[type="file"] {
   align-items: center;
 }
 
-.comment_content {
+.comment_name {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -1577,5 +1577,5 @@ form input[type="file"] {
   overflow-wrap: break-word;
   white-space: normal;
   line-height: 1.5;
-  padding: 10px;
+  padding-bottom: 10px;
 }
