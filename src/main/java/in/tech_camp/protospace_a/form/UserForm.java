@@ -83,27 +83,39 @@ public class UserForm {
   }
 
   public void validatePassword(BindingResult result) {
-    String allowedRegex = "^[A-Za-z0-9]+$";
-    boolean isValidCharacters = password.matches(allowedRegex);
-    
     if (password == null || password.isEmpty()) {
         result.rejectValue("password", "password", "パスワードを入力してください");
         return;
     }
     
-    if (!(isValidCharacters)) {
-      result.rejectValue("password", "password", 
-      "より強力なパスワードを選択してください。大小英字、数字の組み合わせをお試しください。");
-      return;
+    if (password.length() < 6) {
+        result.rejectValue("password", "password", "パスワードは 6 文字以上で設定してください");
+        return;
     }
-    
+
+    if (128 < password.length()) {
+        result.rejectValue("password", "password", "パスワードは 128 文字以下で設定してください");
+        return;
+    }
+
+    String allowedRegex = "^[A-Za-z0-9]+$";
+    boolean isValidCharacters = password.matches(allowedRegex);
+    boolean hasLowercase = password.matches(".*[a-z].*");
+    boolean hasUppercase = password.matches(".*[A-Z].*");
+    boolean hasDigit = password.matches(".*[0-9].*");
+    if (!(isValidCharacters && hasLowercase && hasUppercase && hasDigit)) {
+        result.rejectValue("password", "password",
+            "より強力なパスワードを選択してください。英小文字・英大文字・数字をそれぞれ1文字以上含めてください");
+        return;
+    }
+
     if (passwordConfirmation == null || passwordConfirmation.isEmpty()) {
         result.rejectValue("passwordConfirmation", "passwordConfirmation", "確認用のパスワードを入力してください");
         return;
     }
     
     if (!password.equals(passwordConfirmation)) {
-      result.rejectValue("passwordConfirmation", "password", "パスワードが一致しませんでした。もう一度お試しください。");
+      result.rejectValue("passwordConfirmation", "passwordConfirmation", "パスワードが一致しませんでした。もう一度お試しください。");
     }
   }
 

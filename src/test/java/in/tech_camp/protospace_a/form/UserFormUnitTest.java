@@ -103,37 +103,92 @@ public class UserFormUnitTest {
     }
 
     @Test
-    public void passwordが空ならバリデーションエラーになる() {
-        UserForm form = createValidUserForm();
+    public void passwordが空の場合エラー() {
         form.setPassword("");
-
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
-        assertEquals(1, violations.size());
-        assertEquals("Password can't be blank", violations.iterator().next().getMessage());
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("password"));
+        assertEquals("パスワードを入力してください", result.getFieldError("password").getDefaultMessage());
     }
 
     @Test
-    public void passwordが6文字未満ならバリデーションエラーになる() {
-        UserForm form = createValidUserForm();
-        form.setPassword("123");
-
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority2.class);
-        assertEquals(1, violations.size());
-        assertEquals("Password should be between 6 and 128 characters", violations.iterator().next().getMessage());
+    public void passwordが5文字の場合エラー() {
+        form.setPassword("1".repeat(5));
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("password"));
+        assertEquals("パスワードは 6 文字以上で設定してください", result.getFieldError("password").getDefaultMessage());
     }
 
     @Test
-    public void passwordとpasswordConfirmationが一致しない場合エラーになる() {
-        UserForm form = createValidUserForm();
+    public void passwordが6文字の場合成功() {
+        form.setPassword("1aA".repeat(6));
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("password"));
+    }
+
+    @Test
+    public void passwordが128文字の場合成功() {
+        form.setPassword("1".repeat(126) + "a" + "A");
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("password"));
+    }
+    
+    @Test
+    public void passwordが129文字の場合エラー() {
+        form.setPassword("1".repeat(129));
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("password"));
+        assertEquals("パスワードは 128 文字以下で設定してください",  result.getFieldError("password").getDefaultMessage());
+    }
+
+    @Test
+    public void passwordが小文字のみの場合エラー() {
+        form.setPassword("a".repeat(6));
+        form.setPasswordConfirmation("a".repeat(6));
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("password"));
+        assertEquals("より強力なパスワードを選択してください。英小文字・英大文字・数字をそれぞれ1文字以上含めてください", result.getFieldError("password").getDefaultMessage());
+    }
+
+    @Test
+    public void passwordが大文字のみの場合エラー() {
+        form.setPassword("A".repeat(6));
+        form.setPasswordConfirmation("A".repeat(6));
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("password"));
+        assertEquals("より強力なパスワードを選択してください。英小文字・英大文字・数字をそれぞれ1文字以上含めてください", result.getFieldError("password").getDefaultMessage());
+    }
+
+    @Test
+    public void passwordが数字のみの場合エラー() {
+        form.setPassword("1".repeat(6));
+        form.setPasswordConfirmation("1".repeat(6));
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("password"));
+        assertEquals("より強力なパスワードを選択してください。英小文字・英大文字・数字をそれぞれ1文字以上含めてください", result.getFieldError("password").getDefaultMessage());
+    }
+
+    @Test
+    public void passwordConfirmationが空の場合エラー() {
+        form.setPasswordConfirmation("");
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("passwordConfirmation"));
+        assertEquals("確認用のパスワードを入力してください", result.getFieldError("passwordConfirmation").getDefaultMessage());
+    }
+
+    @Test
+    public void passwordとpasswordConfirmationが一致しない場合エラー() {
         form.setPassword("techcamp123");
         form.setPasswordConfirmation("different");
-
-        BindingResult result = new BeanPropertyBindingResult(form, "userForm");
-        form.validatePassword(result);
-
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
         assertTrue(result.hasFieldErrors("passwordConfirmation"));
-        assertEquals("Password confirmation doesn't match Password",
-                result.getFieldError("passwordConfirmation").getDefaultMessage());
+        assertEquals("パスワードが一致しませんでした。もう一度お試しください。", result.getFieldError("passwordConfirmation").getDefaultMessage());
     }
 
     @Test
@@ -179,8 +234,8 @@ public class UserFormUnitTest {
     private UserForm createValidUserForm() {
         UserForm form = new UserForm(userRepository);
         form.setEmail("test@example.com");
-        form.setPassword("techcamp123");
-        form.setPasswordConfirmation("techcamp123");
+        form.setPassword("1aA".repeat(6));
+        form.setPasswordConfirmation("1aA".repeat(6));
         form.setUsername("TestUser");
         form.setProfile("テストプロフィール");
         form.setCompany("TechCamp");
