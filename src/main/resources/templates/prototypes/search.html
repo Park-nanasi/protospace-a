@@ -11,8 +11,13 @@
 <!-- ヘッダー -->
 <div th:insert="~{header :: header}"></div>
 
+<form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
+  <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+  <input type="submit" class="search-btn" value="検索" />
+</form>
+  
 <div class="main_contents">
-  <div class="proto-detail">
+  <div class="proto-detail" th:each="prototype: ${prototypes}">
     <div class="proto_info">
       <h2 class="title" th:text="${prototype.name}"></h2>
       <p class="author">
@@ -35,23 +40,7 @@
     </div>
     <div class="container">
       <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span>
-      <p>コメント</p>
-      <div th:if="${#authorization.expression('isAuthenticated()')}">
-      <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" 
-        th:object="${commentForm}" 
-        method="post">
-        <textarea id="text" th:field="*{content}" rows="1"></textarea><br>
-        <input type="submit" value="送信する">
-      </form>
-    </div>
-      <ul class="comments_lists">
-        <li class="comments_list" th:each="comment : ${comments}">
-          <p>
-            <span th:text="${comment.content}"></span>
-            <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" th:text="'by ' + ${comment.user.username}"></a>
-          </p>
-        </li>
-      </ul>
+
     </div>
   </div>
 </div>

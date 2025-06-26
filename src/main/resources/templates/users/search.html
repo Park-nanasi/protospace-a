@@ -10,7 +10,7 @@
 
 <div th:insert="~{header :: header}"></div>
 
-<form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}" class="search-form">
+<form th:action="@{/user/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}" class="search-form">
   <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
   <input type="submit" class="search-btn" value="検索" />
 </form>
