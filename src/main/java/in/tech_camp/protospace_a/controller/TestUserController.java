@@ -32,7 +32,7 @@ public class TestUserController {
 
   @GetMapping("/test/users/sign_up")
   public String showSignUp(Model model) {
-    model.addAttribute("userForm", new UserForm());
+    model.addAttribute("userForm", new UserForm(userRepository));
       return "tmp/signUp";
   }
   

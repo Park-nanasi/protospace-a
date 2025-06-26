@@ -22,9 +22,16 @@ public class UserForm {
   private String role;
 
   private String passwordConfirmation;
+
   @Autowired
   private final UserRepository userRepository;
 
+  public void validateUserForm(BindingResult result) {
+    validateEmail(result);
+    validatePassword(result);
+    validateUsername(result);
+    validateProfile(result);
+  }
 
   public void validateUsername(BindingResult result) {
     if (username == null || username.isEmpty()) {

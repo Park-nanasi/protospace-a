@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationPriority1;
 import in.tech_camp.protospace_a.validation.ValidationPriority2;
 import jakarta.validation.ConstraintViolation;
@@ -19,6 +21,9 @@ import jakarta.validation.ValidatorFactory;
 public class UserFormUnitTest {
 
     private Validator validator;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     void setup() {
@@ -138,7 +143,7 @@ public class UserFormUnitTest {
     }
 
     private UserForm createValidUserForm() {
-        UserForm form = new UserForm();
+        UserForm form = new UserForm(userRepository);
         form.setEmail("test@example.com");
         form.setPassword("techcamp123");
         form.setPasswordConfirmation("techcamp123");
