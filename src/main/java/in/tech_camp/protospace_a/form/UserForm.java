@@ -121,8 +121,9 @@ public class UserForm {
   }
 
   public void validateProfile(BindingResult result) {
-    if (profile != null || profile.isEmpty()) {
+    if (profile == null || profile.isEmpty()) {
       result.rejectValue("profile", "profile", "プロフィールを入力してください");
+      return;
     }
 
     if (140 < profile.length()) {

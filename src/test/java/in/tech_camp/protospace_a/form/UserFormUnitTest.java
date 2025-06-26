@@ -218,13 +218,29 @@ public class UserFormUnitTest {
     }
 
     @Test
-    public void profileが空ならバリデーションエラーになる() {
-        UserForm form = createValidUserForm();
+    public void profileが空の場合エラー() {
         form.setProfile("");
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("profile"));
+        assertEquals("プロフィールを入力してください", result.getFieldError("profile").getDefaultMessage());
+    }
 
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
-        assertEquals(1, violations.size());
-        assertEquals("Profile can't be blank", violations.iterator().next().getMessage());
+    @Test
+    public void profileの文字数が140文字の場合成功() {
+        form.setProfile("あ".repeat(140));
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("profile"));
+    }
+
+    @Test
+    public void profileの文字数が141文字の場合エラー() {
+        form.setProfile("あ".repeat(141));
+        result = new BeanPropertyBindingResult(form, "userForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("profile"));
+        assertEquals("プロフィールの文字数は140字までです", result.getFieldError("profile").getDefaultMessage());
     }
 
     @Test
