@@ -15,11 +15,30 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build:
+  build_and_test:
 
     runs-on: ubuntu-latest
     permissions:
       contents: read
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USERNAME: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: protospace
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      POSTGRESQL_USERNAME: testuser
+      POSTGRESQL_PASSWORD: testpass
 
     steps:
     - uses: actions/checkout@v4
@@ -41,6 +60,12 @@ jobs:
         chmod +x ./gradlew
         ./gradlew build
 
+    
+    - name: Run tests
+      run: |
+        chmod +x ./gradlew
+        ./gradlew test
+
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #
@@ -52,8 +77,8 @@ jobs:
     # - name: Build with Gradle 8.9
     #   run: gradle build
 
-  dependency-submission:
 
+  dependency-submission:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -70,8 +95,3 @@ jobs:
     # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-
-    - name: Run tests
-      run: |
-        chmod +x ./gradlew
-        ./gradlew test
