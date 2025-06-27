@@ -34,7 +34,7 @@
       <p class="concept" th:text="${prototype.concept}"></p>
     </div>
     <div class="container">
-      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span>
+      <span th:if="${errorMessages}" th:text="${errorMessages}" class="error_message"></span>
       <p>コメント</p>
       <div th:if="${#authorization.expression('isAuthenticated()')}">
       <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" 
