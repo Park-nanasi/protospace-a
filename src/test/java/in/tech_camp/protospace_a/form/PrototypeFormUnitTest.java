@@ -1,6 +1,7 @@
 package in.tech_camp.protospace_a.form;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ public class PrototypeFormUnitTest {
     }
 
     @Test
-    public void 必要な項目がすべて入力されていればバリデーションエラーなし() {
+    public void 必要な項目がすべて入力の場合成功() {
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
         form.validatePrototypeForm(result);
 
@@ -26,15 +27,31 @@ public class PrototypeFormUnitTest {
     }
 
     @Test
-    public void nameが空ならバリデーションエラー() {
+    public void nameが空の場合エラー() {
         form.setName("");
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
         form.validatePrototypeForm(result);
-
         assertTrue(result.hasFieldErrors("name"));
-        assertEquals("Please enter either name", result.getFieldError("name").getDefaultMessage());
+        assertEquals("プロトタイプ名を入力してください", result.getFieldError("name").getDefaultMessage());
+    }
+    
+    @Test
+    public void nameの文字数が50文字の場合成功() {
+        form.setName("a".repeat(50));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertFalse(result.hasFieldErrors("name"));
     }
 
+    @Test
+    public void nameの文字数が51文字の場合エラー() {
+        form.setName("a".repeat(51));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertTrue(result.hasFieldErrors("name"));
+        assertEquals("プロトタイプ名は 50 文字以内で入力してください", result.getFieldError("name").getDefaultMessage());
+    }
+    
     @Test
     public void catchphraseが空ならバリデーションエラー() {
         form.setCatchphrase("");
