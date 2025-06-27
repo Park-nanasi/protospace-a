@@ -1419,9 +1419,14 @@ form input[type="file"] {
 
 .comment_user {
   border-bottom: 1px solid #bfbfbf;
+  display: flex;
+  justify-content :space-between;
+  align-items: center;
+  margin: 0;
+  padding: 5px;
 }
 
-.comment_user a {
+.comment_user_author {
   font-weight: bold;
   color: #000;
   text-decoration: none;
@@ -1429,9 +1434,17 @@ form input[type="file"] {
   margin-bottom: 0.5em;
 }
 
-.comment_user a::before {
+.comment_user_author::before {
   content: "■";
   margin-right: 0.5em;
+}
+
+.comment_edit_btn {
+  border: 1px solid #666;
+  border-radius: 10px;
+  text-align: center;
+  width: 60px;
+  line-height: 1.5;
 }
 
 .comment_author {

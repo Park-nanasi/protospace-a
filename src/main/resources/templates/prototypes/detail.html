@@ -68,8 +68,10 @@
       <ul class="comments_lists">
         <li class="container_comment_detail" th:each="comment : ${comments}">
           <p class="comment_user">
-            <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" 
+            <a class = "comment_user_author" th:href="@{/users/{userId}(userId = ${comment.user.id})}"
               th:text="${comment.user.username}"></a>
+            <a class="comment_edit_btn" th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+              th:text="編集"></a>
           </p>
           <div class="comment_box">
             <span class="comment_name" th:text="${comment.title}"></span>

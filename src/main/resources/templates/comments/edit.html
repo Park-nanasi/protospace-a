@@ -13,7 +13,7 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>コメント投稿</h2>
-    <form th:method="post" th:action="@{/prototypes/{prototypeId}/comments/new(prototypeId=${prototype.id})}" 
+    <form th:method="post" th:action="@{/prototypes/{prototypeId}/comments/{commentId}/update(prototypeId=${prototypeId}, commentId=${commentId})}" 
           th:object="${commentForm}" enctype="multipart/form-data" class="new_user">
 
       <div class="field">

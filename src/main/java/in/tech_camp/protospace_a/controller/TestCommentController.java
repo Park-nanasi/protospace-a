@@ -65,6 +65,28 @@ public class TestCommentController {
     return "comments/new";
   }
 
+  //コメントの編集ページへアクセス
+  @GetMapping("/prototypes/{prototypeId}/comments/{commentId}/edit")
+  public String showEditComment(@PathVariable("prototypeId") Integer prototypeId, 
+                                @PathVariable("commentId") Integer commentId,
+                                @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+
+    CommentEntity comment = commentRepository.findById(commentId);
+
+    if (comment.getUser().getId() != currentUser.getId()) {
+        return "redirect:/";
+    }
+
+    CommentForm commentForm = new CommentForm();
+    commentForm.setTitle(comment.getTitle());
+    commentForm.setContent(comment.getContent());
+
+    model.addAttribute("commentForm", commentForm);
+    model.addAttribute("prototypeId", prototypeId);
+    model.addAttribute("commentId", commentId);
+    return "comments/edit";
+  }
+
   //新規コメントの投稿
   @PostMapping("/prototypes/{prototypeId}/comments/new")
   public String createComment(@PathVariable("prototypeId") Integer prototypeId, 
