@@ -26,15 +26,17 @@
         <textarea th:field="*{catchphrase}" class="text_prototype" id="catchphrase" name="catchphrase" ></textarea>
         <div th:if="${#fields.hasErrors('catchphrase')}" th:text="＊ + ${fieldErrors['catchphrase']}" class="error_message"></div>
       </div>
-  
+      
       <div class="field">
         <label class="concept">コンセプト</label><br />
         <textarea th:field="*{concept}" class="text_prototype" id="concept" name="concept" ></textarea>
+        <div th:if="${#fields.hasErrors('concept')}" th:text="＊ + ${fieldErrors['concept']}" class="error_message"></div>
       </div>
-
+      
       <div class="field">
-        <label class="image">プロトタイプの画像</label><br />
-        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" required="required" />
+        <label clas s="image">プロトタイプの画像</label><br />
+        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" />
+        <div th:if="${#fields.hasErrors('image')}" th:text="＊ + ${fieldErrors['image']}" class="error_message"></div>
       </div>
 
       <div class="actions">

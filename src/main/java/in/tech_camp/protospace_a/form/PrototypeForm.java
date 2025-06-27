@@ -15,10 +15,8 @@ public class PrototypeForm {
   public void validatePrototypeForm(BindingResult result) {
     validateName(result);
     validateCatchphrase(result);
-    
-    if (concept == null || concept.isEmpty()) {
-      result.rejectValue("concept", "error.Prototype", "Please enter either concept");
-    } else if (image == null || image.isEmpty()) {
+    validateConcept(result);
+    if (image == null || image.isEmpty()) {
       result.rejectValue("image", "error.Prototype", "Please enter either image");
     }
   }
@@ -44,4 +42,15 @@ public class PrototypeForm {
       result.rejectValue("catchphrase", "catchphrase", "キャッチフレーズは 128 文字以内で入力してください");
     }
   }
+
+  public void validateConcept(BindingResult result) {
+    if (concept == null || concept.isEmpty()) {
+      result.rejectValue("concept", "concept", "コンセプトを入力してください");
+    } 
+    
+    if (512 < concept.length()) {
+      result.rejectValue("concept", "concept", "コンセプトは 512 文字以内で入力してください");
+    }
+  }
+  
 }
