@@ -106,22 +106,58 @@ public class PrototypeFormUnitTest {
         assertEquals("コンセプトは 512 文字以内で入力してください", result.getFieldError("concept").getDefaultMessage());
     }
 
+    @Test
+    public void imageがnullの場合エラー() {
         form.setImage(null);
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
         form.validatePrototypeForm(result);
 
         assertTrue(result.hasFieldErrors("image"));
-        assertEquals("Please enter either image", result.getFieldError("image").getDefaultMessage());
+        assertEquals("画像を入力してください", result.getFieldError("image").getDefaultMessage());
     }
 
     @Test
-    public void imageが空ファイルならバリデーションエラー() {
+    public void imageが空ファイルの場合エラー() {
         form.setImage(new MockMultipartFile("image", new byte[0]));
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
         form.validatePrototypeForm(result);
 
         assertTrue(result.hasFieldErrors("image"));
-        assertEquals("Please enter either image", result.getFieldError("image").getDefaultMessage());
+        assertEquals("画像を入力してください", result.getFieldError("image").getDefaultMessage());
+    }
+
+    @Test
+    public void imageのurlの文字数が256文字の場合成功() {
+        form.setImage(new MockMultipartFile("image", "a".repeat(252) + ".png", "image/png", "dummy image content".getBytes()));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertFalse(result.hasFieldErrors("image"));
+    }
+
+    @Test
+    public void imageのurlの文字数が257文字の場合エラー() {
+        form.setImage(new MockMultipartFile("image", "a".repeat(253) + ".png", "image/png", "dummy image content".getBytes()));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertTrue(result.hasFieldErrors("image"));
+        assertEquals("画像URLは 256 文字以内で入力してください", result.getFieldError("image").getDefaultMessage());
+    }
+    
+    @Test
+    public void imageのファイルが10MBの場合成功() {
+        form.setImage(new MockMultipartFile("image", new byte[10 * 1024 * 1024]));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertFalse(result.hasFieldErrors("image"));
+    }
+
+    @Test
+    public void imageのファイルが11MBの場合エラー() {
+        form.setImage(new MockMultipartFile("image", new byte[11 * 1024 * 1024]));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertTrue(result.hasFieldErrors("image"));
+        assertEquals("画像の最大メディア容量は10メガバイトまでです", result.getFieldError("image").getDefaultMessage());
     }
 
     // --- ヘルパーメソッド ---

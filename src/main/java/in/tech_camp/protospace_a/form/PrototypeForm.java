@@ -55,10 +55,12 @@ public class PrototypeForm {
   public void validateImage(BindingResult result) {
     if (image == null || image.isEmpty()) {
       result.rejectValue("image", "image", "画像を入力してください");
+      return;
     }
-
-    if (256 < image.getName().length()) {
+    
+    if (256 < image.getOriginalFilename().length()) {
       result.rejectValue("image", "image", "画像URLは 256 文字以内で入力してください");
+      return;
     }
     
     if (10 * 1024 * 1024 < image.getSize()) {
