@@ -53,15 +53,32 @@ public class PrototypeFormUnitTest {
     }
     
     @Test
-    public void catchphraseが空ならバリデーションエラー() {
+    public void catchphraseが空の場合エラー() {
         form.setCatchphrase("");
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
         form.validatePrototypeForm(result);
-
+        
         assertTrue(result.hasFieldErrors("catchphrase"));
-        assertEquals("Please enter either catchphrase", result.getFieldError("catchphrase").getDefaultMessage());
+        assertEquals("キャッチフレーズを入力してください", result.getFieldError("catchphrase").getDefaultMessage());
     }
 
+    @Test
+    public void catchphraseの文字数が128文字の場合成功() {
+        form.setCatchphrase("a".repeat(128));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertFalse(result.hasFieldErrors("catchphrase"));
+    }
+
+    @Test
+    public void catchphraseの文字数が129文字の場合エラー() {
+        form.setCatchphrase("a".repeat(129));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertTrue(result.hasFieldErrors("catchphrase"));
+        assertEquals("キャッチフレーズは 128 文字以内で入力してください", result.getFieldError("catchphrase").getDefaultMessage());
+    }
+    
     @Test
     public void conceptが空ならバリデーションエラー() {
         form.setConcept("");
