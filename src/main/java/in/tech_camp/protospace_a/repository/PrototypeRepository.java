@@ -80,21 +80,17 @@ public interface PrototypeRepository {
   List<PrototypeEntity> findByNameContaining(String name);
 
 // ユーザーの詳細ページにて検索機能
-// @Select("SELECT * FROM prototypes WHERE user_id = #{userId} AND name LIKE CONCAT('%', #{name}, '%')")
-// List<PrototypeEntity> findByUserIdAndNameContaining(@Param("userId") Integer userId, @Param("name") String name);
-@Select("SELECT p.*, u.id as user_id, u.username as user_name " +
+  @Select("SELECT p.*, u.id as user_id, u.username as user_name " +
         "FROM prototypes p " +
         "LEFT JOIN users u ON p.user_id = u.id " +
         "WHERE p.user_id = #{userId} AND p.name LIKE CONCAT('%', #{name}, '%')")
-@Results({
+  @Results({
     @Result(property = "id", column = "id"),
     @Result(property = "name", column = "name"),
-    // 下面是User的映射
     @Result(property = "user.id", column = "user_id"),
     @Result(property = "user.username", column = "username")
-    // 你可以根据需要添加其他字段映射
-})
-List<PrototypeEntity> findByUserIdAndNameContaining(@Param("userId") Integer userId, @Param("name") String name);
+  })
+  List<PrototypeEntity> findByUserIdAndNameContaining(@Param("userId") Integer userId, @Param("name") String name);
 
 
 

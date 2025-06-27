@@ -17,6 +17,23 @@
 </form>
   
 <div class="main_contents">
+
+<div class="protos">
+  <div class="proto" th:each="prototype : ${prototypes}">
+    <a th:href="@{'/prototypes/' + ${prototype.id}}">
+      <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+    </a>
+    <h2 class="title" th:text="${prototype.name}"></h2>
+    <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+    <p class="author">
+      <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
+    </p>
+  </div>
+</div>
+
+</div>
+
+<!-- <div class="main_contents">
   <div class="proto-detail" th:each="prototype: ${prototypes}">
     <div class="proto_info">
       <h2 class="title" th:text="${prototype.name}"></h2>
@@ -39,7 +56,7 @@
       <p class="concept" th:text="${prototype.concept}"></p>
     </div>
     <div class="container">
-      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span>
+      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span> -->
 
     </div>
   </div>
