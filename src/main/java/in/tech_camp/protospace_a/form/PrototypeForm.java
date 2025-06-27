@@ -16,9 +16,7 @@ public class PrototypeForm {
     validateName(result);
     validateCatchphrase(result);
     validateConcept(result);
-    if (image == null || image.isEmpty()) {
-      result.rejectValue("image", "error.Prototype", "Please enter either image");
-    }
+    validateImage(result);
   }
   
   public void validateName(BindingResult result) {
@@ -53,4 +51,17 @@ public class PrototypeForm {
     }
   }
   
+  public void validateImage(BindingResult result) {
+    if (image == null || image.isEmpty()) {
+      result.rejectValue("image", "image", "画像を入力してください");
+    }
+
+    if (256 < image.getName().length()) {
+      result.rejectValue("image", "image", "画像URLは 256 文字以内で入力してください");
+    }
+    
+    if (10 * 1024 * 1024 < image.getSize()) {
+      result.rejectValue("image", "image", "画像の最大メディア容量は10メガバイトまでです");
+    }
+  }
 }
