@@ -20,6 +20,8 @@ import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
+import java.sql.Timestamp;
+
 
 @Controller
 @AllArgsConstructor
@@ -51,6 +53,7 @@ public class CommentController {
     comment.setContent(commentForm.getContent());
     comment.setPrototype(prototype);
     comment.setUser(user);
+    comment.setCreated_at(new Timestamp(System.currentTimeMillis()));
 
   try {
       commentRepository.insert(comment);

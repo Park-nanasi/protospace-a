@@ -18,7 +18,7 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 @Mapper
 public interface PrototypeRepository {
 
-  @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id})")
+  @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id, created_at, updated_at) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id}, CURRENT_TIMESTAMP, '1970-01-01 00:00:01')")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insertPrototype(PrototypeEntity prototype);
 
