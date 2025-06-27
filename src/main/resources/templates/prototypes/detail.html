@@ -68,14 +68,26 @@
       <ul class="comments_lists">
         <li class="container_comment_detail" th:each="comment : ${comments}">
           <p class="comment_user">
-            <a class = "comment_user_author" th:href="@{/users/{userId}(userId = ${comment.user.id})}"
-              th:text="${comment.user.username}"></a>
-            <a class="comment_edit_btn" th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
-              th:text="編集"></a>
+            <span class="comment_user_author_block">
+              <a class="comment_user_author"
+                th:href="@{/users/{userId}(userId = ${comment.user.id})}"
+                th:text="${comment.user.username}">
+              </a>
+            </span>
+
+            <span class="comment_btn_group">
+              <a class="comment_btn"
+                th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+                th:text="編集">
+              </a>
+              <a class="comment_btn"
+                th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+                th:text="削除">
+              </a>
+            </span>
           </p>
           <div class="comment_box">
             <span class="comment_name" th:text="${comment.title}"></span>
-            <!-- <a class="read_more" th:href="@{/comments/{id}(id=${comment.id})}">詳細を見る</a> -->
              <a class="read_more" th:href="@{'/prototypes/' + ${prototype.id} + '/comments/' + ${comment.id}}">詳細を見る</a>
           </div>
         </li>

@@ -2,6 +2,7 @@ package in.tech_camp.protospace_a.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.One;
@@ -39,14 +40,17 @@ public interface CommentRepository {
   })
   CommentEntity findById(Integer id);
 
-    @Insert("INSERT INTO comments (content, user_id, prototype_id, created_at) VALUES (#{content}, #{user.id}, #{prototype.id}, now())")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(CommentEntity comment);
+  @Insert("INSERT INTO comments (content, user_id, prototype_id, created_at) VALUES (#{content}, #{user.id}, #{prototype.id}, now())")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void insert(CommentEntity comment);
 
-    @Insert("INSERT INTO comments (title, image, content, user_id, prototype_id, created_at) VALUES (#{title}, #{image}, #{content}, #{user.id}, #{prototype.id}, now())")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insertTest(CommentEntity comment);
+  @Insert("INSERT INTO comments (title, image, content, user_id, prototype_id, created_at) VALUES (#{title}, #{image}, #{content}, #{user.id}, #{prototype.id}, now())")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void insertTest(CommentEntity comment);
 
-    @Update("UPDATE comments SET title = #{title}, content = #{content}, image = #{image} WHERE id = #{id}")
-    void update(CommentEntity comment);
+  @Update("UPDATE comments SET title = #{title}, content = #{content}, image = #{image} WHERE id = #{id}")
+  void update(CommentEntity comment);
+
+  @Delete("DELETE FROM comments WHERE id = #{id}")
+  void deleteById(Integer id); 
 }

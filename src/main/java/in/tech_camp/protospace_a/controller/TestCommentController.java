@@ -160,7 +160,7 @@ public class TestCommentController {
       model.addAttribute("commentForm", commentForm);
       model.addAttribute("errorMessages", result.getAllErrors());
 
-      return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId + "/edit";
+      return "comments/edit";
     }
 
     comment.setTitle(commentForm.getTitle());
@@ -187,6 +187,25 @@ public class TestCommentController {
     try {
       System.out.println(comment.getId());
       commentRepository.update(comment);
+    } catch (Exception e) {
+      System.err.println("Error: " + e);
+      return "redirect:/prototypes/" + prototypeId;
+    }
+    return "redirect:/prototypes/" + prototypeId;
+  }
+
+  //コメント削除
+  @GetMapping("/prototypes/{prototypeId}/comments/{commentId}/delete")
+  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId,
+                                @PathVariable("commentId") Integer commentId,
+                                @AuthenticationPrincipal CustomUserDetail currentUser) {
+     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+     CommentEntity comment = commentRepository.findById(commentId);
+    if (prototype.getUser().getId() != currentUser.getId()) {
+        return "redirect:/";
+    }
+    try {
+      commentRepository.deleteById(commentId);
     } catch (Exception e) {
       System.err.println("Error: " + e);
       return "redirect:/prototypes/" + prototypeId;
