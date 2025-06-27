@@ -1423,7 +1423,7 @@ form input[type="file"] {
   justify-content: space-between;
   align-items: center;
   margin: 0;
-  padding: 5px;
+  padding: 10px;
 }
 
 .comment_user_author_block {
@@ -1553,7 +1553,7 @@ form input[type="file"] {
 
 .container_comment_detail {
   margin: 20px 0;
-  padding: 10px 30px;
+  padding: 0 30px 10px 30px;
   background-color: white;
   box-sizing: border-box;
   border: 1px solid rgb(211, 211, 211);
