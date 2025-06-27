@@ -105,12 +105,18 @@ public class UserController {
     // 検索機能
     @GetMapping("/users/{userId}/search")
     public String searchPrototypes(@PathVariable("userId") Integer userId, @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
-    UserEntity user = userRepository.findById(userId);
+      // 名前の長さ判定、50以上だったら、プリントアウト
+      if (searchForm.getName() != null && searchForm.getName().length() > 50) {
+        System.out.println(String.format("検索に入力した名前の文字数：%d、50を超えています!!", searchForm.getName().length()));
+
+    }
+
+      UserEntity user = userRepository.findById(userId);
       List<PrototypeEntity> prototypes = prototypeRepository.findByUserIdAndNameContaining(userId, searchForm.getName());
 
-    model.addAttribute("name", user.getUsername());
-    model.addAttribute("prototypes", prototypes);
-    model.addAttribute("searchForm", searchForm);
-    return "users/userInfo";
+      model.addAttribute("name", user.getUsername());
+      model.addAttribute("prototypes", prototypes);
+      model.addAttribute("searchForm", searchForm);
+      return "users/userInfo";
     }
 }
