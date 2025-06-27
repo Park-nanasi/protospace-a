@@ -14,21 +14,19 @@
   <div class="container_Form">
     <h2>ユーザー新規登録</h2>
     <div class="form">
-      <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
-        <div th:text="${error}"></div>
-      </div>
       <form th:action="@{/user}" th:method="post" th:object="${userForm}", class="new_user">
         
         <div class="field">
           <label for="email">メールアドレス</label><br />
           <input type="email" id="email" th:field="*{email}"  />
+          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'email')}" th:text="＊ + ${fieldErrors['email']}" class="error_message"></div>
         </div>
-
+        
         <div class="field">
           <label for="password">パスワード</label><em>(6文字以上)</em><br />
           <input type="password" id="password" th:field="*{password}" />
         </div>
-
+        
         <div class='field'>
           <div class='field-label'>
             <label for="password_confirmation">パスワード再入力</label>
@@ -36,16 +34,20 @@
           <div class='field-input'>
             <input type="password" th:field="*{passwordConfirmation}" id="password_confirmation" autocomplete="off"/>
           </div>
+          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'password')}" th:text="＊ + ${fieldErrors['password']}" class="error_message"></div>
+          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'passwordConfirmation')}" th:text="＊ + ${fieldErrors['passwordConfirmation']}" class="error_message"></div>
         </div>
-
+        
         <div class="field">
           <label for="username">ユーザー名</label><br />
           <input type="text" id="username" th:field="*{username}"  autofocus="autofocus" />
+          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'username')}" th:text="＊ + ${fieldErrors['username']}" class="error_message"></div>
         </div>
-
+        
         <div class="field">
           <label for="profile">プロフィール</label><br />
           <input type="text" id="profile" th:field="*{profile}"  autofocus="autofocus" />
+          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'profile')}" th:text="＊ + ${fieldErrors['profile']}" class="error_message"></div>
         </div>
 
         <div class="field">
