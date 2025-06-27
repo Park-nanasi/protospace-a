@@ -33,26 +33,7 @@
       <h2 class="sub-title">コンセプト</h2>
       <p class="concept" th:text="${prototype.concept}"></p>
     </div>
-    <!-- <div class="container"> 既存のコメント一覧
-      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span>
-      <p>コメント</p>
-      <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" 
-          th:object="${commentForm}" 
-          method="post">
-          <textarea id="text" th:field="*{content}" rows="1"></textarea><br>
-          <input type="submit" value="送信する">
-        </form>
-      </div>
-      <ul class="comments_lists">
-        <li class="comments_list" th:each="comment : ${comments}">
-          <p>
-            <span th:text="${comment.content}"></span>
-            <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" th:text="'by ' + ${comment.user.username}"></a>
-          </p>
-        </li>
-      </ul>
-    </div> -->
+
     <div class="container_comment">
       <div class="comment_top">
         <p>コメント</p>
@@ -75,7 +56,8 @@
               </a>
             </span>
 
-            <span class="comment_btn_group">
+            <span class="comment_btn_group"
+                  th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
               <a class="comment_btn"
                 th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
                 th:text="編集">
