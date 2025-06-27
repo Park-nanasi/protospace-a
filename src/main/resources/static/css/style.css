@@ -1417,6 +1417,10 @@ form input[type="file"] {
   margin-bottom: 1em;
 }
 
+.comment_user {
+  border-bottom: 1px solid #bfbfbf;
+}
+
 .comment_user a {
   font-weight: bold;
   color: #000;
@@ -1438,11 +1442,9 @@ form input[type="file"] {
 
 .comment_box {
   position: relative;
-  border: 2px solid #57C3E9;
-  background-color: #EAF8FD;
+  background-color: #ffffff;
   color: #333;
-  border-radius: 4px;
-  max-width: 70%;
+  max-width: 100%;
   min-height: 3em;
   padding: 0.5em 10px;
   word-wrap: break-word;
@@ -1475,10 +1477,6 @@ form input[type="file"] {
 
 .read_more:hover {
   text-decoration: underline;
-}
-.comment_box:hover {
-  border-color: #2B9ACF;
-  border-width: 3px;
 }
 
 .user_contents {

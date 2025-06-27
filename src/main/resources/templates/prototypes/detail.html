@@ -66,7 +66,7 @@
       </div>
 
       <ul class="comments_lists">
-        <li class="comments_list" th:each="comment : ${comments}">
+        <li class="container_comment_detail" th:each="comment : ${comments}">
           <p class="comment_user">
             <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" 
               th:text="${comment.user.username}"></a>
