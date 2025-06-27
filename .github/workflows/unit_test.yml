@@ -25,8 +25,8 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USERNAME: testuser
-          POSTGRES_PASSWORD: testpass
+          POSTGRES_USERNAME: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: protospace
         ports:
           - 5432:5432
@@ -37,8 +37,10 @@ jobs:
           --health-retries 5
 
     env:
-      POSTGRESQL_USERNAME: testuser
-      POSTGRESQL_PASSWORD: testpass
+      SPRING_PROFILES_ACTIVE: ci
+      POSTGRESQL_HOST: localhost
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: postgres
 
     steps:
     - uses: actions/checkout@v4
