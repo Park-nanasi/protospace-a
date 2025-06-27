@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_a.entity.CommentEntity;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.CommentForm;
 import in.tech_camp.protospace_a.form.PrototypeForm;
@@ -54,7 +56,12 @@ public class PrototypeController {
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", commentForm);
     if (prototype != null) {
-      model.addAttribute("comments", prototype.getComments());
+        List<CommentEntity> sortedComments = prototype.getComments()
+            .stream()
+            .sorted(Comparator.comparing(CommentEntity::getId))
+            .collect(Collectors.toList());
+
+        model.addAttribute("comments", sortedComments);
     }
     model.addAttribute("errorMessages", null);
     return "prototypes/detail";

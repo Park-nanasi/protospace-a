@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import in.tech_camp.protospace_a.entity.CommentEntity;
 
@@ -45,4 +46,7 @@ public interface CommentRepository {
     @Insert("INSERT INTO comments (title, image, content, user_id, prototype_id, created_at) VALUES (#{title}, #{image}, #{content}, #{user.id}, #{prototype.id}, now())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertTest(CommentEntity comment);
+
+    @Update("UPDATE comments SET title = #{title}, content = #{content}, image = #{image} WHERE id = #{id}")
+    void update(CommentEntity comment);
 }

@@ -141,5 +141,56 @@ public class TestCommentController {
     }
 
     return "redirect:/prototypes/" + prototypeId;
-  } 
+  }
+
+  //コメントの更新処理
+  @PostMapping("/prototypes/{prototypeId}/comments/{commentId}/update")
+  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId,
+                               @PathVariable("commentId") Integer commentId,
+                               @ModelAttribute("commentForm") @Validated(ValidationOrder.class) CommentForm commentForm, BindingResult result,
+                               @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    CommentEntity comment = commentRepository.findById(commentId);
+    if (prototype.getUser().getId() != currentUser.getId()) {
+        return "redirect:/";
+    }
+    if (result.hasErrors()) {
+      model.addAttribute("prototype", prototype);
+      model.addAttribute("comment", comment);
+      model.addAttribute("commentForm", commentForm);
+      model.addAttribute("errorMessages", result.getAllErrors());
+
+      return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId + "/edit";
+    }
+
+    comment.setTitle(commentForm.getTitle());
+    comment.setContent(commentForm.getContent());
+
+    MultipartFile imageFile = commentForm.getImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        prototype.setImage("/uploads/" + fileName);
+      } catch (IOException e) {
+        System.out.println("Error：" + e);
+        return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId + "/edit";
+      }
+    }
+
+    try {
+      System.out.println(comment.getId());
+      commentRepository.update(comment);
+    } catch (Exception e) {
+      System.err.println("Error: " + e);
+      return "redirect:/prototypes/" + prototypeId;
+    }
+    return "redirect:/prototypes/" + prototypeId;
+  }
 }
