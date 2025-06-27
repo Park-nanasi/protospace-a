@@ -7,13 +7,14 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,8 +30,6 @@ import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import lombok.AllArgsConstructor;
-
-
 
 @Controller
 @AllArgsConstructor
@@ -69,12 +68,11 @@ public class PrototypeController {
 
   @PostMapping("/prototypes/new")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
-    prototypeForm.validatePrototypeForm(bindingResult);
+    prototypeForm.validatePrototypeForm(bindingResult);   
     if (bindingResult.hasErrors()) {
-      List<String> errorMessages = bindingResult.getAllErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.toList());
-      model.addAttribute("errorMessages", errorMessages);
+      Map<String, String> fieldErrors = bindingResult.getFieldErrors().stream()
+              .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
+      model.addAttribute("fieldErrors", fieldErrors);
       model.addAttribute("prototypeForm", prototypeForm);
       return "prototypes/new";
     }
@@ -153,13 +151,12 @@ public class PrototypeController {
     }
     prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
-        model.addAttribute("errors", bindingResult.getAllErrors()
-            .stream()
-            .map(error -> error.getDefaultMessage())
-            .collect(Collectors.toList()));
-        return "redirect:/prototypes/" + prototypeId + "/edit";
+      Map<String, String> fieldErrors = bindingResult.getFieldErrors().stream()
+              .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
+      model.addAttribute("fieldErrors", fieldErrors);
+      model.addAttribute("prototypeForm", prototypeForm);
+      return "redirect:/prototypes/" + prototypeId + "/edit";
     }
-
     prototype.setName(prototypeForm.getName());
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
