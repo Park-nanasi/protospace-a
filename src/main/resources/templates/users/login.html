@@ -13,19 +13,20 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>ユーザーログイン</h2>
-    <div th:if="${loginError}">
-        <span class="error_message">メールアドレスまたはパスワードが正しくありません。</span>
-    </div>
     <form th:method="post" th:action="@{/login}" class="new_user">
-
+      
       <div class="field">
         <label class="column-title">メールアドレス</label><br />
         <input type="email" id="email" name="email" autofocus="autofocus" required="required" />
       </div>
-
+      
       <div class="field">
         <label class="password">パスワード</label><br />
         <input type="password" name="password" required="required" autocomplete="off" />
+      </div>
+
+      <div th:if="${loginError}">
+          <span class="error_message">メールアドレスまたはパスワードが正しくありません。</span>
       </div>
 
       <div class="actions">
