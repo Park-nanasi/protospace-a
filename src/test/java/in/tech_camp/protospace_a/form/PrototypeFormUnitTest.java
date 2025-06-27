@@ -80,17 +80,32 @@ public class PrototypeFormUnitTest {
     }
     
     @Test
-    public void conceptが空ならバリデーションエラー() {
+    public void conceptが空の場合エラー() {
         form.setConcept("");
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
         form.validatePrototypeForm(result);
-
+        
         assertTrue(result.hasFieldErrors("concept"));
-        assertEquals("Please enter either concept", result.getFieldError("concept").getDefaultMessage());
+        assertEquals("コンセプトを入力してください", result.getFieldError("concept").getDefaultMessage());
+    }
+    
+    @Test
+    public void conceptの文字数が512文字の場合成功() {
+        form.setConcept("a".repeat(512));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertFalse(result.hasFieldErrors("concept"));
     }
 
     @Test
-    public void imageがnullならバリデーションエラー() {
+    public void conceptの文字数が513文字の場合エラー() {
+        form.setConcept("a".repeat(513));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validatePrototypeForm(result);
+        assertTrue(result.hasFieldErrors("concept"));
+        assertEquals("コンセプトは 512 文字以内で入力してください", result.getFieldError("concept").getDefaultMessage());
+    }
+
         form.setImage(null);
         BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
         form.validatePrototypeForm(result);

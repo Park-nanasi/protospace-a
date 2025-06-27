@@ -44,6 +44,7 @@ public class PrototypeForm {
   public void validateConcept(BindingResult result) {
     if (concept == null || concept.isEmpty()) {
       result.rejectValue("concept", "concept", "コンセプトを入力してください");
+      return;
     } 
     
     if (512 < concept.length()) {
