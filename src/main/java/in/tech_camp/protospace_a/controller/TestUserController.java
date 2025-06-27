@@ -32,13 +32,13 @@ public class TestUserController {
 
   @GetMapping("/test/users/sign_up")
   public String showSignUp(Model model) {
-    model.addAttribute("userForm", new UserForm());
+    model.addAttribute("userForm", new UserForm(userRepository));
       return "tmp/signUp";
   }
   
   @PostMapping("/test/user")
   public String createUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm, BindingResult result, Model model) {
-    userForm.validatePasswordConfirmation(result);
+    userForm.validateUserForm(result);
     if (userRepository.existsByEmail(userForm.getEmail())) {
       result.rejectValue("email", "null", "Email already exists");
     }

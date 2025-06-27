@@ -1597,4 +1597,9 @@ form input[type="file"] {
   white-space: normal;
   line-height: 1.5;
   padding-bottom: 10px;
+
+.error_message {
+  color: red;
+  font-size: 12px;
+
 }
