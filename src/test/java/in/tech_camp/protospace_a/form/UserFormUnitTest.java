@@ -183,10 +183,13 @@ public class UserFormUnitTest {
 
     @Test
     public void passwordとpasswordConfirmationが一致しない場合エラー() {
-        form.setPassword("techcamp123");
-        form.setPasswordConfirmation("different");
+        form.setPassword("Techcamp123");
+        form.setPasswordConfirmation("Different123");
         result = new BeanPropertyBindingResult(form, "userForm");
         form.validateUserForm(result);
+        assertFalse(form.getPassword() == form.getPasswordConfirmation());
+        // System.out.println("password: " + form.getPassword());
+        // System.out.println("passwordConfirmation: " + form.getPasswordConfirmation());
         assertTrue(result.hasFieldErrors("passwordConfirmation"));
         assertEquals("パスワードが一致しませんでした。もう一度お試しください。", result.getFieldError("passwordConfirmation").getDefaultMessage());
     }
@@ -240,7 +243,7 @@ public class UserFormUnitTest {
         result = new BeanPropertyBindingResult(form, "userForm");
         form.validateUserForm(result);
         assertTrue(result.hasFieldErrors("profile"));
-        assertEquals("プロフィールの文字数は140字までです", result.getFieldError("profile").getDefaultMessage());
+        assertEquals("プロフィールの文字数は140字以内で入力してください", result.getFieldError("profile").getDefaultMessage());
     }
 
     @Test

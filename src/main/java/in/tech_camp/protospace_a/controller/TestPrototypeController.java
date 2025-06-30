@@ -54,6 +54,7 @@ public class TestPrototypeController {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
     // - ログアウト状態で投稿ページに遷移しようとすると、ログインページに遷移すること
+    prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
         model.addAttribute("errors", bindingResult.getAllErrors()
             .stream()
