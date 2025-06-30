@@ -1444,16 +1444,11 @@ form input[type="file"] {
 
 .comment_btn_group {
   display: flex;
+  justify-content: end;
   gap: 10px;
 }
 
-.comment_btn {
-  border: 1px solid #666;
-  border-radius: 10px;
-  text-align: center;
-  width: 60px;
-  line-height: 1.5;
-}
+
 
 .comment_author {
   text-decoration: none;
@@ -1539,7 +1534,7 @@ form input[type="file"] {
   align-items: center;
 }
 
-.comment_new {
+.comment_btn {
   display: flex;
   background-color: #9bdbf2;
   color: white;
@@ -1548,6 +1543,7 @@ form input[type="file"] {
   align-items: center;
   justify-content: center;
   font-size: 13px;
+  font-weight: bold;
   border-radius: 10px;
 }
 
@@ -1597,6 +1593,11 @@ form input[type="file"] {
   white-space: normal;
   line-height: 1.5;
   padding-bottom: 10px;
+}
+
+.comment_time {
+  color: #929292;
+}
 
 .error_message {
   color: red;

@@ -59,7 +59,7 @@ public class PrototypeController {
     if (prototype != null) {
         List<CommentEntity> sortedComments = prototype.getComments()
             .stream()
-            .sorted(Comparator.comparing(CommentEntity::getId))
+            .sorted(Comparator.comparing(CommentEntity::getId).reversed())
             .collect(Collectors.toList());
 
         model.addAttribute("comments", sortedComments);

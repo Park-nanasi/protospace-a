@@ -25,13 +25,26 @@
         </div>
 
         <div class="container_comment">
+          <span class="comment_btn_group"
+              th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
+            <a class="comment_btn"
+              th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+              th:text="編集">
+            </a>
+            <a class="comment_btn"
+              th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+              th:text="削除">
+            </a>
+          </span>
           <div class="container_comment_detail">
             <div class="comment_title">
               <p th:text="${comment.title}"></p>
+              
               <p class="comment_author">
                 <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" 
                   th:text="'by ' + ${comment.user.username}"></a>
               </p>
+              
             </div>
             <span class="comment_text" th:text="${comment.content}"></span>
           </div>
