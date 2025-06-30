@@ -12,7 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +27,7 @@ import in.tech_camp.protospace_a.form.CommentForm;
 import in.tech_camp.protospace_a.repository.CommentRepository;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
-import in.tech_camp.protospace_a.validation.ValidationOrder;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
@@ -91,7 +90,7 @@ private final PrototypeRepository prototypeRepository;
   //新規コメントの投稿
   @PostMapping("/prototypes/{prototypeId}/comments/new")
   public String createComment(@PathVariable("prototypeId") Integer prototypeId, 
-                            @ModelAttribute("commentForm") @Validated(ValidationOrder.class) CommentForm commentForm,
+                            @ModelAttribute("commentForm") @Valid CommentForm commentForm,
                             BindingResult result,
                             @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
@@ -101,7 +100,6 @@ private final PrototypeRepository prototypeRepository;
       model.addAttribute("prototype", prototype);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("commentForm", commentForm);
-      model.addAttribute("errorMessages", result.getAllErrors());
         return "comments/new";
     }
 
@@ -149,7 +147,7 @@ private final PrototypeRepository prototypeRepository;
   @PostMapping("/prototypes/{prototypeId}/comments/{commentId}/update")
   public String updateComment(@PathVariable("prototypeId") Integer prototypeId,
                                @PathVariable("commentId") Integer commentId,
-                               @ModelAttribute("commentForm") @Validated(ValidationOrder.class) CommentForm commentForm, BindingResult result,
+                               @ModelAttribute("commentForm") @Valid CommentForm commentForm, BindingResult result,
                                @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     CommentEntity comment = commentRepository.findById(commentId);
@@ -160,7 +158,6 @@ private final PrototypeRepository prototypeRepository;
       model.addAttribute("prototype", prototype);
       model.addAttribute("comment", comment);
       model.addAttribute("commentForm", commentForm);
-      model.addAttribute("errorMessages", result.getAllErrors());
 
       return "comments/edit";
     }

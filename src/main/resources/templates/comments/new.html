@@ -18,13 +18,13 @@
 
       <div class="field">
         <label class="column-title">コメントタイトル</label><br />
-        <input th:field="*{title}" type="text" id="title" name="title" autofocus="autofocus" required="required" />
+        <input th:field="*{title}" type="text" id="title" name="title" autofocus="autofocus" />
         <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
       </div>
 
       <div class="field">
         <label class="column-content">コメント内容</label><br />
-        <textarea rows="10" th:field="*{content}" class="longText" id="content" name="content" required="required" ></textarea>
+        <textarea rows="10" th:field="*{content}" class="longText" id="content" name="content" ></textarea>
         <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error-message"></div>
       </div>
 
