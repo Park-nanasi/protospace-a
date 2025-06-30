@@ -30,6 +30,8 @@ import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.form.CommentForm;
 import in.tech_camp.protospace_a.form.PrototypeForm;
+import in.tech_camp.protospace_a.form.SearchForm;
+
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -45,7 +47,9 @@ public class PrototypeController {
   @GetMapping("/")
   public String showAllPrototypes(Model model) {
     List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
+    SearchForm searchForm = new SearchForm();
     model.addAttribute("prototypes", prototypes);
+    model.addAttribute("searchForm", searchForm);
     return "prototypes/index";
   }
 
@@ -199,5 +203,19 @@ public class PrototypeController {
       return "redirect:/prototypes/" + prototypeId;
     }
     return "redirect:/prototypes/" + prototypeId;
+  }
+
+  // 検索機能
+  @GetMapping("/prototypes/search")
+  public String searchPrototypes(@ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+    // 名前の長さ判定、50以上だったら、プリントアウト
+    if (searchForm.getName() != null && searchForm.getName().length() > 50) {
+      System.out.println(String.format("検索に入力した名前の文字数：%d、50を超えています!!", searchForm.getName().length()));
+  }
+
+    List<PrototypeEntity> prototypes = prototypeRepository.findByNameContaining(searchForm.getName());
+    model.addAttribute("prototypes", prototypes);
+    model.addAttribute("searchForm", searchForm);
+    return "prototypes/search";
   }
 }
