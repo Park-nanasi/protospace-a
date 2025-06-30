@@ -39,24 +39,36 @@
       <h2 class="sub-title">コンセプト</h2>
       <p class="concept" th:text="${prototype.concept}"></p>
     </div>
-    <div class="container">
-      <span th:if="${errorMessages}" th:text="${errorMessages}" class="error_message"></span>
-      <p>コメント</p>
-      <div th:if="${#authorization.expression('isAuthenticated()')}">
-      <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" 
-        th:object="${commentForm}" 
-        method="post">
-        <textarea id="text" th:field="*{content}" rows="1"></textarea><br>
-        <input type="submit" value="送信する">
-      </form>
-    </div>
-      <ul class="comments_lists">
-        <li class="comments_list" th:each="comment : ${comments}">
+
+    <div class="container_comment">
+      <div class="comment_top">
+        <p>コメント</p>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
           <p>
-            <span th:text="${comment.content}"></span>
-            <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" th:text="'(' + ${comment.user.username}"></a>
-            <a th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}+ ')'"></a>
+            <a class="comment_btn"
+              th:href="@{'/prototypes/' + ${prototype.id} + '/comments/new'}"
+              th:text="投稿する"></a>
           </p>
+        </div>
+      </div>
+
+      <ul class="comments_lists">
+        <li class="container_comment_detail" th:each="comment : ${comments}">
+          <p class="comment_user">
+            <span class="comment_user_author_block">
+              <a class="comment_user_author"
+                th:href="@{/users/{userId}(userId = ${comment.user.id})}"
+                th:text="${comment.user.username}">
+              </a>
+            </span>
+            
+            <a class="comment_time" th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}"></a>
+            
+          </p>
+          <div class="comment_box">
+            <span class="comment_name" th:text="${comment.title}"></span>
+             <a class="read_more" th:href="@{'/prototypes/' + ${prototype.id} + '/comments/' + ${comment.id}}">詳細を見る</a>
+          </div>
         </li>
       </ul>
     </div>
