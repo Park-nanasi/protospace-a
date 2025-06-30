@@ -11,12 +11,13 @@
 <!-- ヘッダー -->
 <div th:insert="~{header :: header}"></div>
 
-<form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
-  <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
-  <input type="submit" class="search-btn" value="検索" />
-</form>
-  
+
 <div class="main_contents">
+  
+  <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
+    <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+    <input type="submit" class="search-btn" value="検索" />
+  </form>
 
 <div class="protos">
   <div class="proto" th:each="prototype : ${prototypes}">
