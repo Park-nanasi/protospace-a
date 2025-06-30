@@ -32,18 +32,18 @@ public class CommentController {
   private final PrototypeRepository prototypeRepository;
 
   @PostMapping("/prototypes/{prototypeId}/comment")
-  public String createComment(@PathVariable("prototypeId") Integer prototypeId, 
-                            @ModelAttribute("commentForm") @Validated(ValidationOrder.class) CommentForm commentForm,
-                            BindingResult result,
-                            @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
-    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+  public String createComment(@PathVariable Integer prototypeId,
+      @ModelAttribute("commentForm") @Validated(ValidationOrder.class) CommentForm commentForm,
+      BindingResult result,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
 
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     if (result.hasErrors()) {
       model.addAttribute("prototype", prototype);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("commentForm", commentForm);
       model.addAttribute("errorMessages", "コメントの投稿に失敗しました。");
-        return "prototypes/detail";
+      return "prototypes/detail";
     }
 
     CommentEntity comment = new CommentEntity();
@@ -52,16 +52,17 @@ public class CommentController {
     comment.setPrototype(prototype);
     comment.setUser(user);
 
-  try {
+    try {
       commentRepository.insert(comment);
-  } catch (Exception e) {
+    }
+    catch (Exception e) {
       model.addAttribute("prototype", prototype);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("commentForm", commentForm);
       model.addAttribute("errorMessages", "コメントの投稿に失敗しました。");
       System.out.println("エラー：" + e);
       return "prototypes/detail";
-  }
+    }
     return "redirect:/prototypes/" + prototypeId;
   }
 }

@@ -30,25 +30,28 @@ import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
-
-
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
 
   private final UserRepository userRepository;
+
   private final PrototypeRepository prototypeRepository;
+
   private final ImageUrl imageUrl;
 
   @GetMapping("/")
   public String showAllPrototypes(Model model) {
-    List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
+
+    List<PrototypeEntity> prototypes = prototypeRepository.findAllPrototypes();
     model.addAttribute("prototypes", prototypes);
     return "prototypes/index";
   }
 
   @GetMapping("/prototypes/{prototypeId}")
-  public String showTargetPrototype(@PathVariable("prototypeId") Integer prototypeId, Model model) {
+  public String showTargetPrototype(
+      @PathVariable("prototypeId") Integer prototypeId, Model model) {
+
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     CommentForm commentForm = new CommentForm();
     model.addAttribute("prototype", prototype);
@@ -61,19 +64,25 @@ public class PrototypeController {
   }
 
   @GetMapping("/prototypes/new")
-  public String showPrototypeForm(@AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+  public String showPrototypeForm(
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+
     PrototypeForm prototypeForm = new PrototypeForm();
     model.addAttribute("prototypeForm", prototypeForm);
     return "prototypes/new";
   }
 
   @PostMapping("/prototypes/new")
-  public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+  public String createPrototype(
+      @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+      BindingResult bindingResult,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+
     prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
       List<String> errorMessages = bindingResult.getAllErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.toList());
+          .map(DefaultMessageSourceResolvable::getDefaultMessage)
+          .collect(Collectors.toList());
       model.addAttribute("errorMessages", errorMessages);
       model.addAttribute("prototypeForm", prototypeForm);
       return "prototypes/new";
@@ -82,7 +91,7 @@ public class PrototypeController {
     prototype.setName(prototypeForm.getName());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
     prototype.setConcept(prototypeForm.getConcept());
-  
+
     MultipartFile imageFile = prototypeForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
@@ -93,46 +102,57 @@ public class PrototypeController {
           Files.createDirectories(uploadDirPath);
         }
 
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        String fileName = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_"
+            + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
         prototype.setImage("/uploads/" + fileName);
-      } catch (IOException e) {
+      }
+      catch (IOException e) {
         System.out.println("Error：" + e);
         return "prototypes/new";
       }
     }
-      // prototype.setImage(prototypeForm.getImage());
-      prototype.setUser(userRepository.findByUserId(currentUser.getId()));
-      try {
-        prototypeRepository.insertPrototype(prototype);
-      } catch (Exception e) {
-        System.out.println("Error：" + e);
-        return "redirect:/";
-      }
-        return "redirect:/";
-      }
+    // prototype.setImage(prototypeForm.getImage());
+    prototype.setUser(userRepository.findByUserId(currentUser.getId()));
+    try {
+      prototypeRepository.insertPrototype(prototype);
+    }
+    catch (Exception e) {
+      System.out.println("Error：" + e);
+      return "redirect:/";
+    }
+    return "redirect:/";
+  }
 
   @GetMapping("/prototypes/{prototypeId}/delete")
-  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId, @AuthenticationPrincipal CustomUserDetail currentUser) {
-     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
-    if (prototype.getUser().getId() != currentUser.getId()) {
-        return "redirect:/";
+  public String deletePrototype(
+      @PathVariable("prototypeId") Integer prototypeId,
+      @AuthenticationPrincipal CustomUserDetail currentUser) {
+
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    if (prototype.getUser().getId().equals(currentUser.getId())) {
+      return "redirect:/";
     }
     try {
       prototypeRepository.deleteByPrototypeId(prototypeId);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.err.println("Error: " + e);
       return "redirect:/";
     }
     return "redirect:/";
   }
-  
+
   @GetMapping("/prototypes/{prototypeId}/edit")
-  public String updatePrototype(@PathVariable("prototypeId") Integer prototypeId, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+  public String updatePrototype(
+      @PathVariable("prototypeId") Integer prototypeId,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     if (prototype.getUser().getId() != currentUser.getId()) {
-        return "redirect:/";
+      return "redirect:/";
     }
 
     PrototypeForm prototypeForm = new PrototypeForm();
@@ -146,18 +166,22 @@ public class PrototypeController {
   }
 
   @PostMapping("/prototypes/{prototypeId}/update")
-  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId,
+      @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+      BindingResult bindingResult,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     if (prototype.getUser().getId() != currentUser.getId()) {
-        return "redirect:/";
+      return "redirect:/";
     }
     prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
-        model.addAttribute("errors", bindingResult.getAllErrors()
-            .stream()
-            .map(error -> error.getDefaultMessage())
-            .collect(Collectors.toList()));
-        return "redirect:/prototypes/" + prototypeId + "/edit";
+      model.addAttribute("errors",
+          bindingResult.getAllErrors().stream()
+              .map(error -> error.getDefaultMessage())
+              .collect(Collectors.toList()));
+      return "redirect:/prototypes/" + prototypeId + "/edit";
     }
 
     prototype.setName(prototypeForm.getName());
@@ -172,19 +196,22 @@ public class PrototypeController {
         if (!Files.exists(uploadDirPath)) {
           Files.createDirectories(uploadDirPath);
         }
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        String fileName = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_"
+            + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
         prototype.setImage("/uploads/" + fileName);
-      } catch (IOException e) {
+      }
+      catch (IOException e) {
         System.out.println("Error：" + e);
         return "redirect:/prototypes/" + prototypeId + "/edit";
       }
     }
-
     try {
       prototypeRepository.updatePrototype(prototype);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.err.println("Error: " + e);
       return "redirect:/prototypes/" + prototypeId;
     }
