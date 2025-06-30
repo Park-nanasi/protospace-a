@@ -11,16 +11,42 @@
 <!-- ヘッダー -->
 <div th:insert="~{header :: header}"></div>
 
+
 <div class="main_contents">
-  <div class="proto-detail">
+  <div class="greeting">
+    <p>
+      こんにちは
+    <span th:if="${#authorization.expression('isAuthenticated()')}">
+      <!-- <p class="author"> -->
+        、<a th:href="@{'/users/' + ${#authentication.principal.user.id}}" th:text="${#authentication.principal.user.username} + さん"></a>
+      </span>
+    </p>
+
+    <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
+      <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+      <input type="submit" class="search-btn" value="検索" />
+    </form>
+  </div>
+
+<div class="protos">
+  <div class="proto" th:each="prototype : ${prototypes}">
+    <a th:href="@{'/prototypes/' + ${prototype.id}}">
+      <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+    </a>
+    <h2 class="title" th:text="${prototype.name}"></h2>
+    <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+    <p class="author">
+      <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
+    </p>
+  </div>
+</div>
+
+</div>
+
+<!-- <div class="main_contents">
+  <div class="proto-detail" th:each="prototype: ${prototypes}">
     <div class="proto_info">
       <h2 class="title" th:text="${prototype.name}"></h2>
-  
-      <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
-        th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></a>
-      <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
-        th:text="'編集時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}"></a>
-
       <p class="author">
           <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
         </p>
@@ -40,25 +66,8 @@
       <p class="concept" th:text="${prototype.concept}"></p>
     </div>
     <div class="container">
-      <span th:if="${errorMessages}" th:text="${errorMessages}" class="error_message"></span>
-      <p>コメント</p>
-      <div th:if="${#authorization.expression('isAuthenticated()')}">
-      <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" 
-        th:object="${commentForm}" 
-        method="post">
-        <textarea id="text" th:field="*{content}" rows="1"></textarea><br>
-        <input type="submit" value="送信する">
-      </form>
-    </div>
-      <ul class="comments_lists">
-        <li class="comments_list" th:each="comment : ${comments}">
-          <p>
-            <span th:text="${comment.content}"></span>
-            <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" th:text="'(' + ${comment.user.username}"></a>
-            <a th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}+ ')'"></a>
-          </p>
-        </li>
-      </ul>
+      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span> -->
+
     </div>
   </div>
 </div>

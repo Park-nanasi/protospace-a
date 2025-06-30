@@ -10,16 +10,14 @@
 
 <div th:insert="~{header :: header}"></div>
 
+<form th:action="@{/user/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}" class="search-form">
+  <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+  <input type="submit" class="search-btn" value="検索" />
+</form>
 
 <div class="main_contents">
   <div class="user_contents">
     <h2 th:text="${name} + 'さんの情報'"></h2>
-    
-    <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}" class="user-search-form">
-      <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
-      <input type="submit" class="search-btn" value="検索" />
-    </form>
-
     <table class="table">
       <tbody>
         <tr>

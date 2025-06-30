@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
+import in.tech_camp.protospace_a.form.SearchForm;
 import in.tech_camp.protospace_a.form.UserForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
@@ -86,7 +87,7 @@ public class UserController {
   }
 
   @GetMapping("/users/{userId}")
-  public String showMypage(@PathVariable("userId") Integer userId, Model model) {
+  public String showMypage(@PathVariable("userId") Integer userId, @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
 
@@ -97,5 +98,21 @@ public class UserController {
     model.addAttribute("prototypes", prototypes);
     return "users/userInfo";
   }
-  
+    // 検索機能
+    @GetMapping("/users/{userId}/search")
+    public String searchPrototypes(@PathVariable("userId") Integer userId, @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+      // 名前の長さ判定、50以上だったら、プリントアウト
+      if (searchForm.getName() != null && searchForm.getName().length() > 50) {
+        System.out.println(String.format("検索に入力した名前の文字数：%d、50を超えています!!", searchForm.getName().length()));
+
+    }
+
+      UserEntity user = userRepository.findById(userId);
+      List<PrototypeEntity> prototypes = prototypeRepository.findByUserIdAndNameContaining(userId, searchForm.getName());
+
+      model.addAttribute("name", user.getUsername());
+      model.addAttribute("prototypes", prototypes);
+      model.addAttribute("searchForm", searchForm);
+      return "users/userInfo";
+    }
 }
