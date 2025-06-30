@@ -15,15 +15,13 @@ import in.tech_camp.protospace_a.entity.CommentEntity;
 @Mapper
 public interface CommentRepository {
   @Select("SELECT c.*, u.id AS user_id, u.username AS user_username FROM comments c JOIN users u ON c.user_id = u.id WHERE c.prototype_id = #{prototypeId}")
-  @Results(value = {
-    @Result(property = "user.id", column = "user_id"),
-    @Result(property = "user.username", column = "user_username"),
-        @Result(property = "prototype", column = "prototype_id", 
-                one = @One(select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findById"))
-    })
-    List<CommentEntity> findByPrototypeId(Integer prototypeId);
+  @Results(value = {@Result(property = "user.id", column = "user_id"),
+      @Result(property = "user.username", column = "user_username"),
+      @Result(property = "prototype", column = "prototype_id", one = @One(
+          select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findById"))})
+  List<CommentEntity> findByPrototypeId(Integer prototypeId);
 
-    @Insert("INSERT INTO comments (content, user_id, prototype_id, created_at) VALUES (#{content}, #{user.id}, #{prototype.id}, now())")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(CommentEntity comment);
+  @Insert("INSERT INTO comments (content, user_id, prototype_id, created_at) VALUES (#{content}, #{user.id}, #{prototype.id}, now())")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void insert(CommentEntity comment);
 }

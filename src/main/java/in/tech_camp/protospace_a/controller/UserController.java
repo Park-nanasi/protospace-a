@@ -24,7 +24,6 @@ import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
-
 @Controller
 @AllArgsConstructor
 public class UserController {
@@ -36,16 +35,19 @@ public class UserController {
   @GetMapping("/users/sign_up")
   public String showSignUp(Model model) {
     model.addAttribute("userForm", new UserForm(userRepository));
-      return "users/signUp";
+    return "users/signUp";
   }
-  
+
   @PostMapping("/user")
-  public String createUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm, BindingResult result, Model model) {
+  public String createUser(
+      @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
+      BindingResult result, Model model) {
     userForm.validateUserForm(result);
 
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
-              .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
+          .collect(Collectors.toMap(FieldError::getField,
+              FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
       model.addAttribute("fieldErrors", fieldErrors);
       model.addAttribute("userForm", userForm);
       return "users/signUp";
@@ -58,11 +60,11 @@ public class UserController {
     userEntity.setProfile(userForm.getProfile());
     userEntity.setCompany(userForm.getCompany());
     userEntity.setRole(userForm.getRole());
-    
 
     try {
       userService.createUserWithEncryptedPassword(userEntity);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.out.println("エラー：" + e);
       return "redirect:/";
     }
@@ -73,12 +75,14 @@ public class UserController {
   // ログインに成功した時
   @GetMapping("/users/login")
   public String showLogin() {
-      return "users/login";
+    return "users/login";
   }
 
   // 失敗した時の表示
   @GetMapping("/login")
-  public String showLoginWithError(@RequestParam(value = "error", required = false) String error, Model model) {
+  public String showLoginWithError(
+      @RequestParam(value = "error", required = false) String error,
+      Model model) {
     if (error != null) {
       model.addAttribute("loginError", "Invalid email or password.");
     }
@@ -86,7 +90,8 @@ public class UserController {
   }
 
   @GetMapping("/users/{userId}")
-  public String showMypage(@PathVariable("userId") Integer userId, Model model) {
+  public String showMypage(@PathVariable("userId") Integer userId,
+      Model model) {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
 
@@ -97,5 +102,5 @@ public class UserController {
     model.addAttribute("prototypes", prototypes);
     return "users/userInfo";
   }
-  
+
 }

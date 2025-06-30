@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class UserService {
+
   private final UserRepository userRepository;
 
   private final PasswordEncoder passwordEncoder;
