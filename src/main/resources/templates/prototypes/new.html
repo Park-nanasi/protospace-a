@@ -13,29 +13,30 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>新規プロトタイプ投稿</h2>
-    <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
-      <div th:text="${error}"></div>
-    </div>
     <form th:method="post" th:action="@{/prototypes/new}" th:object="${prototypeForm}" enctype="multipart/form-data" class="new_user">
 
       <div class="field">
         <label class="column-title">プロトタイプの名称</label><br />
-        <input th:field="*{name}" type="name" id="name" name="name" autofocus="autofocus" required="required" />
+        <input th:field="*{name}" type="name" id="name" name="name" autofocus="autofocus" />
+        <div th:if="${#fields.hasErrors('name')}" th:text="＊ + ${fieldErrors['name']}" class="error_message"></div>
       </div>
 
       <div class="field">
         <label class="catchphrase">キャッチコピー</label><br />
-        <textarea th:field="*{catchphrase}" class="text_prototype" id="catchphrase" name="catchphrase" required="required" ></textarea>
+        <textarea th:field="*{catchphrase}" class="text_prototype" id="catchphrase" name="catchphrase" ></textarea>
+        <div th:if="${#fields.hasErrors('catchphrase')}" th:text="＊ + ${fieldErrors['catchphrase']}" class="error_message"></div>
       </div>
-  
+      
       <div class="field">
         <label class="concept">コンセプト</label><br />
-        <textarea rows=10 th:field="*{concept}" class="longText" id="concept" name="concept" required="required" ></textarea>
+        <textarea rows=10 th:field="*{concept}" class="longText" id="concept" name="concept"></textarea
+        <div th:if="${#fields.hasErrors('concept')}" th:text="＊ + ${fieldErrors['concept']}" class="error_message"></div>
       </div>
-
+      
       <div class="field">
-        <label class="image">プロトタイプの画像</label><br />
-        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" required="required" />
+        <label clas s="image">プロトタイプの画像</label><br />
+        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" />
+        <div th:if="${#fields.hasErrors('image')}" th:text="＊ + ${fieldErrors['image']}" class="error_message"></div>
       </div>
 
       <div class="actions">

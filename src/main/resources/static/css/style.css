@@ -1129,12 +1129,26 @@ footer p {
   padding-top: 32px;
 }
 
+.user-search-form {
+  text-align: center;
+  padding-bottom: 40px;
+}
+
 .search-form .search-input {
   width: 30%;
   margin-right: 10px;
 }
 
 .search-form .search-btn {
+  width: 10%;
+}
+
+.user-search-form .search-input {
+  width: 30%;
+  margin-right: 10px;
+}
+
+.user-search-form .search-btn {
   width: 10%;
 }
 
@@ -1233,7 +1247,7 @@ form input[type="submit"].logout-btn:hover {
 }
 
 .greeting {
-  margin-bottom: 140px;
+  /* margin-bottom: 28px; */
 }
 
 .greeting a{
