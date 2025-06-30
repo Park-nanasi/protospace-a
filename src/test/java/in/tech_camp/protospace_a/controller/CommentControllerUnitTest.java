@@ -69,7 +69,7 @@ public class CommentControllerUnitTest {
     String viewName = commentController.createComment(prototypeId, form, bindingResult, currentUser, model);
 
     ArgumentCaptor<CommentEntity> captor = ArgumentCaptor.forClass(CommentEntity.class);
-    verify(commentRepository).insertTest(captor.capture());
+    verify(commentRepository).insert(captor.capture());
     CommentEntity captured = captor.getValue();
 
     assertThat(captured.getContent(), is("テストコメント"));

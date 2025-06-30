@@ -134,7 +134,7 @@ private final PrototypeRepository prototypeRepository;
     comment.setCreated_at(new Timestamp(System.currentTimeMillis()));
 
     try {
-      commentRepository.insertTest(comment);
+      commentRepository.insert(comment);
     } catch (Exception e) {
       System.out.println("Error：" + e);
       return "redirect:/prototypes/" + prototypeId;
@@ -176,7 +176,7 @@ private final PrototypeRepository prototypeRepository;
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage("/uploads/comments/" + fileName);
+        comment.setImage("/uploads/comments/" + fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
         return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId + "/edit";

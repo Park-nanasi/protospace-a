@@ -13,30 +13,7 @@
 <div class="main_contents">
   <div class="container_Form">
     <h2>コメント投稿</h2>
-    <form th:method="post" th:action="@{/prototypes/{prototypeId}/comments/new(prototypeId=${prototype.id})}" 
-          th:object="${commentForm}" enctype="multipart/form-data" class="new_user">
-
-      <div class="field">
-        <label class="column-title">コメントタイトル</label><br />
-        <input th:field="*{title}" type="text" id="title" name="title" autofocus="autofocus" />
-        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
-      </div>
-
-      <div class="field">
-        <label class="column-content">コメント内容</label><br />
-        <textarea rows="10" th:field="*{content}" class="longText" id="content" name="content" ></textarea>
-        <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error-message"></div>
-      </div>
-
-      <div class="field">
-        <label class="image">添付画像</label><br />
-        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" />
-      </div>
-
-      <div class="actions">
-        <input type="submit" value="保存する">
-      </div>
-    </form>
+    <div th:replace="~{fragments/comment_form :: commentForm(@{/prototypes/{prototypeId}/comments/new(prototypeId=${prototype.id})})}"></div>
   </div>
 </div>
 
