@@ -1,7 +1,7 @@
 package in.tech_camp.protospace_a.entity;
 
-import java.util.List;
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Data;
 

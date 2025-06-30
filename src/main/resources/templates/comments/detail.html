@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <title>ProtoSpace</title>
+  </head>
+
+  <body>
+    <!-- ヘッダー -->
+    <div th:insert="~{header :: header}"></div>
+      
+    <div class="main_contents">
+      <div class="proto-detail">
+        <div class="proto_info">
+          <h2 class="title" th:text="${prototype.name}"></h2>
+          <p class="author">
+              <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
+          </p>
+          <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+          <h2 class="sub-title" >キャッチコピー</h2>
+          <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+          <h2 class="sub-title">コンセプト</h2>
+          <p class="concept" th:text="${prototype.concept}"></p>
+        </div>
+
+        <div class="container_comment">
+          <span class="comment_btn_group"
+              th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
+            <a class="comment_btn"
+              th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+              th:text="編集">
+            </a>
+            <a class="comment_btn"
+              th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+              th:text="削除">
+            </a>
+          </span>
+          <div class="container_comment_detail">
+            <div class="comment_title">
+              <p th:text="${comment.title}"></p>
+              
+              <p class="comment_author">
+                <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" 
+                  th:text="'by ' + ${comment.user.username}"></a>
+              </p>
+              
+            </div>
+            <span class="comment_text" th:text="${comment.content}"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- フッター -->
+    <div th:insert="~{footer :: footer}"></div>
+  </body>
+</html>

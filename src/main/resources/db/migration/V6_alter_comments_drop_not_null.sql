@@ -1,0 +1,2 @@
+ALTER TABLE comments
+ALTER COLUMN image DROP NOT NULL;
