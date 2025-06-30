@@ -7,20 +7,23 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
@@ -30,8 +33,6 @@ import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import lombok.AllArgsConstructor;
-
-
 
 @Controller
 @AllArgsConstructor
@@ -70,12 +71,11 @@ public class PrototypeController {
 
   @PostMapping("/prototypes/new")
   public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
-    prototypeForm.validatePrototypeForm(bindingResult);
+    prototypeForm.validatePrototypeForm(bindingResult);   
     if (bindingResult.hasErrors()) {
-      List<String> errorMessages = bindingResult.getAllErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.toList());
-      model.addAttribute("errorMessages", errorMessages);
+      Map<String, String> fieldErrors = bindingResult.getFieldErrors().stream()
+              .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
+      model.addAttribute("fieldErrors", fieldErrors);
       model.addAttribute("prototypeForm", prototypeForm);
       return "prototypes/new";
     }
@@ -144,26 +144,28 @@ public class PrototypeController {
     prototype.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
 
-    model.addAttribute("prototypeForm", prototypeForm);
+    if (!(model.containsAttribute("prototypeForm"))) {
+      model.addAttribute("prototypeForm", prototypeForm);
+    }
+
     model.addAttribute("prototypeId", prototypeId);
     return "prototypes/edit";
   }
 
   @PostMapping("/prototypes/{prototypeId}/update")
-  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+  public String postMethodName(@PathVariable("prototypeId") Integer prototypeId, @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetail currentUser, Model model, RedirectAttributes redirectAttributes) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     if (prototype.getUser().getId() != currentUser.getId()) {
         return "redirect:/";
     }
     prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
-        model.addAttribute("errors", bindingResult.getAllErrors()
-            .stream()
-            .map(error -> error.getDefaultMessage())
-            .collect(Collectors.toList()));
-        return "redirect:/prototypes/" + prototypeId + "/edit";
+      Map<String, String> fieldErrors = bindingResult.getFieldErrors().stream()
+              .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
+      redirectAttributes.addFlashAttribute("prototypeForm", prototypeForm);
+      redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
+      return "redirect:/prototypes/" + prototypeId + "/edit";
     }
-
     prototype.setName(prototypeForm.getName());
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
@@ -183,6 +185,9 @@ public class PrototypeController {
         prototype.setImage("/uploads/" + fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
+        Map<String, String> fieldErrors = new HashMap<>();
+        fieldErrors.put("image", "画像は存在しませんでした");
+        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
         return "redirect:/prototypes/" + prototypeId + "/edit";
       }
     }
