@@ -30,6 +30,8 @@ import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
+import java.sql.Timestamp;
+
 
 @Controller
 @AllArgsConstructor
@@ -132,6 +134,7 @@ private final PrototypeRepository prototypeRepository;
 
     UserEntity user = userRepository.findById(currentUser.getId());
     comment.setUser(user);
+    comment.setCreated_at(new Timestamp(System.currentTimeMillis()));
 
     try {
       commentRepository.insertTest(comment);

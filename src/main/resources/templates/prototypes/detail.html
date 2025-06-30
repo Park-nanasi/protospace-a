@@ -15,6 +15,12 @@
   <div class="proto-detail">
     <div class="proto_info">
       <h2 class="title" th:text="${prototype.name}"></h2>
+  
+      <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
+        th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></a>
+      <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
+        th:text="'編集時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}"></a>
+
       <p class="author">
           <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
         </p>
@@ -67,6 +73,11 @@
                 th:text="削除">
               </a>
             </span>
+            <!--
+            <span th:text="${comment.content}"></span>
+            <a th:href="@{/users/{userId}(userId = ${comment.user.id})}" th:text="'(' + ${comment.user.username}"></a>
+            <a th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}+ ')'"></a>
+            -->
           </p>
           <div class="comment_box">
             <span class="comment_name" th:text="${comment.title}"></span>
