@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -29,8 +30,6 @@ import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
-
-import java.sql.Timestamp;
 
 
 @Controller
@@ -180,7 +179,7 @@ private final PrototypeRepository prototypeRepository;
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage("/uploads/" + fileName);
+        prototype.setImage("/uploads/comments/" + fileName);
       } catch (IOException e) {
         System.out.println("Error：" + e);
         return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId + "/edit";
