@@ -61,7 +61,7 @@ public interface PrototypeRepository {
   })
   PrototypeEntity findById(Integer id);
 
-  @Select("SELECT * FROM prototypes WHERE user_id = #{userId}")
+  @Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
   @Results(value = {
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById"))
