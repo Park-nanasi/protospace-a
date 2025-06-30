@@ -1,75 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
-</head>
+  </head>
 
-<body>
+  <body>
 
-<div th:insert="~{header :: header}"></div>
+    <div th:insert="~{header :: header}"></div>
 
-<div class="main_contents">
-  <div class="container_Form">
-    <h2>ユーザー新規登録</h2>
-    <div class="form">
-      <form th:action="@{/user}" th:method="post" th:object="${userForm}", class="new_user">
-        
-        <div class="field">
-          <label for="email">メールアドレス</label><br />
-          <input type="email" id="email" th:field="*{email}"  />
-          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'email')}" th:text="＊ + ${fieldErrors['email']}" class="error_message"></div>
-        </div>
-        
-        <div class="field">
-          <label for="password">パスワード</label><em>(6文字以上)</em><br />
-          <input type="password" id="password" th:field="*{password}" />
-        </div>
-        
-        <div class='field'>
-          <div class='field-label'>
-            <label for="password_confirmation">パスワード再入力</label>
-          </div>
-          <div class='field-input'>
-            <input type="password" th:field="*{passwordConfirmation}" id="password_confirmation" autocomplete="off"/>
-          </div>
-          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'password')}" th:text="＊ + ${fieldErrors['password']}" class="error_message"></div>
-          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'passwordConfirmation')}" th:text="＊ + ${fieldErrors['passwordConfirmation']}" class="error_message"></div>
-        </div>
-        
-        <div class="field">
-          <label for="username">ユーザー名</label><br />
-          <input type="text" id="username" th:field="*{username}"  autofocus="autofocus" />
-          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'username')}" th:text="＊ + ${fieldErrors['username']}" class="error_message"></div>
-        </div>
-        
-        <div class="field">
-          <label for="profile">プロフィール</label><br />
-          <input type="text" id="profile" th:field="*{profile}"  autofocus="autofocus" />
-          <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'profile')}" th:text="＊ + ${fieldErrors['profile']}" class="error_message"></div>
-        </div>
+    <div class="main_contents">
+      <div class="container_Form">
+        <h2>ユーザー新規登録</h2>
+        <div class="form">
+          <form th:action="@{/user}" th:method="post" th:object="${userForm}" , class="new_user">
 
-        <div class="field">
-          <label for="company">所属</label><br />
-          <input type="text" id="company" th:field="*{company}"  autofocus="autofocus" />
+            <div class="field">
+              <label for="email">メールアドレス</label><br />
+              <input type="email" id="email" th:field="*{email}" />
+              <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'email')}"
+                th:text="＊ + ${fieldErrors['email']}" class="error_message"></div>
+            </div>
+
+            <div class="field">
+              <label for="password">パスワード</label><em>(6文字以上)</em><br />
+              <input type="password" id="password" th:field="*{password}" />
+            </div>
+
+            <div class='field'>
+              <div class='field-label'>
+                <label for="password_confirmation">パスワード再入力</label>
+              </div>
+              <div class='field-input'>
+                <input type="password" th:field="*{passwordConfirmation}" id="password_confirmation"
+                  autocomplete="off" />
+              </div>
+              <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'password')}"
+                th:text="＊ + ${fieldErrors['password']}" class="error_message"></div>
+              <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'passwordConfirmation')}"
+                th:text="＊ + ${fieldErrors['passwordConfirmation']}" class="error_message"></div>
+            </div>
+
+            <div class="field">
+              <label for="username">ユーザー名</label><br />
+              <input type="text" id="username" th:field="*{username}" autofocus="autofocus" />
+              <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'username')}"
+                th:text="＊ + ${fieldErrors['username']}" class="error_message"></div>
+            </div>
+
+            <div class="field">
+              <label for="profile">プロフィール</label><br />
+              <input type="text" id="profile" th:field="*{profile}" autofocus="autofocus" />
+              <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'profile')}"
+                th:text="＊ + ${fieldErrors['profile']}" class="error_message"></div>
+            </div>
+
+            <div class="field">
+              <label for="company">所属</label><br />
+              <input type="text" id="company" th:field="*{company}" autofocus="autofocus" />
+            </div>
+
+            <div class="field">
+              <label for="role">役職 </label><br />
+              <input type="text" id="role" th:field="*{role}" autofocus="autofocus" />
+            </div>
+
+            <div class="actions">
+              <input type="submit" value="Sign up">
+            </div>
+
+          </form>
         </div>
-
-        <div class="field">
-          <label for="role">役職  </label><br />
-          <input type="text" id="role" th:field="*{role}"  autofocus="autofocus" />
-        </div>
-
-          <div class="actions">
-            <input type="submit" value="Sign up">
-          </div>
-
-        </form>
       </div>
-  </div>
-</div>
+    </div>
 
-<div th:insert="~{footer :: footer}"></div>
+    <div th:insert="~{footer :: footer}"></div>
 
-</body>
+  </body>
+
 </html>
