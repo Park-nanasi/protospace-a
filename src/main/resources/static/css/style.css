@@ -1623,7 +1623,7 @@ form input[type="file"] {
   font-size: 15px;
   text-decoration: none;
   display: inline-block;
-  color: #d6d6d6;
+  color: #000000;
 }
 
 .comment_text {
