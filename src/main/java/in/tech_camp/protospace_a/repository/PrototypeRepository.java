@@ -79,6 +79,9 @@ public interface PrototypeRepository {
   })
   void updatePrototype(PrototypeEntity prototype);
 
+  @Delete("DELETE FROM prototypes WHERE id = #{id}")
+  void deleteByPrototypeId(Integer id);
+
     // prototype一覧ページに検索機能表示
     @Select("SELECT * FROM prototypes WHERE name LIKE CONCAT('%', #{name}, '%')")
     @Results(value = {@Result(property = "user", column = "user_id", one = @One(
