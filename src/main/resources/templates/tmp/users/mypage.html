@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+
+  <head>
     <title>マイページ | Protospace</title>
     <meta charset="UTF-8">
-</head>
-<body>
+  </head>
+
+  <body>
     <h1>マイページ</h1>
     <h2>ユーザー情報</h2>
     <ul>
-        <li><strong>名前：</strong><span th:text="${nickname}"></span></li>
-        <li><strong>プロフィール：</strong><span th:text="${profile}"></span></li>
-        <li><strong>所属：</strong><span th:text="${company}"></span></li>
-        <li><strong>役職：</strong><span th:text="${role}"></span></li>
+      <li><strong>名前：</strong><span th:text="${nickname}"></span></li>
+      <li><strong>プロフィール：</strong><span th:text="${profile}"></span></li>
+      <li><strong>所属：</strong><span th:text="${company}"></span></li>
+      <li><strong>役職：</strong><span th:text="${role}"></span></li>
     </ul>
     <hr>
     <h2>このユーザーの投稿プロトタイプ一覧</h2>
     <div th:if="${#lists.isEmpty(prototypes)}">
-        <p>まだプロトタイプの投稿がありません。</p>
+      <p>まだプロトタイプの投稿がありません。</p>
     </div>
     <ul th:if="${!#lists.isEmpty(prototypes)}">
-        <li th:each="prototype : ${prototypes}">
-            <div style="border: 1px solid #ccc; padding:10px; margin: 10px 0;">
-                <h3>
-                    <span th:text="${prototype.catchphrase}"></span>
-                </h3>
-                <p>
-                    <strong>コンセプト：</strong>
-                    <span th:text="${prototype.concept}"></span>
-                </p>
-                <div th:if="${prototype.image}">
-                    <img th:src="@{${prototype.image}}" alt="イメージ" style="max-width: 200px; max-height: 150px;" />
-                </div>
-                <p>
-                    <small>作成日:
-                        <span th:text="${#dates.format(prototype.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
-                    </small>
-                </p>
-            </div>
-        </li>
+      <li th:each="prototype : ${prototypes}">
+        <div style="border: 1px solid #ccc; padding:10px; margin: 10px 0;">
+          <h3>
+            <span th:text="${prototype.catchphrase}"></span>
+          </h3>
+          <p>
+            <strong>コンセプト：</strong>
+            <span th:text="${prototype.concept}"></span>
+          </p>
+          <div th:if="${prototype.image}">
+            <img th:src="@{${prototype.image}}" alt="イメージ" style="max-width: 200px; max-height: 150px;" />
+          </div>
+          <p>
+            <small>作成日:
+              <span th:text="${#dates.format(prototype.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+            </small>
+          </p>
+        </div>
+      </li>
     </ul>
-</body>
+  </body>
+
 </html>

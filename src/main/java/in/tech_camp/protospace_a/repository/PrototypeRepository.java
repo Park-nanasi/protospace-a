@@ -19,9 +19,9 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 @Mapper
 public interface PrototypeRepository {
 
-  @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id, created_at, updated_at) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id}, CURRENT_TIMESTAMP, '1970-01-01 00:00:01')")
-  @Options(useGeneratedKeys = true, keyProperty = "id")
-  void insertPrototype(PrototypeEntity prototype);
+    @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id, created_at, updated_at) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id}, CURRENT_TIMESTAMP, '1970-01-01 00:00:01')")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertPrototype(PrototypeEntity prototype);
 
   @Select("SELECT p.id, p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name " +
           "FROM prototypes p " +
@@ -52,9 +52,6 @@ public interface PrototypeRepository {
   })
   PrototypeEntity findByPrototype(Integer id);
 
-  @Delete("DELETE FROM prototypes WHERE id = #{id}")
-  void deleteByPrototypeId(Integer id); 
-
   @Select("SELECT * FROM prototypes WHERE id = #{id}")
   @Results(value = {
     @Result(property = "created_at", column = "created_at"),
@@ -82,27 +79,22 @@ public interface PrototypeRepository {
   })
   void updatePrototype(PrototypeEntity prototype);
 
-//   prototype一覧ページに検索機能表示
-  @Select("SELECT * FROM prototypes WHERE name LIKE CONCAT('%', #{name}, '%')")
-  @Results(value = {
-    @Result(property = "user", column = "user_id",
-            one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById"))
-  })
-  List<PrototypeEntity> findByNameContaining(String name);
+    // prototype一覧ページに検索機能表示
+    @Select("SELECT * FROM prototypes WHERE name LIKE CONCAT('%', #{name}, '%')")
+    @Results(value = {@Result(property = "user", column = "user_id", one = @One(
+            select = "in.tech_camp.protospace_a.repository.UserRepository.findById"))})
+    List<PrototypeEntity> findByNameContaining(String name);
 
-// ユーザーの詳細ページにて検索機能
-  @Select("SELECT p.*, u.id as user_id, u.username as user_name " +
-        "FROM prototypes p " +
-        "LEFT JOIN users u ON p.user_id = u.id " +
-        "WHERE p.user_id = #{userId} AND p.name LIKE CONCAT('%', #{name}, '%')")
-  @Results({
-    @Result(property = "id", column = "id"),
-    @Result(property = "name", column = "name"),
-    @Result(property = "user.id", column = "user_id"),
-    @Result(property = "user.username", column = "username")
-  })
-  List<PrototypeEntity> findByUserIdAndNameContaining(@Param("userId") Integer userId, @Param("name") String name);
-
+    // ユーザーの詳細ページにて検索機能
+    @Select("SELECT p.*, u.id as user_id, u.username as user_name "
+            + "FROM prototypes p " + "LEFT JOIN users u ON p.user_id = u.id "
+            + "WHERE p.user_id = #{userId} AND p.name LIKE CONCAT('%', #{name}, '%')")
+    @Results({@Result(property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "user.id", column = "user_id"),
+            @Result(property = "user.username", column = "username")})
+    List<PrototypeEntity> findByUserIdAndNameContaining(
+            @Param("userId") Integer userId, @Param("name") String name);
 
 
 }

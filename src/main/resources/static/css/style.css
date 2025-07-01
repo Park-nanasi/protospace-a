@@ -153,7 +153,7 @@ pre {
 /*
  * Set consistent quote types. */
 q {
-  quotes: "“""”""‘""’";
+  quotes: "“" "”" "‘" "’";
 }
 
 /*
@@ -338,64 +338,70 @@ textarea {
 /*
  * Remove most spacing between table cells. */
 .table {
-    border-collapse: collapse;
-    margin-bottom: 32px;
-    width: 50%;
+  border-collapse: collapse;
+  margin-bottom: 32px;
+  width: 50%;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid rgb(232, 232, 232);
 }
 
 table {
-    display: table;
-    border-collapse: separate;
-    box-sizing: border-box;
-    text-indent: initial;
-    unicode-bidi: isolate;
-    border-spacing: 2px;
+  display: table;
+  border-collapse: separate;
+  box-sizing: border-box;
+  text-indent: initial;
+  unicode-bidi: isolate;
+  border-spacing: 2px;
 }
 
 tbody {
-    display: table-row-group;
-    vertical-align: middle;
-    unicode-bidi: isolate;
-    border-color: inherit;
+  display: table-row-group;
+  vertical-align: middle;
+  unicode-bidi: isolate;
+  border-color: inherit;
 }
 
 tr {
-    min-height: 55px;
-    display: table-row;
-    vertical-align: inherit;
-    unicode-bidi: isolate;
-    border-color: inherit;
+  min-height: 55px;
+  display: table-row;
+  vertical-align: inherit;
+  unicode-bidi: isolate;
+  border-color: inherit;
 }
 
-td,th {
-  height: 55px;         /* 最小高さを指定 */
+td,
+th {
+  height: 55px;
+  /* 最小高さを指定 */
   padding: 8px;
-  vertical-align: top;  /* 追加で上寄せにする場合 */
-  word-break: break-word; /* 長文がセル幅を超えたら改行 */
+  vertical-align: top;
+  /* 追加で上寄せにする場合 */
+  word-break: break-word;
+  /* 長文がセル幅を超えたら改行 */
   padding-left: 5px;
 
   font-weight: bold;
-  color:#434343;
+  color: #434343;
 }
 
 th {
-    width: 30%;
-    display: table-cell;
-    vertical-align: inherit;
-    
-    text-align: start;
-    unicode-bidi: isolate;
-    background-color: #f9f9f9;
+  width: 30%;
+  display: table-cell;
+  vertical-align: inherit;
+
+  text-align: start;
+  unicode-bidi: isolate;
+  background-color: #f9f9f9;
 }
 
 td {
-    display: table-cell;
-    vertical-align: inherit;
-    unicode-bidi: isolate;
+  display: table-cell;
+  vertical-align: inherit;
+  unicode-bidi: isolate;
 }
 
 /* ==========================================================================
@@ -794,7 +800,7 @@ header.header div.header__bar.row div.grid-6 a.post:hover {
 header.header {
   padding: 10px;
   background-color: #f1f8fe;
-  position:absolute;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -821,9 +827,7 @@ header.header div.header__bar.row div.grid-6 {
   text-align: right;
 }
 
-header.header div.header__bar.row div.grid-6 a.post {
-  
-}
+header.header div.header__bar.row div.grid-6 a.post {}
 
 header.header .user_nav {
   position: relative;
@@ -1153,7 +1157,7 @@ footer p {
 }
 
 
-form input[type="submit"].delete-btn{
+form input[type="submit"].delete-btn {
   padding: 4px 6px;
   background-color: #fff;
   color: #666;
@@ -1163,7 +1167,7 @@ form input[type="submit"].delete-btn{
   text-align: left;
 }
 
-form input[type="submit"]:hover.delete-btn{
+form input[type="submit"]:hover.delete-btn {
   background-color: #84d3ef;
 }
 
@@ -1190,7 +1194,8 @@ form input[type="submit"].logout-btn:hover {
 .header_logo {
   display: block;
   position: relative;
-  top: 5px; /* 下に10pxずらす */
+  top: 5px;
+  /* 下に10pxずらす */
 
   transform: scaleX(1.2);
 }
@@ -1200,10 +1205,10 @@ form input[type="submit"].logout-btn:hover {
 }
 
 .text_blue {
-  color:rgb(140, 140, 232);
+  color: rgb(140, 140, 232);
 }
 
-.logo_bottom {  
+.logo_bottom {
   font-size: calc(10px * 1.8);
   margin-left: -3px;
   transform: scaleY(1.5);
@@ -1211,8 +1216,10 @@ form input[type="submit"].logout-btn:hover {
 
 .user-naves {
   position: relative;
-  top: 5px;          /* 下に5pxずらす（修正） */
-  display: flex;     /* 横並び */
+  top: 5px;
+  /* 下に5pxずらす（修正） */
+  display: flex;
+  /* 横並び */
   gap: 12px;
 }
 
@@ -1230,19 +1237,21 @@ form input[type="submit"].logout-btn:hover {
   font-weight: 600;
 }
 
-.user-nav:hover{
+.user-nav:hover {
   background-color: #87cefa;
 }
 
-.user-nav-text:hover{
+.user-nav-text:hover {
   color: white;
 }
 
 .main_contents {
   padding: 30px 16%;
   background-color: white;
-  flex-grow: 1; /* これが重要：余白を埋めて footer を下に押す */
-  overflow: auto; /* スクロール対応 */
+  flex-grow: 1;
+  /* これが重要：余白を埋めて footer を下に押す */
+  overflow: auto;
+  /* スクロール対応 */
   min-height: 100%;
 }
 
@@ -1250,20 +1259,24 @@ form input[type="submit"].logout-btn:hover {
   /* margin-bottom: 28px; */
 }
 
-.greeting a{
+.greeting a {
   font-weight: bold;
   text-decoration: underline;
 }
 
 .protos {
   display: flex;
-  flex-wrap: wrap;       /* 折り返しを許可 */
-  gap: 20px;             /* アイテム間の余白 */
-  justify-content: space-between; /* 両端揃え（or center, flex-startもOK） */
+  flex-wrap: wrap;
+  /* 折り返しを許可 */
+  gap: 20px;
+  /* アイテム間の余白 */
+  justify-content: space-between;
+  /* 両端揃え（or center, flex-startもOK） */
 }
 
 .proto {
-  width: calc(33.333% - 14px); /* 3つ並べて隙間を考慮した幅 */
+  width: calc(33.333% - 14px);
+  /* 3つ並べて隙間を考慮した幅 */
   box-sizing: border-box;
   padding: 10px;
 }
@@ -1272,7 +1285,7 @@ form input[type="submit"].logout-btn:hover {
   width: 100%;
   height: 75%;
   margin-bottom: 10px;
-  object-fit:scale-down;
+  object-fit: scale-down;
 }
 
 .proto .title {
@@ -1295,10 +1308,13 @@ form input[type="submit"].logout-btn:hover {
 }
 
 .proto_info {
-  text-align: center;             /* 中身を中央揃え */
+  text-align: center;
+  /* 中身を中央揃え */
   display: flex;
-  flex-direction: column;        /* 縦に並べる */
-  align-items: center;           /* 横方向中央配置 */
+  flex-direction: column;
+  /* 縦に並べる */
+  align-items: center;
+  /* 横方向中央配置 */
   padding: 30px;
 }
 
@@ -1321,7 +1337,7 @@ form input[type="submit"].logout-btn:hover {
   color: rgb(56, 56, 56);
 }
 
-.proto_info .author a{
+.proto_info .author a {
   text-decoration: underline;
   color: #cacaca;
   font-weight: 700;
@@ -1345,10 +1361,14 @@ form input[type="submit"].logout-btn:hover {
   text-align: center;
   width: 100px;
   height: 30px;
-  display: flex;                 /* 子をflex配置 */
-  align-items: center;           /* 縦中央 */
-  justify-content: center;       /* 横中央 */
-  background-color: transparent; /* 背景は透明に */
+  display: flex;
+  /* 子をflex配置 */
+  align-items: center;
+  /* 縦中央 */
+  justify-content: center;
+  /* 横中央 */
+  background-color: transparent;
+  /* 背景は透明に */
   transition: background-color 0.3s;
 }
 
@@ -1358,20 +1378,27 @@ form input[type="submit"].logout-btn:hover {
   font-weight: 600;
   text-decoration: none;
   display: inline-block;
-  width: 100%;           /* 親divと同じ幅 */
-  height: 100%;          /* 親divと同じ高さ */
-  line-height: 30px;     /* 縦中央（代替） */
+  width: 100%;
+  /* 親divと同じ幅 */
+  height: 100%;
+  /* 親divと同じ高さ */
+  line-height: 30px;
+  /* 縦中央（代替） */
 }
 
 .user-nav a.user-nav-text {
   display: inline-block;
-  width: 100%;           /* 親divと同じ幅 */
-  height: 100%;          /* 親divと同じ高さ */
-  line-height: 30px;     /* 縦中央（代替） */
+  width: 100%;
+  /* 親divと同じ幅 */
+  height: 100%;
+  /* 親divと同じ高さ */
+  line-height: 30px;
+  /* 縦中央（代替） */
 }
 
 .proto-btn:hover {
-  background-color: #f5f5f5; /* ホバー時に少し色変えると良い */
+  background-color: #f5f5f5;
+  /* ホバー時に少し色変えると良い */
 }
 
 
@@ -1385,7 +1412,7 @@ form input[type="submit"].logout-btn:hover {
 .container_Form h2 {
   font-size: 30px;
   color: black;
-  font-weight:bold;
+  font-weight: bold;
 
   padding-bottom: 30px;
 }
@@ -1422,7 +1449,7 @@ form input[type="file"] {
   font-size: 15px;
 }
 
-.text_prototype{
+.text_prototype {
   width: 50%;
 }
 
@@ -1502,7 +1529,7 @@ form input[type="file"] {
 }
 
 .comment_box:hover .read_more {
-  color: #DAA520; 
+  color: #DAA520;
 }
 
 .read_more:hover {
@@ -1517,7 +1544,7 @@ form input[type="file"] {
 .user_contents h2 {
   font-size: 30px;
   color: black;
-  font-weight:bold;
+  font-weight: bold;
 
   padding-bottom: 30px;
 }
@@ -1528,7 +1555,7 @@ form input[type="file"] {
   background-color: white;
   box-sizing: border-box;
   border-top: 1px #d7d7d7 solid;
-  }
+}
 
 .container_comment h3 {
   margin: 0 0 20px;
@@ -1592,7 +1619,7 @@ form input[type="file"] {
   color: #000;
 }
 
-.comment_author a{
+.comment_author a {
   font-size: 15px;
   text-decoration: none;
   display: inline-block;
@@ -1600,9 +1627,9 @@ form input[type="file"] {
 }
 
 .comment_text {
-  display: block; 
+  display: block;
   max-width: 100%;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
   line-height: 1.5;

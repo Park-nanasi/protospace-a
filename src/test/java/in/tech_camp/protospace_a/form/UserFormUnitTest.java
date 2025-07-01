@@ -72,7 +72,7 @@ public class UserFormUnitTest {
         result = new BeanPropertyBindingResult(form, "userForm");
         form.validateUserForm(result);
         assertTrue(result.hasFieldErrors("email"));
-        assertEquals("ASCII 文字 (a-z)、数字 (0-9)、およびピリオド (.) のみが使用できます", result.getFieldError("email").getDefaultMessage());
+        assertEquals("ASCII 文字 (a-z)、ピリオド (.) を使用してください", result.getFieldError("email").getDefaultMessage());
     }
 
     @Test
@@ -265,7 +265,7 @@ public class UserFormUnitTest {
     }
 
     private UserForm createValidUserForm() {
-        UserForm form = new UserForm(userRepository);
+        UserForm form = new UserForm();
         form.setEmail("test@example.com");
         form.setPassword("1aA".repeat(6));
         form.setPasswordConfirmation("1aA".repeat(6));

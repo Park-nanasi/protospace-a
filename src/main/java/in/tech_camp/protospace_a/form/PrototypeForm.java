@@ -18,7 +18,7 @@ public class PrototypeForm {
     validateConcept(result);
     validateImage(result);
   }
-  
+
   public void validateName(BindingResult result) {
     if ((name == null || name.isEmpty())) {
       result.rejectValue("name", "error.Prototype", "プロトタイプ名を入力してください");
@@ -35,9 +35,10 @@ public class PrototypeForm {
       result.rejectValue("catchphrase", "catchphrase", "キャッチフレーズを入力してください");
       return;
     }
-    
+
     if (128 < catchphrase.length()) {
-      result.rejectValue("catchphrase", "catchphrase", "キャッチフレーズは 128 文字以内で入力してください");
+      result.rejectValue("catchphrase", "catchphrase",
+          "キャッチフレーズは 128 文字以内で入力してください");
     }
   }
 
@@ -45,24 +46,24 @@ public class PrototypeForm {
     if (concept == null || concept.isEmpty()) {
       result.rejectValue("concept", "concept", "コンセプトを入力してください");
       return;
-    } 
-    
+    }
+
     if (512 < concept.length()) {
       result.rejectValue("concept", "concept", "コンセプトは 512 文字以内で入力してください");
     }
   }
-  
+
   public void validateImage(BindingResult result) {
     if (image == null || image.isEmpty()) {
       result.rejectValue("image", "image", "画像を入力してください");
       return;
     }
-    
+
     if (256 < image.getOriginalFilename().length()) {
       result.rejectValue("image", "image", "画像URLは 256 文字以内で入力してください");
       return;
     }
-    
+
     if (10 * 1024 * 1024 < image.getSize()) {
       result.rejectValue("image", "image", "画像の最大メディア容量は10メガバイトまでです");
     }

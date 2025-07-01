@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
-</head>
-<body>
+  </head>
+
+  <body>
     <h1>Hello, Prototype!</h1>
     <p>これは、Prototypeの挙動を試すページです。</p>
-    <div xmlns:th="http://www.thymeleaf.org" th:fragment="form(actionUrl, prototypeForm, errors)" >
-        <ul>
+    <div xmlns:th="http://www.thymeleaf.org" th:fragment="form(actionUrl, prototypeForm, errors)">
+      <ul>
         <th:block th:each="error : ${errors}">
           <li th:text="${error}"></li>
         </th:block>
-        </ul>
-        <form th:action="${actionUrl}" th:method="post" th:object="${prototypeForm}">
-          <input type="text" th:field="*{name}" placeholder="name"/>
-          <input type="text" th:field="*{catchphrase}" placeholder="catchphrase"/>
-          <textarea th:field="*{concept}" placeholder="concept" rows="10"></textarea>
-          <input type="text" th:field="*{image}" placeholder="Image Url" />
-          <input type="submit" value="SEND" />
-        </form>
+      </ul>
+      <form th:action="${actionUrl}" th:method="post" th:object="${prototypeForm}">
+        <input type="text" th:field="*{name}" placeholder="name" />
+        <input type="text" th:field="*{catchphrase}" placeholder="catchphrase" />
+        <textarea th:field="*{concept}" placeholder="concept" rows="10"></textarea>
+        <input type="text" th:field="*{image}" placeholder="Image Url" />
+        <input type="submit" value="SEND" />
+      </form>
     </div>
-</body>
+  </body>
+
 </html>
