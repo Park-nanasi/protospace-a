@@ -265,7 +265,7 @@ public class UserFormUnitTest {
     }
 
     private UserForm createValidUserForm() {
-        UserForm form = new UserForm(userRepository);
+        UserForm form = new UserForm();
         form.setEmail("test@example.com");
         form.setPassword("1aA".repeat(6));
         form.setPasswordConfirmation("1aA".repeat(6));
