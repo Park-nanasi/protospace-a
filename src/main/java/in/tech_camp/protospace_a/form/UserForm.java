@@ -2,7 +2,7 @@ package in.tech_camp.protospace_a.form;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-
+import org.springframework.web.multipart.MultipartFile;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationPriority1;
@@ -15,7 +15,8 @@ public class UserForm {
   private String email;
   private String password;
   private String username;
-  private String profile;
+  private String profile;  
+  private MultipartFile profileImage;
   private String passwordConfirmation;
 
   public void validateUserForm(BindingResult result) {
