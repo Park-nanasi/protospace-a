@@ -32,6 +32,8 @@ public interface PrototypeRepository {
       @Result(property = "name", column = "name"),
       @Result(property = "catchphrase", column = "catchphrase"),
       @Result(property = "image", column = "image"),
+      @Result(property = "created_at", column = "created_at"),
+      @Result(property = "updated_at", column = "updated_at"),
       @Result(property = "user.id", column = "user_id"),
       @Result(property = "user.username", column = "user_name")
   })
@@ -43,6 +45,8 @@ public interface PrototypeRepository {
           "JOIN users u ON p.user_id = u.id " +
           "WHERE p.id = #{id}")
   @Results({
+      @Result(property = "created_at", column = "created_at"),
+      @Result(property = "updated_at", column = "updated_at"),
       @Result(property = "user.id", column = "user_id"),
       @Result(property = "user.username", column = "user_name")
   })
@@ -53,6 +57,8 @@ public interface PrototypeRepository {
 
   @Select("SELECT * FROM prototypes WHERE id = #{id}")
   @Results(value = {
+    @Result(property = "created_at", column = "created_at"),
+    @Result(property = "updated_at", column = "updated_at"),
     @Result(property = "id", column = "id"),
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById")),
@@ -63,12 +69,17 @@ public interface PrototypeRepository {
 
   @Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
   @Results(value = {
+    @Result(property = "created_at", column = "created_at"),
+    @Result(property = "updated_at", column = "updated_at"),
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById"))
   })
   List<PrototypeEntity> findByUserId(Integer userId);
 
   @Update("UPDATE prototypes SET name = #{name}, catchphrase = #{catchphrase}, concept = #{concept}, image = #{image},  updated_at = CURRENT_TIMESTAMP WHERE id = #{id}")
+  @Results(value = {
+    @Result(property = "updated_at", column = "updated_at")
+  })
   void updatePrototype(PrototypeEntity prototype);
 
 //   prototype一覧ページに検索機能表示
