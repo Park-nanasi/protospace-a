@@ -3,9 +3,11 @@ package in.tech_camp.protospace_a.form;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 
+import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationPriority1;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
@@ -24,9 +26,6 @@ public class UserForm {
 
   private String passwordConfirmation;
 
-  @Autowired
-  private final UserRepository userRepository;
-
   public void validateUserForm(BindingResult result) {
     validateEmail(result);
     validatePassword(result);
@@ -42,7 +41,6 @@ public class UserForm {
 
     if (30 < username.length()) {
       result.rejectValue("username", "username", "ユーザー名は 30 文字で指定してください");
-      return;
     }
   }
 
@@ -57,9 +55,10 @@ public class UserForm {
       return;
     }
 
-    if (!email.matches("^[@a-z0-9.]+$")) {
-      result.rejectValue("email", "email",
-          "ASCII 文字 (a-z)、数字 (0-9)、およびピリオド (.) のみが使用できます");
+    boolean hasAscii = email.matches(".*[a-z].*");
+    boolean hasPeriod = email.matches(".*[.].*");
+    if (!(email.matches("^[@a-z0-9.]+$") && hasAscii && hasPeriod)) {
+      result.rejectValue("email", "email", "ASCII 文字 (a-z)、ピリオド (.) を使用してください");
       return;
     }
 
@@ -82,10 +81,11 @@ public class UserForm {
       return;
     }
 
-    if (userRepository.existsByEmail(email)) {
-      result.rejectValue("email", "null",
-          "このメールアドレスは既に使用されています。別のメールアドレスを作成してください");
-    }
+    // todo: UserVaridationClass メールアドレスの重複のバリデーション機能作成
+    // if (userService.existsByEmail(email)) {
+    // result.rejectValue("email", "email",
+    // "このメールアドレスは既に使用されています。別のメールアドレスを作成してください");
+    // }
   }
 
   public void validatePassword(BindingResult result) {
