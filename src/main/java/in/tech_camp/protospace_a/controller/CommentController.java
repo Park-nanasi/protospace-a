@@ -34,17 +34,18 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class CommentController {
-private final PrototypeRepository prototypeRepository;
+  private final PrototypeRepository prototypeRepository;
   private final CommentRepository commentRepository;
   private final UserRepository userRepository;
 
   private final ImageUrl imageUrl;
 
-  //コメントの詳細ページへアクセス
+  // コメントの詳細ページへアクセス
   @GetMapping("/prototypes/{prototypeId}/comments/{commentId}")
-  public String showCommentDetail(@PathVariable("prototypeId") Integer prototypeId,
-                                  @PathVariable("commentId") Integer commentId, Model model) {
-    
+  public String showCommentDetail(
+      @PathVariable("prototypeId") Integer prototypeId,
+      @PathVariable("commentId") Integer commentId, Model model) {
+
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     CommentEntity comment = commentRepository.findById(commentId);
 
@@ -54,27 +55,28 @@ private final PrototypeRepository prototypeRepository;
     return "comments/detail";
   }
 
-  //コメントの投稿ページへアクセス
+  // コメントの投稿ページへアクセス
   @GetMapping("/prototypes/{prototypeId}/comments/new")
-  public String showCommentForm(@PathVariable("prototypeId") Integer prototypeId,
-                                @AuthenticationPrincipal CustomUserDetail currentUser,
-                                Model model) {
+  public String showCommentForm(
+      @PathVariable("prototypeId") Integer prototypeId,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", new CommentForm());
     return "comments/new";
   }
 
-  //コメントの編集ページへアクセス
+  // コメントの編集ページへアクセス
   @GetMapping("/prototypes/{prototypeId}/comments/{commentId}/edit")
-  public String showEditComment(@PathVariable("prototypeId") Integer prototypeId, 
-                                @PathVariable("commentId") Integer commentId,
-                                @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+  public String showEditComment(
+      @PathVariable("prototypeId") Integer prototypeId,
+      @PathVariable("commentId") Integer commentId,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
 
     CommentEntity comment = commentRepository.findById(commentId);
 
     if (comment.getUser().getId() != currentUser.getId()) {
-        return "redirect:/";
+      return "redirect:/";
     }
 
     CommentForm commentForm = new CommentForm();
@@ -87,20 +89,20 @@ private final PrototypeRepository prototypeRepository;
     return "comments/edit";
   }
 
-  //新規コメントの投稿
+  // 新規コメントの投稿
   @PostMapping("/prototypes/{prototypeId}/comments/new")
-  public String createComment(@PathVariable("prototypeId") Integer prototypeId, 
-                            @ModelAttribute("commentForm") @Valid CommentForm commentForm,
-                            BindingResult result,
-                            @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+  public String createComment(@PathVariable("prototypeId") Integer prototypeId,
+      @ModelAttribute("commentForm") @Valid CommentForm commentForm,
+      BindingResult result,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
-    
+
 
     if (result.hasErrors()) {
       model.addAttribute("prototype", prototype);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("commentForm", commentForm);
-        return "comments/new";
+      return "comments/new";
     }
 
     CommentEntity comment = new CommentEntity();
@@ -117,16 +119,19 @@ private final PrototypeRepository prototypeRepository;
           Files.createDirectories(uploadDirPath);
         }
 
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        String fileName = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_"
+            + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
         comment.setImage("/uploads/" + fileName);
-      } catch (IOException e) {
+      }
+      catch (IOException e) {
         System.out.println("Error：" + e);
         return "comments/new";
       }
     }
-    
+
     comment.setPrototype(prototype);
 
     UserEntity user = userRepository.findById(currentUser.getId());
@@ -135,7 +140,8 @@ private final PrototypeRepository prototypeRepository;
 
     try {
       commentRepository.insert(comment);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.out.println("Error：" + e);
       return "redirect:/prototypes/" + prototypeId;
     }
@@ -143,16 +149,17 @@ private final PrototypeRepository prototypeRepository;
     return "redirect:/prototypes/" + prototypeId;
   }
 
-  //コメントの更新処理
+  // コメントの更新処理
   @PostMapping("/prototypes/{prototypeId}/comments/{commentId}/update")
   public String updateComment(@PathVariable("prototypeId") Integer prototypeId,
-                               @PathVariable("commentId") Integer commentId,
-                               @ModelAttribute("commentForm") @Valid CommentForm commentForm, BindingResult result,
-                               @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+      @PathVariable("commentId") Integer commentId,
+      @ModelAttribute("commentForm") @Valid CommentForm commentForm,
+      BindingResult result,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     CommentEntity comment = commentRepository.findById(commentId);
     if (prototype.getUser().getId() != currentUser.getId()) {
-        return "redirect:/";
+      return "redirect:/";
     }
     if (result.hasErrors()) {
       model.addAttribute("prototype", prototype);
@@ -173,39 +180,45 @@ private final PrototypeRepository prototypeRepository;
         if (!Files.exists(uploadDirPath)) {
           Files.createDirectories(uploadDirPath);
         }
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        String fileName = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_"
+            + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
         comment.setImage("/uploads/comments/" + fileName);
-      } catch (IOException e) {
+      }
+      catch (IOException e) {
         System.out.println("Error：" + e);
-        return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId + "/edit";
+        return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId
+            + "/edit";
       }
     }
 
     try {
       System.out.println(comment.getId());
       commentRepository.update(comment);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.err.println("Error: " + e);
       return "redirect:/prototypes/" + prototypeId;
     }
     return "redirect:/prototypes/" + prototypeId;
   }
 
-  //コメント削除
+  // コメント削除
   @GetMapping("/prototypes/{prototypeId}/comments/{commentId}/delete")
   public String deleteComment(@PathVariable("prototypeId") Integer prototypeId,
-                                @PathVariable("commentId") Integer commentId,
-                                @AuthenticationPrincipal CustomUserDetail currentUser) {
-     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
-     CommentEntity comment = commentRepository.findById(commentId);
+      @PathVariable("commentId") Integer commentId,
+      @AuthenticationPrincipal CustomUserDetail currentUser) {
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    CommentEntity comment = commentRepository.findById(commentId);
     if (prototype.getUser().getId() != currentUser.getId()) {
-        return "redirect:/";
+      return "redirect:/";
     }
     try {
       commentRepository.deleteById(commentId);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.err.println("Error: " + e);
       return "redirect:/prototypes/" + prototypeId;
     }

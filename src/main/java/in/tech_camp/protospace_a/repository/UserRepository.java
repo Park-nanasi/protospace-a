@@ -12,24 +12,22 @@ import in.tech_camp.protospace_a.entity.UserEntity;
 
 @Mapper
 public interface UserRepository {
-  @Insert("INSERT INTO users (username, email, password, profile, company, role) VALUES (#{username}, #{email}, #{password}, #{profile}, #{company}, #{role})")
-  @Options(useGeneratedKeys = true, keyProperty = "id")
-  void insert(UserEntity user);
+    @Insert("INSERT INTO users (username, email, password, profile, company, role) VALUES (#{username}, #{email}, #{password}, #{profile}, #{company}, #{role})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insert(UserEntity user);
 
-  @Select("SELECT EXISTS(SELECT 1 FROM users WHERE email = #{email})")
-  boolean existsByEmail(String email);
+    @Select("SELECT EXISTS(SELECT 1 FROM users WHERE email = #{email})")
+    boolean existsByEmail(String email);
 
-  @Select("SELECT * FROM users WHERE email = #{email}")
-  UserEntity findByEmail(String email);
+    @Select("SELECT * FROM users WHERE email = #{email}")
+    UserEntity findByEmail(String email);
 
-  @Select("SELECT * FROM users WHERE id = #{id}")
-  @Results(value = {
-    @Result(property = "id", column = "id"),
-    @Result(property = "prototypes", column = "id", 
-            many = @Many(select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findByUserId"))
-  })
-  UserEntity findById(Integer id);
+    @Select("SELECT * FROM users WHERE id = #{id}")
+    @Results(value = {@Result(property = "id", column = "id"),
+            @Result(property = "prototypes", column = "id", many = @Many(
+                    select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findByUserId"))})
+    UserEntity findById(Integer id);
 
-  @Select("SELECT * FROM users WHERE id = #{id}")
-  UserEntity findByUserId(Integer id);
+    @Select("SELECT * FROM users WHERE id = #{id}")
+    UserEntity findByUserId(Integer id);
 }

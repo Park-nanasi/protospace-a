@@ -31,10 +31,10 @@ public class TestPrototypeController {
   public String showEditPage() {
     return "prototypes/edit";
   }
-  
+
   @GetMapping("/test/prototypes")
   public String showAllPrototypes(Model model) {
-    List<PrototypeEntity> prototypes =  prototypeRepository.findAllPrototypes();
+    List<PrototypeEntity> prototypes = prototypeRepository.findAllPrototypes();
     model.addAttribute("prototypes", prototypes);
     System.out.println("prototypes: " + prototypes);
     return "prototypes/index";
@@ -50,17 +50,19 @@ public class TestPrototypeController {
   }
 
   @PostMapping("/test/prototype-new")
-  public String createPrototype(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+  public String createPrototype(
+      @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+      BindingResult bindingResult, Model model) {
     // todo ログイン機能作成後
     // - ログイン状態の場合のみ、投稿ページへ遷移できること。
     // - ログアウト状態で投稿ページに遷移しようとすると、ログインページに遷移すること
     prototypeForm.validatePrototypeForm(bindingResult);
     if (bindingResult.hasErrors()) {
-        model.addAttribute("errors", bindingResult.getAllErrors()
-            .stream()
-            .map(error -> error.getDefaultMessage())
-            .collect(Collectors.toList()));
-        return "tmp/prototype";
+      model.addAttribute("errors",
+          bindingResult.getAllErrors().stream()
+              .map(error -> error.getDefaultMessage())
+              .collect(Collectors.toList()));
+      return "tmp/prototype";
     }
 
     // todo プロトタイプの投稿画面作成後
@@ -75,7 +77,8 @@ public class TestPrototypeController {
 
     try {
       prototypeRepository.insertPrototype(prototype);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.err.println("Error：" + e);
       return "tmp/prototype";
     }
@@ -86,17 +89,19 @@ public class TestPrototypeController {
   }
 
   @GetMapping("/test/prototypes/{prototypeId}/delete")
-  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+  public String deletePrototype(
+      @PathVariable("prototypeId") Integer prototypeId) {
     try {
       prototypeRepository.deleteByPrototypeId(prototypeId);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.err.println("Error^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: " + e);
       return "redirect:/tmp/test";
     }
     return "redirect:/tmp/test";
   }
 
-  
+
   @GetMapping("/test/prototype-update")
   public String updatePrototype(Model model) {
     // createPrototypeの挙動を確認するため
@@ -106,13 +111,15 @@ public class TestPrototypeController {
   }
 
   @PostMapping("/test/prototype-update")
-  public String postMethodName(@ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm, BindingResult bindingResult, Model model) {
+  public String postMethodName(
+      @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+      BindingResult bindingResult, Model model) {
     if (bindingResult.hasErrors()) {
-        model.addAttribute("errors", bindingResult.getAllErrors()
-            .stream()
-            .map(error -> error.getDefaultMessage())
-            .collect(Collectors.toList()));
-        return "tmp/prototype";
+      model.addAttribute("errors",
+          bindingResult.getAllErrors().stream()
+              .map(error -> error.getDefaultMessage())
+              .collect(Collectors.toList()));
+      return "tmp/prototype";
     }
 
     PrototypeEntity prototype = new PrototypeEntity();
@@ -122,15 +129,16 @@ public class TestPrototypeController {
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setCatchphrase(prototypeForm.getCatchphrase());
     // prototype.setImage(prototypeForm.getImage());
-    
+
     try {
       prototypeRepository.updatePrototype(prototype);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.err.println("Error: " + e);
       return "redirect:/tmp/test";
     }
 
     System.out.println("Edit: :" + prototype);
     return "redirect:/tmp/test";
-  }  
+  }
 }

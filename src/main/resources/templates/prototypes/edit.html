@@ -1,52 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
-</head>
+  </head>
 
-<body>
+  <body>
 
-<div th:insert="~{header :: header}"></div>
+    <div th:insert="~{header :: header}"></div>
 
-<div class="main_contents">
-  <div class="container_Form">
-    <h2>プロトタイプ編集</h2>
-    <form th:method="post" th:action="@{/prototypes/{prototypeId}/update(prototypeId = ${prototypeId})}" th:object="${prototypeForm}" enctype="multipart/form-data" class="new_user">
+    <div class="main_contents">
+      <div class="container_Form">
+        <h2>プロトタイプ編集</h2>
+        <form th:method="post" th:action="@{/prototypes/{prototypeId}/update(prototypeId = ${prototypeId})}"
+          th:object="${prototypeForm}" enctype="multipart/form-data" class="new_user">
 
-      <div class="field">
-        <label class="column-title">プロトタイプの名称</label><br />
-        <input th:field="*{name}" type="text" id="name" name="name" autofocus="autofocus" />
-        <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'name')}" th:text="＊ + ${fieldErrors['name']}" class="error_message"></div>
+          <div class="field">
+            <label class="column-title">プロトタイプの名称</label><br />
+            <input th:field="*{name}" type="text" id="name" name="name" autofocus="autofocus" />
+            <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'name')}"
+              th:text="＊ + ${fieldErrors['name']}" class="error_message"></div>
+          </div>
+
+          <div class="field">
+            <label class="catchphrase">キャッチコピー</label><br />
+            <textarea th:field="*{catchphrase}" class="text_prototype" id="catchphrase" name="catchphrase"></textarea>
+            <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'catchphrase')}"
+              th:text="＊ + ${fieldErrors['catchphrase']}" class="error_message"></div>
+          </div>
+
+          <div class="field">
+            <label class="concept">コンセプト</label><br />
+            <textarea th:field="*{concept}" class="text_prototype" id="concept" name="concept"></textarea>
+            <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'concept')}"
+              th:text="＊ + ${fieldErrors['concept']}" class="error_message"></div>
+          </div>
+
+          <div class="field">
+            <label class="image">プロトタイプの画像</label><br />
+            <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" />
+            <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'image')}"
+              th:text="＊ + ${fieldErrors['image']}" class="error_message"></div>
+          </div>
+
+          <div class="actions">
+            <input type="submit" value="保存する">
+          </div>
+        </form>
       </div>
-      
-      <div class="field">
-        <label class="catchphrase">キャッチコピー</label><br />
-        <textarea th:field="*{catchphrase}" class="text_prototype" id="catchphrase" name="catchphrase" ></textarea>
-        <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'catchphrase')}" th:text="＊ + ${fieldErrors['catchphrase']}" class="error_message"></div>
-      </div>
-      
-      <div class="field">
-        <label class="concept">コンセプト</label><br />
-        <textarea th:field="*{concept}" class="text_prototype" id="concept" name="concept" ></textarea>
-        <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'concept')}" th:text="＊ + ${fieldErrors['concept']}" class="error_message"></div>
-      </div>
-      
-      <div class="field">
-        <label class="image">プロトタイプの画像</label><br />
-        <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" />
-        <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'image')}" th:text="＊ + ${fieldErrors['image']}" class="error_message"></div>
-      </div>
+    </div>
 
-      <div class="actions">
-        <input type="submit" value="保存する">
-      </div>
-    </form>
-  </div>
-</div>
+    <div th:insert="~{footer :: footer}"></div>
 
-<div th:insert="~{footer :: footer}"></div>
+  </body>
 
-</body>
 </html>
