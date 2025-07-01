@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+  <title>ProtoSpace</title>
+</head>
+
+<body>
+
+<!-- ヘッダー -->
+<div th:insert="~{header :: header}"></div>
+
+
+<div class="main_contents">
+  <div class="greeting">
+    <p>
+      こんにちは
+    <span th:if="${#authorization.expression('isAuthenticated()')}">
+      <!-- <p class="author"> -->
+        、<a th:href="@{'/users/' + ${#authentication.principal.user.id}}" th:text="${#authentication.principal.user.username} + さん"></a>
+      </span>
+    </p>
+
+    <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
+      <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+      <input type="submit" class="search-btn" value="検索" />
+    </form>
+  </div>
+
+<div class="protos">
+  <div class="proto" th:each="prototype : ${prototypes}">
+    <a th:href="@{'/prototypes/' + ${prototype.id}}">
+      <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+    </a>
+    <h2 class="title" th:text="${prototype.name}"></h2>
+    <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+    <p class="author">
+      <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
+    </p>
+  </div>
+</div>
+
+</div>
+
+<!-- <div class="main_contents">
+  <div class="proto-detail" th:each="prototype: ${prototypes}">
+    <div class="proto_info">
+      <h2 class="title" th:text="${prototype.name}"></h2>
+      <p class="author">
+          <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
+        </p>
+      <div class="proto-btns"
+          th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
+        <div class="proto-btn">
+          <a class="proto-btn-text" th:href="@{/prototypes/{prototypeId}/edit(prototypeId = ${prototype.id})}">編集する</a>
+        </div>
+        <div class="proto-btn">
+          <a class="proto-btn-text" th:href="@{/prototypes/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
+        </div>
+      </div>
+      <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+      <h2 class="sub-title" >キャッチコピー</h2>
+      <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+      <h2 class="sub-title">コンセプト</h2>
+      <p class="concept" th:text="${prototype.concept}"></p>
+    </div>
+    <div class="container">
+      <span th:if="${errorMessages}" style="color:red;" th:text="${errorMessages}"></span> -->
+
+    </div>
+  </div>
+</div>
+
+<!-- フッター -->
+<div th:insert="~{footer :: footer}"></div>
+
+</body>
+</html>

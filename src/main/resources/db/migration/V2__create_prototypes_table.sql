@@ -1,4 +1,4 @@
-CREATE TABLE prototypes (
+CREATE TABLE IF NOT EXISTS prototypes (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     name VARCHAR(50) NOT NULL,
