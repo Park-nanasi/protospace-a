@@ -132,12 +132,20 @@ public class UserForm {
     }
   }
   
-  // todo ProfileImageのバリデーション機能作成
   public void validateProfileImage(BindingResult result) {
     if (profileImage == null || profileImage.isEmpty()) {
-      // result.rejectValue("profileImage", "profileImage", "プロフィールを入力してください");
-      System.out.println("Profile Image: ");
+      System.out.println("Warning: Profile Image is null");
       return;
     }
+
+    if (256 < profileImage.getOriginalFilename().length()) {
+      result.rejectValue("profileImage", "profileImage", "画像URLは 256 文字以内で入力してください");
+      return;
+    }
+
+    if (10 * 1024 * 1024 < profileImage.getSize()) {
+      result.rejectValue("profileImage", "profileImage", "画像の最大メディア容量は10メガバイトまでです");
+    }
+
   }
 }
