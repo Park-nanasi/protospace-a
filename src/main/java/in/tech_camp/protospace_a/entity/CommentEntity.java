@@ -14,6 +14,5 @@ public class CommentEntity {
   private Timestamp createdAt;
   private String title;
   private String image;
-
   private PrototypeEntity prototype;
 }

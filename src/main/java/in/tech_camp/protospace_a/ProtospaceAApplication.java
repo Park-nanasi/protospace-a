@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ProtospaceAApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProtospaceAApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(ProtospaceAApplication.class, args);
+  }
 
 }

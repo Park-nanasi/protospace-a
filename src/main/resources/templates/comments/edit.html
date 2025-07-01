@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
-</head>
+  </head>
 
-<body>
+  <body>
 
-<div th:insert="~{header :: header}"></div>
+    <div th:insert="~{header :: header}"></div>
 
-<div class="main_contents">
-  <div class="container_Form">
-    <h2>コメント編集</h2>
-    <div th:replace="~{fragments/comment_form :: commentForm(@{/prototypes/{prototypeId}/comments/{commentId}/update(prototypeId=${prototypeId}, commentId=${commentId})})}"></div>
-  </div>
-</div>
+    <div class="main_contents">
+      <div class="container_Form">
+        <h2>コメント編集</h2>
+        <div
+          th:replace="~{fragments/comment_form :: commentForm(@{/prototypes/{prototypeId}/comments/{commentId}/update(prototypeId=${prototypeId}, commentId=${commentId})})}">
+        </div>
+      </div>
+    </div>
 
-<div th:insert="~{footer :: footer}"></div>
+    <div th:insert="~{footer :: footer}"></div>
 
-</body>
+  </body>
+
 </html>

@@ -33,11 +33,13 @@ public class TestUserController {
   @GetMapping("/test/users/sign_up")
   public String showSignUp(Model model) {
     model.addAttribute("userForm", new UserForm());
-      return "tmp/signUp";
+    return "tmp/signUp";
   }
-  
+
   @PostMapping("/test/user")
-  public String createUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm, BindingResult result, Model model) {
+  public String createUser(
+      @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
+      BindingResult result, Model model) {
     userForm.validateUserForm(result);
     if (userRepository.existsByEmail(userForm.getEmail())) {
       result.rejectValue("email", "null", "Email already exists");
@@ -45,8 +47,8 @@ public class TestUserController {
 
     if (result.hasErrors()) {
       List<String> errorMessages = result.getAllErrors().stream()
-              .map(DefaultMessageSourceResolvable::getDefaultMessage)
-              .collect(Collectors.toList());
+          .map(DefaultMessageSourceResolvable::getDefaultMessage)
+          .collect(Collectors.toList());
 
       model.addAttribute("errorMessages", errorMessages);
       model.addAttribute("userForm", userForm);
@@ -60,11 +62,12 @@ public class TestUserController {
     userEntity.setProfile(userForm.getProfile());
     userEntity.setCompany(userForm.getCompany());
     userEntity.setRole(userForm.getRole());
-    
+
 
     try {
       userService.createUserWithEncryptedPassword(userEntity);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       System.out.println("Error：" + e);
       return "redirect:tmp/login";
     }
@@ -74,12 +77,14 @@ public class TestUserController {
   // ログインに成功した時
   @GetMapping("/test/users/login")
   public String showLogin() {
-      return "tmp/login";
+    return "tmp/login";
   }
 
   // 失敗した時の表示
   @GetMapping("/test/login")
-  public String showLoginWithError(@RequestParam(value = "error", required = false) String error, Model model) {
+  public String showLoginWithError(
+      @RequestParam(value = "error", required = false) String error,
+      Model model) {
     if (error != null) {
       model.addAttribute("loginError", "Invalid email or password.");
     }
@@ -88,7 +93,8 @@ public class TestUserController {
   }
 
   @GetMapping("/test/users/{userId}")
-  public String showMypage(@PathVariable("userId") Integer userId, Model model) {
+  public String showMypage(@PathVariable("userId") Integer userId,
+      Model model) {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = user.getPrototypes();
 
@@ -99,5 +105,5 @@ public class TestUserController {
     model.addAttribute("prototypes", prototypes);
     return "tmp/users/mypage";
   }
-  
+
 }
