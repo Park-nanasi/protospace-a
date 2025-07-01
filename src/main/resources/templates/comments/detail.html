@@ -32,7 +32,7 @@
             <span class="comment_btn_group"
               th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
               <a class="comment_btn"
-                th:href="@{/prototypes/{prototypeId}/comments/{co mmentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+                th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
                 th:text="編集">
               </a>
               <a class="comment_btn"
