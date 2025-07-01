@@ -15,7 +15,7 @@
       <div class="container_Form">
         <h2>ユーザー新規登録</h2>
         <div class="form">
-          <form th:action="@{/user}" th:method="post" th:object="${userForm}" , class="new_user">
+          <form th:action="@{/user}" th:method="post" th:object="${userForm}" enctype="multipart/form-data" class="new_user">
 
             <div class="field">
               <label for="email">メールアドレス</label><br />
@@ -56,7 +56,12 @@
               <div th:if="${fieldErrors != null and #maps.containsKey(fieldErrors, 'profile')}"
                 th:text="＊ + ${fieldErrors['profile']}" class="error_message"></div>
             </div>
-
+            <div class="field">
+              <label for="profileImage" class="image">プロフィール画像</label><br />
+              <input th:field="*{profileImage}" type="file" name="profileImage" id="profileImage" accept="image/*" />
+              <!-- <div th:if="${#fields.hasErrors('profileImage')}" th:text="＊ + ${fieldErrors['profileImage']}" class="error_message">
+              </div> -->
+            </div>
             <div class="actions">
               <input type="submit" value="Sign up">
             </div>

@@ -15,7 +15,7 @@ public class UserForm {
   private String email;
   private String password;
   private String username;
-  private String profile;  
+  private String profile;
   private MultipartFile profileImage;
   private String passwordConfirmation;
 
@@ -24,6 +24,7 @@ public class UserForm {
     validatePassword(result);
     validateUsername(result);
     validateProfile(result);
+    validateProfileImage(result);
   }
 
   public void validateUsername(BindingResult result) {
@@ -125,9 +126,18 @@ public class UserForm {
       result.rejectValue("profile", "profile", "プロフィールを入力してください");
       return;
     }
-
+    
     if (140 < profile.length()) {
       result.rejectValue("profile", "profile", "プロフィールの文字数は140字以内で入力してください");
+    }
+  }
+  
+  // todo ProfileImageのバリデーション機能作成
+  public void validateProfileImage(BindingResult result) {
+    if (profileImage == null || profileImage.isEmpty()) {
+      // result.rejectValue("profileImage", "profileImage", "プロフィールを入力してください");
+      System.out.println("Profile Image: ");
+      return;
     }
   }
 }
