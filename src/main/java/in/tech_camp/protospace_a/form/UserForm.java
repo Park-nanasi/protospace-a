@@ -16,14 +16,6 @@ public class UserForm {
   private String password;
   private String username;
   private String profile;
-
-  @NotBlank(message = "Company can't be blank",
-      groups = ValidationPriority1.class)
-  private String company;
-
-  @NotBlank(message = "Role can't be blank", groups = ValidationPriority1.class)
-  private String role;
-
   private String passwordConfirmation;
 
   public void validateUserForm(BindingResult result) {

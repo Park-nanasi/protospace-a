@@ -60,9 +60,6 @@ public class UserController {
     userEntity.setEmail(userForm.getEmail());
     userEntity.setPassword(userForm.getPassword());
     userEntity.setProfile(userForm.getProfile());
-    userEntity.setCompany(userForm.getCompany());
-    userEntity.setRole(userForm.getRole());
-
 
     try {
       userService.createUserWithEncryptedPassword(userEntity);
@@ -100,8 +97,6 @@ public class UserController {
 
     model.addAttribute("name", user.getUsername());
     model.addAttribute("profile", user.getProfile());
-    model.addAttribute("role", user.getRole());
-    model.addAttribute("company", user.getCompany());
     model.addAttribute("prototypes", prototypes);
     return "users/userInfo";
   }

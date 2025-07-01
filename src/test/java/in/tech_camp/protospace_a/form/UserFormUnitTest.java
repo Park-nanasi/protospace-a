@@ -246,24 +246,6 @@ public class UserFormUnitTest {
         assertEquals("プロフィールの文字数は140字以内で入力してください", result.getFieldError("profile").getDefaultMessage());
     }
 
-    @Test
-    public void companyが空ならバリデーションエラーになる() {
-        form.setCompany("");
-
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
-        assertEquals(1, violations.size());
-        assertEquals("Company can't be blank", violations.iterator().next().getMessage());
-    }
-
-    @Test
-    public void roleが空ならバリデーションエラーになる() {
-        form.setRole("");
-
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
-        assertEquals(1, violations.size());
-        assertEquals("Role can't be blank", violations.iterator().next().getMessage());
-    }
-
     private UserForm createValidUserForm() {
         UserForm form = new UserForm();
         form.setEmail("test@example.com");
@@ -271,8 +253,6 @@ public class UserFormUnitTest {
         form.setPasswordConfirmation("1aA".repeat(6));
         form.setUsername("TestUser");
         form.setProfile("テストプロフィール");
-        form.setCompany("TechCamp");
-        form.setRole("エンジニア");
         return form;
     }
 }

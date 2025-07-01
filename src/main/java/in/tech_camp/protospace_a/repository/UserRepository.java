@@ -12,7 +12,7 @@ import in.tech_camp.protospace_a.entity.UserEntity;
 
 @Mapper
 public interface UserRepository {
-    @Insert("INSERT INTO users (username, email, password, profile, company, role) VALUES (#{username}, #{email}, #{password}, #{profile}, #{company}, #{role})")
+    @Insert("INSERT INTO users (username, email, password, profile) VALUES (#{username}, #{email}, #{password}, #{profile})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(UserEntity user);
 

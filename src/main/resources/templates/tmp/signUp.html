@@ -39,18 +39,6 @@
         <div th:if="${#fields.hasErrors('profile')}" th:errors="*{profile}"></div>
       </div>
 
-      <div>
-        <label>Company:</label>
-        <input th:field="*{company}" required maxlength="50" />
-        <div th:if="${#fields.hasErrors('company')}" th:errors="*{company}"></div>
-      </div>
-
-      <div>
-        <label>Role:</label>
-        <input th:field="*{role}" required maxlength="50" />
-        <div th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
-      </div>
-
       <button type="submit">Register</button>
     </form>
   </body>
