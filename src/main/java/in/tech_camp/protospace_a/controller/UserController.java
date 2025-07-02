@@ -54,7 +54,7 @@ public class UserController {
   public String createUser(
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
       BindingResult result, Model model) {
-    userForm.validateUserForm(result);
+    userForm.validateNewUserForm(result);
 
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
@@ -148,11 +148,7 @@ public class UserController {
   public String updateMyPage(@PathVariable("userId") Integer userId,
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
       BindingResult result, Model model) {
-    // userForm.validateUpdateUserForm(result);
-    userForm.validatePassword(result);
-    userForm.validateUsername(result);
-    userForm.validateProfile(result);
-    userForm.validateProfileImage(result);
+    userForm.validateUpdateUserForm(result);
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
           .collect(Collectors.toMap(FieldError::getField,
@@ -160,7 +156,8 @@ public class UserController {
       model.addAttribute("fieldErrors", fieldErrors);
       model.addAttribute("userForm", userForm);
       System.err.println("Error: /users/update");
-      fieldErrors.forEach((field, error) -> System.err.println("Field: " + field + " - Error: " + error));
+      fieldErrors.forEach((field, error) -> System.err
+          .println("Field: " + field + " - Error: " + error));
       return "users/edit";
     }
 
