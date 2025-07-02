@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_a.ImageUrl;
+import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.SearchForm;
@@ -55,7 +57,6 @@ public class UserController {
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
       BindingResult result, Model model) {
     userForm.validateNewUserForm(result);
-
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
           .collect(Collectors.toMap(FieldError::getField,
@@ -64,6 +65,8 @@ public class UserController {
       model.addAttribute("userForm", userForm);
       return "users/signUp";
     }
+
+    System.out.println("password: " + userForm.getPassword());
 
     UserEntity userEntity = new UserEntity();
     userEntity.setUsername(userForm.getUsername());
@@ -105,13 +108,11 @@ public class UserController {
     return "redirect:/";
   }
 
-  // ログインに成功した時
   @GetMapping("/users/login")
   public String showLogin() {
     return "users/login";
   }
 
-  // 失敗した時の表示
   @GetMapping("/login")
   public String showLoginWithError(
       @RequestParam(value = "error", required = false) String error,
@@ -135,7 +136,12 @@ public class UserController {
 
   @GetMapping("/users/{userId}/edit")
   public String editMypage(@PathVariable("userId") Integer userId,
-      @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    if (!currentUser.getId().equals(userId)) {
+      // todo: トップページに画面表示
+      System.err.println("Error: 他のユーザーのプロフィールは編集できません");
+      return "redirect:/";
+    }
     UserEntity user = userRepository.findById(userId);
     UserForm userForm = new UserForm();
     userForm.setUsername(user.getUsername());
@@ -191,7 +197,7 @@ public class UserController {
     }
 
     try {
-      userRepository.updateUser(user);
+      userService.updateUserWithEncryptedPassword(user);
     }
     catch (Exception e) {
       System.err.println("Error:" + e);
