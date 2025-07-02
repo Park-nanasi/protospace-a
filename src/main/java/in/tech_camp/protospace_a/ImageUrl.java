@@ -11,7 +11,15 @@ public class ImageUrl {
   @Value("${image.url}")
   private String url;
 
-  public String getImageUrl() {
-    return url;
+  public String getPrototypeImageUrl() {
+    return url + "/prototypes/";
+  }
+
+  public String getCommentImageUrl() {
+    return url + "/comments/";
+  }
+
+  public String getUserProfileImageUrl() {
+    return url + "/user_profiles/";
   }
 }

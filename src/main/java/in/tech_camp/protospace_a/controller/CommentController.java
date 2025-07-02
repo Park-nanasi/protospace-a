@@ -112,7 +112,7 @@ public class CommentController {
     MultipartFile imageFile = commentForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getCommentImageUrl();
 
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
@@ -175,7 +175,7 @@ public class CommentController {
     MultipartFile imageFile = commentForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getCommentImageUrl();
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
           Files.createDirectories(uploadDirPath);
