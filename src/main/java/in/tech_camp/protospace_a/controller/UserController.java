@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +32,7 @@ import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
@@ -69,7 +70,7 @@ public class UserController {
     userEntity.setEmail(userForm.getEmail());
     userEntity.setPassword(userForm.getPassword());
     userEntity.setProfile(userForm.getProfile());
-    
+
     MultipartFile imageFile = userForm.getProfileImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
@@ -126,12 +127,82 @@ public class UserController {
       @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
-
     model.addAttribute("name", user.getUsername());
     model.addAttribute("profile", user.getProfile());
     model.addAttribute("prototypes", prototypes);
     return "users/userInfo";
   }
+
+  @GetMapping("/users/{userId}/edit")
+  public String editMypage(@PathVariable("userId") Integer userId,
+      @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+    UserEntity user = userRepository.findById(userId);
+    UserForm userForm = new UserForm();
+    userForm.setUsername(user.getUsername());
+    userForm.setProfile(user.getProfile());
+    model.addAttribute("userForm", userForm);
+    return "users/edit";
+  }
+
+  @PostMapping("/users/{userId}/update")
+  public String updateMyPage(@PathVariable("userId") Integer userId,
+      @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
+      BindingResult result, Model model) {
+    // userForm.validateUpdateUserForm(result);
+    userForm.validatePassword(result);
+    userForm.validateUsername(result);
+    userForm.validateProfile(result);
+    userForm.validateProfileImage(result);
+    if (result.hasErrors()) {
+      Map<String, String> fieldErrors = result.getFieldErrors().stream()
+          .collect(Collectors.toMap(FieldError::getField,
+              FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
+      model.addAttribute("fieldErrors", fieldErrors);
+      model.addAttribute("userForm", userForm);
+      System.err.println("Error: /users/update");
+      fieldErrors.forEach((field, error) -> System.err.println("Field: " + field + " - Error: " + error));
+      return "users/edit";
+    }
+
+    UserEntity user = new UserEntity();
+    user.setId(userId);
+    user.setUsername(userForm.getUsername());
+    user.setPassword(userForm.getPassword());
+    user.setProfile(userForm.getProfile());
+
+    MultipartFile imageFile = userForm.getProfileImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
+
+        String fileName = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_"
+            + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        user.setProfileImage("/uploads/userprofiles" + fileName);
+      }
+      catch (IOException e) {
+        System.out.println("Error：" + e);
+        return "redirect:/users/" + userId + "/edit";
+      }
+    }
+
+    try {
+      userRepository.updateUser(user);
+    }
+    catch (Exception e) {
+      System.err.println("Error:" + e);
+      return "redirect:/";
+    }
+    return "redirect:/";
+  }
+
 
   // 検索機能
   @GetMapping("/users/{userId}/search")
