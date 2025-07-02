@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 public class CustomUserDetail implements UserDetails {
-  private final UserEntity user;
+  private UserEntity user;
 
   public CustomUserDetail(UserEntity user) {
     this.user = user;
@@ -25,6 +25,14 @@ public class CustomUserDetail implements UserDetails {
     return user.getUsername();
   }
 
+  public void setUserName(String username) {
+    user.setUsername(username);
+  }
+
+  public String getProfileImage() {
+    return user.getProfileImage();
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.emptyList();
@@ -35,9 +43,25 @@ public class CustomUserDetail implements UserDetails {
     return user.getPassword();
   }
 
+  public void setPassword(String password) {
+    user.setPassword(password);
+  }
+
+  public void setProfile(String profile) {
+    user.setProfile(profile);
+  }
+
+  public void setProfileImage(String profileImage) {
+    user.setProfileImage(profileImage);
+  }
+  
   @Override
   public String getUsername() {
     return user.getEmail();
+  }
+
+  public void setEmail(String email) {
+    user.setEmail(email);
   }
 
   @Override
