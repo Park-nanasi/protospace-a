@@ -40,7 +40,7 @@ public class TestUserController {
   public String createUser(
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
       BindingResult result, Model model) {
-    userForm.validateUserForm(result);
+    userForm.validateNewUserForm(result);
     if (userRepository.existsByEmail(userForm.getEmail())) {
       result.rejectValue("email", "null", "Email already exists");
     }
