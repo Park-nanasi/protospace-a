@@ -1645,3 +1645,30 @@ form input[type="file"] {
   font-size: 12px;
 
 }
+
+.proto-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.proto-header .title {
+  margin: 0;
+}
+
+.like-section {
+  display: flex;
+  align-items: center;
+  /* 为了整体右边更紧凑，可以根据需求调整 */
+}
+
+.like-btn {
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #ccc;
+}
+
+.like-count {
+  margin-left: 2px;
+}
