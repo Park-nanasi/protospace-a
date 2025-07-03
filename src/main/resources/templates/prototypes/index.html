@@ -15,13 +15,6 @@
 
     <div class="main_contents">
       <div class="greeting">
-        <p>
-          こんにちは
-          <span th:if="${#authorization.expression('isAuthenticated()')}">
-            、<a th:href="@{'/users/' + ${#authentication.principal.user.id}}"
-              th:text="${#authentication.principal.user.username} + さん"></a>
-          </span>
-        </p>
 
         <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
           <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
