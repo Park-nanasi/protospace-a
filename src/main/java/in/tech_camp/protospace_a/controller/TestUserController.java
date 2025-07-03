@@ -40,7 +40,7 @@ public class TestUserController {
   public String createUser(
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
       BindingResult result, Model model) {
-    userForm.validateUserForm(result);
+    userForm.validateNewUserForm(result);
     if (userRepository.existsByEmail(userForm.getEmail())) {
       result.rejectValue("email", "null", "Email already exists");
     }
@@ -60,9 +60,6 @@ public class TestUserController {
     userEntity.setEmail(userForm.getEmail());
     userEntity.setPassword(userForm.getPassword());
     userEntity.setProfile(userForm.getProfile());
-    userEntity.setCompany(userForm.getCompany());
-    userEntity.setRole(userForm.getRole());
-
 
     try {
       userService.createUserWithEncryptedPassword(userEntity);
@@ -100,8 +97,6 @@ public class TestUserController {
 
     model.addAttribute("nickname", user.getUsername());
     model.addAttribute("profile", user.getProfile());
-    model.addAttribute("role", user.getRole());
-    model.addAttribute("company", user.getCompany());
     model.addAttribute("prototypes", prototypes);
     return "tmp/users/mypage";
   }

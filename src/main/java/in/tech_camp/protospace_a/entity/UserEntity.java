@@ -11,8 +11,7 @@ public class UserEntity {
   private String email;
   private String password;
   private String profile;
-  private String company;
-  private String role;
+  private String profileImage;
   private List<PrototypeEntity> prototypes;
   private List<CommentEntity> comments;
 }

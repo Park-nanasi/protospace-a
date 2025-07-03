@@ -20,6 +20,12 @@ public class UserService {
     userRepository.insert(userEntity);
   }
 
+  public void updateUserWithEncryptedPassword(UserEntity userEntity) {
+    String encodedPassword = encodePassword(userEntity.getPassword());
+    userEntity.setPassword(encodedPassword);
+    userRepository.updateUser(userEntity);
+  }
+
   private String encodePassword(String password) {
     return passwordEncoder.encode(password);
   }
