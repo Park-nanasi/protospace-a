@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 window.addEventListener('pageshow', function(event) {
   if (event.persisted) {
-    // 如果页面是从缓存里恢复
     window.location.reload();
   }
 })

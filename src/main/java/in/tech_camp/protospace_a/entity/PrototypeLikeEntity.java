@@ -9,7 +9,6 @@ public class PrototypeLikeEntity {
   private Integer userId;
   private Integer prototypeId;
   private Timestamp createdAt;
-  // private Integer countLike;
   private PrototypeEntity prototype;
   private UserEntity user;
 }

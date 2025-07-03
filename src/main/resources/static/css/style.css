@@ -1660,7 +1660,6 @@ form input[type="file"] {
 .like-section {
   display: flex;
   align-items: center;
-  /* 为了整体右边更紧凑，可以根据需求调整 */
 }
 
 .like-btn {
