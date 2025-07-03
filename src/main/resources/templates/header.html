@@ -13,8 +13,7 @@
         <a class="post user-nav-text" th:href="@{/prototypes/new}">New Proto</a>
       </div>
       <div class="user-profile-container">
-        <!-- todo: ログインユーザーの画像を適用する -->
-        <img src="" alt="プロフィール画像" class="user-profile">
+        <img th:if="${#authentication.principal.user.profileImage} != null" th:src="@{${#authentication.principal.user.profileImage}}" alt="プロフィール画像" class="user-profile">
       </div>
     </div>
 
