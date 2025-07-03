@@ -17,7 +17,7 @@
       <div class="greeting">
         <p>
           こんにちは
-          <span th:if="${#authorization.expression('isAuthenticated()')}">
+          <span th:if ="${#authorization.expression('isAuthenticated()')}">
             <!-- <p class="author"> -->
             、<a th:href="@{'/users/' + ${#authentication.principal.user.id}}"
               th:text="${#authentication.principal.user.username} + さん"></a>
