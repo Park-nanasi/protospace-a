@@ -116,7 +116,7 @@
                 </span>
                 <div class="comment_block_right">
                   <a class="comment_time" th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}"></a>
-
+                  
                   <div class="comment_menu_wrapper"
                       th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
                     <button class="menu_toggle" type="button"
