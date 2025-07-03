@@ -82,6 +82,7 @@ public class CommentController {
     CommentForm commentForm = new CommentForm();
     commentForm.setTitle(comment.getTitle());
     commentForm.setContent(comment.getContent());
+    comment.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
     model.addAttribute("commentForm", commentForm);
     model.addAttribute("prototypeId", prototypeId);

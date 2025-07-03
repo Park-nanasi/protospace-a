@@ -1,5 +1,11 @@
 package in.tech_camp.protospace_a.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,7 +20,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.SearchForm;
@@ -33,6 +41,7 @@ public class UserController {
   private final PrototypeRepository prototypeRepository;
   private final UserRepository userRepository;
   private final UserService userService;
+  private final ImageUrl imageUrl;
 
   @GetMapping("/users/sign_up")
   public String showSignUp(Model model) {
@@ -60,9 +69,29 @@ public class UserController {
     userEntity.setEmail(userForm.getEmail());
     userEntity.setPassword(userForm.getPassword());
     userEntity.setProfile(userForm.getProfile());
-    userEntity.setCompany(userForm.getCompany());
-    userEntity.setRole(userForm.getRole());
+    
+    MultipartFile imageFile = userForm.getProfileImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
 
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
+
+        String fileName = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_"
+            + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        userEntity.setProfileImage("/uploads/userprofiles" + fileName);
+      }
+      catch (IOException e) {
+        System.out.println("Error：" + e);
+        return "users/new";
+      }
+    }
 
     try {
       userService.createUserWithEncryptedPassword(userEntity);
@@ -100,8 +129,6 @@ public class UserController {
 
     model.addAttribute("name", user.getUsername());
     model.addAttribute("profile", user.getProfile());
-    model.addAttribute("role", user.getRole());
-    model.addAttribute("company", user.getCompany());
     model.addAttribute("prototypes", prototypes);
     return "users/userInfo";
   }
