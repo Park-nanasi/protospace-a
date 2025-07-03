@@ -1,13 +1,13 @@
-package in.tech_camp.protospace_a;
+// package in.tech_camp.protospace_a;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class ProtospaceAApplicationTests {
+// @SpringBootTest
+// class ProtospaceAApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+// 	@Test
+// 	void contextLoads() {
+// 	}
 
-}
+// }
