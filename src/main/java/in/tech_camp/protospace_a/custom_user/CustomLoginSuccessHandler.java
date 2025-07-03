@@ -18,25 +18,27 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
   private final UserService userService;
   private final UserRepository userRepository;
 
-  
-  public CustomLoginSuccessHandler(UserService userService, UserRepository userRepository) {
-      this.userService = userService;
-      this.userRepository = userRepository;
+
+  public CustomLoginSuccessHandler(UserService userService,
+      UserRepository userRepository) {
+    this.userService = userService;
+    this.userRepository = userRepository;
   }
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      Authentication authentication) throws IOException, ServletException {
-    CustomUserDetail user = (CustomUserDetail) authentication.getPrincipal();
-    UserEntity currentUser =
-        userRepository.findById(user.getId());
+      HttpServletResponse response, Authentication authentication)
+      throws IOException, ServletException {
+    CustomUserDetail loginUser =
+        (CustomUserDetail) authentication.getPrincipal();
+    UserEntity currentUser = userRepository.findById(loginUser.getId());
     response.sendRedirect("/");
     System.out.println("onAuthenticationsSuccess");
     System.out.println("User: " + currentUser.getUsername());
+    System.out.println("Password: " + currentUser.getPassword());
     System.out.println("Email: " + currentUser.getEmail());
     System.out.println("Profile: " + currentUser.getProfile());
     System.out.println("ProfileImage: " + currentUser.getProfileImage());
-    userService.updateUserWithEncryptedPassword(currentUser, user);
+    userService.loginCurrentUser(currentUser, loginUser);
   }
 }

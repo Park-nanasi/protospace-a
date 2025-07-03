@@ -25,7 +25,7 @@ public class CustomUserDetail implements UserDetails {
     return user.getUsername();
   }
 
-  public void setUserName(String username) {
+  public void setUsername(String username) {
     user.setUsername(username);
   }
 

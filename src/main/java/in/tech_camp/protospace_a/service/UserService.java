@@ -25,13 +25,19 @@ public class UserService {
   }
   
   public void updateUserWithEncryptedPassword(UserEntity userEntity,
-  CustomUserDetail customUser) {
+      CustomUserDetail customUser) {
     String encodedPassword = encodePassword(userEntity.getPassword());
     userEntity.setPassword(encodedPassword);
     userRepository.updateUser(userEntity);
     if (customUser != null) {
       updateCustomUser(customUser, userEntity);
     }
+  }
+  
+  public void loginCurrentUser(UserEntity userEntity,
+      CustomUserDetail customUser) {
+    customUser.setUsername(userEntity.getUsername());
+    customUser.setProfileImage(userEntity.getProfileImage());
   }
 
   private String encodePassword(String password) {
@@ -40,7 +46,7 @@ public class UserService {
 
   private void updateCustomUser(CustomUserDetail customUser,
       UserEntity userEntity) {
-    customUser.setUserName(userEntity.getUsername());
+    customUser.setUsername(userEntity.getUsername());
     customUser.setPassword(userEntity.getPassword());
     customUser.setProfile(userEntity.getProfile());
     customUser.setProfileImage(userEntity.getProfileImage());
