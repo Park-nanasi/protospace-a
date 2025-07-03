@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+  <head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <title>ProtoSpace</title>
+  </head>
+
+  <body>
+
+    <div th:insert="~{header :: header}"></div>
+
+    <div class="main_contents">
+      <div class="container_Form">
+        <h2>ユーザープロフィール編集</h2>
+        <form th:method="post" th:action="@{/users/{userId}/update(userId = ${userId})}" th:object="${userForm}"
+          enctype="multipart/form-data" class="new_user">
+
+          <div class="field">
+            <label class="column-title">名前</label><br />
+            <input th:field="*{username}" type="text" id="username" name="username" autofocus="autofocus" />
+            <div th:if="${#fields.hasErrors('username')}" th:text="＊ + ${fieldErrors['username']}"
+              class="error_message">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">パスワード</label><em>(6文字以上)</em><br />
+            <input type="password" id="password" th:field="*{password}" />
+          </div>
+
+          <div class='field'>
+            <div class='field-label'>
+              <label for="password_confirmation">パスワード再入力</label>
+            </div>
+            <div class='field-input'>
+              <input type="password" th:field="*{passwordConfirmation}" id="password_confirmation" autocomplete="off" />
+            </div>
+            <div th:if="${#fields.hasErrors('password')}" th:text="＊ + ${fieldErrors['password']}"
+              class="error_message"></div>
+            <div th:if="${#fields.hasErrors('passwordConfirmation')}"
+              th:text="＊ + ${fieldErrors['passwordConfirmation']}" class="error_message"></div>
+          </div>
+
+          <div class="field">
+            <label class="profile">プロフィール</label><br />
+            <textarea th:field="*{profile}" class="text" id="profile" name="text"></textarea>
+            <div th:if="${#fields.hasErrors('profile')}" th:text="＊ + ${fieldErrors['profile']}" class="error_message">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="profileImage">プロフィール画像</label><br />
+            <input th:field="*{profileImage}" type="file" name="image" id="profileImage" accept="image/*" />
+            <div th:if="${#fields.hasErrors('profileImage')}" th:text="＊ + ${fieldErrors['profileImage']}"
+              class="error_message">
+            </div>
+          </div>
+
+          <div class="actions">
+            <input type="submit" value="保存する">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div th:insert="~{footer :: footer}"></div>
+
+  </body>
+
+</html>

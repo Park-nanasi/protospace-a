@@ -16,27 +16,28 @@
       <div class="user_contents">
         <h2 th:text="${name} + 'さんの情報'"></h2>
 
-        <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}"
-          class="user-search-form">
-          <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
-          <input type="submit" class="search-btn" value="検索" />
-        </form>
-
+        
         <table class="table">
           <tbody>
             <tr>
               <th class="table_col1">名前</th>
               <td class="table_col2" th:text="${name}"></td>
             </tr>
-
+            
             <tr>
               <th class="table_col1">プロフィール</th>
               <td class="table_col2" th:text="${profile}"></td>
             </tr>
           </tbody>
         </table>
-
+        
         <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>
+        
+        <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}"
+          class="user-search-form">
+          <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+          <input type="submit" class="search-btn" value="検索" />
+        </form>
 
         <div class="protos">
           <div class="proto" th:each="prototype : ${prototypes}">
