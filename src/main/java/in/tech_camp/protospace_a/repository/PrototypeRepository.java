@@ -23,7 +23,7 @@ public interface PrototypeRepository {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertPrototype(PrototypeEntity prototype);
 
-  @Select("SELECT p.id, p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name " +
+  @Select("SELECT p.id, p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name, u.profile_image AS profile_image " +
           "FROM prototypes p " +
           "JOIN users u ON p.user_id = u.id " +
           "ORDER BY p.created_at DESC")
@@ -35,7 +35,8 @@ public interface PrototypeRepository {
       @Result(property = "created_at", column = "created_at"),
       @Result(property = "updated_at", column = "updated_at"),
       @Result(property = "user.id", column = "user_id"),
-      @Result(property = "user.username", column = "user_name")
+      @Result(property = "user.username", column = "user_name"),
+      @Result(property = "user.profileImage", column = "profile_image")
   })
   List<PrototypeEntity> findAllPrototypes();
 

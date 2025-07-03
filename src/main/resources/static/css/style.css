@@ -1386,6 +1386,16 @@ form input[type="submit"].logout-btn:hover {
   /* 縦中央（代替） */
 }
 
+.proto-user-profile {
+  display: flex; 
+  justify-content: space-around;
+}
+
+.proto-user-icon-profile {
+  display: flex;
+  justify-content: start;
+}
+
 .user-nav a.user-nav-text {
   display: inline-block;
   width: 100%;

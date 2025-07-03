@@ -23,7 +23,7 @@ public interface CommentRepository {
           select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findById"))})
   List<CommentEntity> findByPrototypeId(Integer prototypeId);
 
-  @Select("SELECT c.*, u.id AS user_id, u.username AS user_username "
+  @Select("SELECT c.*, u.id AS user_id, u.username AS user_username, u.profile_image AS profile_image"
       + "FROM comments c " + "JOIN users u ON c.user_id = u.id "
       + "WHERE c.id = #{id}")
   @Results(value = {@Result(property = "id", column = "id"),
@@ -31,6 +31,7 @@ public interface CommentRepository {
       @Result(property = "createdAt", column = "created_at"),
       @Result(property = "user.id", column = "user_id"),
       @Result(property = "user.username", column = "user_username"),
+      @Result(property = "user.profileImage", column = "profile_image"),
       @Result(property = "prototype", column = "prototype_id", one = @One(
           select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findById"))})
   CommentEntity findById(Integer id);
