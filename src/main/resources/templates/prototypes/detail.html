@@ -9,16 +9,22 @@
       function toggleComment(commentId) {
         const summaries = document.querySelectorAll('[id^="summary-"]');
         const fulls = document.querySelectorAll('[id^="full-"]');
+        const buttons = document.querySelectorAll('[id^="readmore-"]');
 
         summaries.forEach(el => el.style.display = 'inline');
         fulls.forEach(el => el.style.display = 'none');
+        buttons.forEach(btn => btn.style.display = 'inline');
 
         const summary = document.getElementById('summary-' + commentId);
         const full = document.getElementById('full-' + commentId);
+        const button = document.getElementById('readmore-' + commentId);
 
         if (summary && full) {
           summary.style.display = 'none';
           full.style.display = 'inline';
+        }
+        if (button) {
+          button.style.display = 'none';
         }
       }
 
@@ -151,6 +157,7 @@
 
                 <button type="button"
                         class="read_more"
+                        th:id="'readmore-' + ${comment.id}"
                         th:if="${#strings.length(comment.content) > 80}"
                         th:attr="onclick='toggleComment(' + ${comment.id} + ')'">
                   詳細を見る
