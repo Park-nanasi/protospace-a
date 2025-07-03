@@ -1133,10 +1133,10 @@ footer p {
   padding-top: 32px;
 }
 
-.user-search-form {
-  text-align: center;
-  padding-bottom: 40px;
-}
+/* .user-search-form {
+  /* text-align: center; */
+  /* padding-bottom: 40px; */
+/* } */ */
 
 .search-form .search-input {
   width: 30%;
@@ -1649,7 +1649,7 @@ form input[type="file"] {
   font-size: 15px;
   text-decoration: none;
   display: inline-block;
-  color: #d6d6d6;
+  color: #000000;
 }
 
 .comment_text {

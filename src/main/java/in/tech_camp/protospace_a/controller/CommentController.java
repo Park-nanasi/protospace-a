@@ -82,6 +82,7 @@ public class CommentController {
     CommentForm commentForm = new CommentForm();
     commentForm.setTitle(comment.getTitle());
     commentForm.setContent(comment.getContent());
+    comment.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
     model.addAttribute("commentForm", commentForm);
     model.addAttribute("prototypeId", prototypeId);
@@ -143,10 +144,10 @@ public class CommentController {
     }
     catch (Exception e) {
       System.out.println("Error：" + e);
-      return "redirect:/prototypes/" + prototypeId;
+      return "redirect:/prototypes/" + prototypeId + "/comments/" + comment.getId();
     }
 
-    return "redirect:/prototypes/" + prototypeId;
+    return "redirect:/prototypes/" + prototypeId + "/comments/" + comment.getId();
   }
 
   // コメントの更新処理
@@ -200,9 +201,9 @@ public class CommentController {
     }
     catch (Exception e) {
       System.err.println("Error: " + e);
-      return "redirect:/prototypes/" + prototypeId;
+      return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId;
     }
-    return "redirect:/prototypes/" + prototypeId;
+    return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId;
   }
 
   // コメント削除
