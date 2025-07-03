@@ -5,8 +5,10 @@ import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,36 +51,46 @@ public class CommentControllerUnitTest {
 
   @Test
   public void コメントの投稿ができる() {
-    Integer prototypeId = 1;
+  Integer prototypeId = 1;
 
-    CommentForm form = new CommentForm();
-    form.setContent("テストコメント");
-    form.setTitle("タイトル");
+  CommentForm form = new CommentForm();
+  form.setContent("テストコメント");
+  form.setTitle("タイトル");
 
-    PrototypeEntity prototype = new PrototypeEntity();
-    UserEntity user = new UserEntity();
-    user.setId(1);
+  PrototypeEntity prototype = new PrototypeEntity();
+  UserEntity user = new UserEntity();
+  user.setId(1);
 
-    when(prototypeRepository.findById(prototypeId)).thenReturn(prototype);
-    when(bindingResult.hasErrors()).thenReturn(false);
-    when(currentUser.getId()).thenReturn(1);
-    when(userRepository.findById(1)).thenReturn(user);
+  // コメントが insert 後に ID を持つようにする
+  when(prototypeRepository.findById(prototypeId)).thenReturn(prototype);
+  when(bindingResult.hasErrors()).thenReturn(false);
+  when(currentUser.getId()).thenReturn(1);
+  when(userRepository.findById(1)).thenReturn(user);
 
-    Model model = new ExtendedModelMap();
+  // insert時にコメントIDをセット
+  // insertはvoidだから、Answerを使ってID付与しておく
+  doAnswer(invocation -> {
+    CommentEntity comment = invocation.getArgument(0);
+    comment.setId(123); // モックID
+    return null;
+  }).when(commentRepository).insert(any(CommentEntity.class));
 
-    String viewName = commentController.createComment(prototypeId, form, bindingResult, currentUser, model);
+  Model model = new ExtendedModelMap();
 
-    ArgumentCaptor<CommentEntity> captor = ArgumentCaptor.forClass(CommentEntity.class);
-    verify(commentRepository).insert(captor.capture());
-    CommentEntity captured = captor.getValue();
+  String viewName = commentController.createComment(prototypeId, form, bindingResult, currentUser, model);
 
-    assertThat(captured.getContent(), is("テストコメント"));
-    assertThat(captured.getTitle(), is("タイトル"));
-    assertThat(captured.getPrototype(), is(prototype));
-    assertThat(captured.getUser(), is(user));
+  ArgumentCaptor<CommentEntity> captor = ArgumentCaptor.forClass(CommentEntity.class);
+  verify(commentRepository).insert(captor.capture());
+  CommentEntity captured = captor.getValue();
 
-    assertThat(viewName, is("redirect:/prototypes/" + prototypeId));
-  }
+  assertThat(captured.getContent(), is("テストコメント"));
+  assertThat(captured.getTitle(), is("タイトル"));
+  assertThat(captured.getPrototype(), is(prototype));
+  assertThat(captured.getUser(), is(user));
+
+  // IDが123で設定されたので、リダイレクト先もそのようにチェック
+  assertThat(viewName, is("redirect:/prototypes/" + prototypeId + "/comments/123"));
+}
 
   @Test
   public void コメントが更新できる() {
