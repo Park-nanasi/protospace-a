@@ -1,0 +1,241 @@
+/* コメント一覧 & コメント表示 */
+.comments_list {
+  list-style: none;
+  margin-bottom: 1em;
+}
+
+.comment_user {
+  border-bottom: 1px solid #bfbfbf;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 10px;
+}
+
+.comment_user_author_block {
+  flex-shrink: 0;
+}
+
+.comment_user_author {
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.comment_user_author::before {
+  content: "■";
+  margin-right: 0.5em;
+}
+
+.comment_btn_group {
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+.comment_author {
+  text-decoration: none;
+  display: inline-block;
+  color: #cacaca;
+}
+
+.comment_box {
+  position: relative;
+  background-color: #ffffff;
+  color: #333;
+  max-width: 100%;
+  min-height: 3em;
+  padding: 0.5em 10px;
+  word-wrap: break-word;
+  overflow: hidden;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.comment_name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  white-space: normal;
+}
+
+.read_more {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: 10px;
+  color: #2B9ACF;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.read_more:hover {
+  text-decoration: underline;
+  color: #DAA520;
+}
+
+/* ユーザー関連表示 */
+.user_contents {
+  margin: 20px 0;
+  box-sizing: border-box;
+}
+
+.user_contents h2 {
+  font-size: 30px;
+  color: black;
+  font-weight: bold;
+  padding-bottom: 30px;
+}
+
+/* コメントフォーム・コメント詳細コンテナ */
+.container_comment {
+  margin: 20px 0;
+  padding: 10px 30px;
+  background-color: white;
+  box-sizing: border-box;
+  border-top: 1px #d7d7d7 solid;
+}
+
+.container_comment h3 {
+  margin: 0 0 20px;
+  text-align: center;
+  font-weight: normal;
+  font-size: 20px;
+  color: #666;
+}
+
+.container_comment p {
+  font-weight: bold;
+}
+
+.comment_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment_btn {
+  display: flex;
+  background-color: #9bdbf2;
+  color: white;
+  width: 100px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.container_comment_detail {
+  margin: 20px 0;
+  padding: 0 30px 10px 30px;
+  background-color: white;
+  box-sizing: border-box;
+  border: 1px solid rgb(211, 211, 211);
+  border-radius: 10px;
+}
+
+.container_comment_detail h3 {
+  margin: 0 0 20px;
+  text-align: center;
+  font-weight: normal;
+  font-size: 20px;
+  color: #666;
+}
+
+.container_comment_detail p {
+  font-weight: bold;
+}
+
+/* コメントタイトル・本文・時間 */
+.comment_title {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: #333 1px solid;
+  font-size: 20px;
+  margin-bottom: 2em;
+  font-weight: bold;
+  color: #000;
+}
+
+.comment_author a {
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-block;
+  color: #000000;
+}
+
+.comment_text {
+  display: block;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.5;
+  padding-bottom: 10px;
+}
+
+.comment_time {
+  color: #929292;
+}
+
+/* コメントメニュー（ドロップダウン） */
+.comment_menu_wrapper {
+  position: relative;
+  margin-left: auto;
+}
+
+.menu_toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+.menu_dropdown {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.menu_item {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.menu_item:hover {
+  background-color: #f5f5f5;
+  color: #DAA520;
+}
+
+/* コメント右寄せ部分 */
+.comment_block_right {
+  display: flex;
+  align-items: center;
+}
