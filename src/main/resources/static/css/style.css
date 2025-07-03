@@ -1133,10 +1133,10 @@ footer p {
   padding-top: 32px;
 }
 
-.user-search-form {
-  text-align: center;
-  padding-bottom: 40px;
-}
+/* .user-search-form {
+  /* text-align: center; */
+  /* padding-bottom: 40px; */
+/* } */ */
 
 .search-form .search-input {
   width: 30%;
