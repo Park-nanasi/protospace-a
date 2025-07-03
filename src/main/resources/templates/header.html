@@ -13,7 +13,10 @@
         <a class="post user-nav-text" th:href="@{/prototypes/new}">New Proto</a>
       </div>
       <div class="user-profile-container">
-        <img th:if="${#authentication.principal.user.profileImage} != null" th:src="@{${#authentication.principal.user.profileImage}}" alt="プロフィール画像" class="user-profile">
+        <a th:if="${#authentication.principal.user.id}" th:href="@{'/users/' + ${#authentication.principal.user.id}}">
+          <img th:if="${#authentication.principal.user.profileImage} != null"
+            th:src="@{${#authentication.principal.user.profileImage}}" alt="プロフィール画像" class="user-profile">
+        </a>
       </div>
     </div>
 
