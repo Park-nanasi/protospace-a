@@ -44,9 +44,6 @@ public interface CommentRepository {
   void insert(CommentEntity comment);
 
   @Update("UPDATE comments SET title = #{title}, content = #{content}, image = #{image}, created_at = #{created_at}, updated_at = CURRENT_TIMESTAMP WHERE id = #{id}")
-//   @Results(value = {
-//     @Result(property = "updated_at", column = "updated_at")
-//   })
   void update(CommentEntity comment);
 
   @Delete("DELETE FROM comments WHERE id = #{id}")
