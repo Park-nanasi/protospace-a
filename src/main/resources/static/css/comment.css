@@ -135,12 +135,25 @@
 }
 
 .container_comment_detail {
+  position: relative;
   margin: 20px 0;
   padding: 0 30px 10px 30px;
   background-color: white;
   box-sizing: border-box;
   border: 1px solid rgb(211, 211, 211);
   border-radius: 10px;
+}
+
+.container_comment_detail::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 10px; 
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid rgb(211, 211, 211);
 }
 
 .container_comment_detail h3 {
