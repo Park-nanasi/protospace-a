@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
@@ -243,26 +244,61 @@ public class UserFormUnitTest {
         result = new BeanPropertyBindingResult(form, "userForm");
         form.validateUserForm(result);
         assertTrue(result.hasFieldErrors("profile"));
-        assertEquals("プロフィールの文字数は140字以内で入力してください", result.getFieldError("profile").getDefaultMessage());
+        assertEquals("プロフィールの文字数は140字以内で入力してください",
+                result.getFieldError("profile").getDefaultMessage());
+    }
+    
+    
+    @Test
+    public void profileImageがnullの場合エラー() {
+        form.setProfileImage(null);
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("profileImage"));
+    }
+    
+    @Test
+    public void profileImageが空ファイルの場合エラー() {
+        form.setProfileImage(new MockMultipartFile("profileImage", new byte[0]));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("profileImage"));
     }
 
     @Test
-    public void companyが空ならバリデーションエラーになる() {
-        form.setCompany("");
-
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
-        assertEquals(1, violations.size());
-        assertEquals("Company can't be blank", violations.iterator().next().getMessage());
+    public void profileImageのurlの文字数が256文字の場合成功() {
+        form.setProfileImage(new MockMultipartFile("profileImage", "a".repeat(252) + ".png", "profileImage/png", "dummy profileImage content".getBytes()));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("profileImage"));
     }
 
     @Test
-    public void roleが空ならバリデーションエラーになる() {
-        form.setRole("");
-
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, ValidationPriority1.class);
-        assertEquals(1, violations.size());
-        assertEquals("Role can't be blank", violations.iterator().next().getMessage());
+    public void profileImageのurlの文字数が257文字の場合エラー() {
+        form.setProfileImage(new MockMultipartFile("profileImage", "a".repeat(253) + ".png", "profileImage/png", "dummy profileImage content".getBytes()));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("profileImage"));
+        assertEquals("画像URLは 256 文字以内で入力してください", result.getFieldError("profileImage").getDefaultMessage());
     }
+    
+    @Test
+    public void profileImageのファイルが10MBの場合成功() {
+        form.setProfileImage(new MockMultipartFile("profileImage", new byte[10 * 1024 * 1024]));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validateUserForm(result);
+        assertFalse(result.hasFieldErrors("profileImage"));
+    }
+
+    @Test
+    public void profileImageのファイルが11MBの場合エラー() {
+        form.setProfileImage(new MockMultipartFile("profileImage", new byte[11 * 1024 * 1024]));
+        BindingResult result = new BeanPropertyBindingResult(form, "prototypeForm");
+        form.validateUserForm(result);
+        assertTrue(result.hasFieldErrors("profileImage"));
+        assertEquals("画像の最大メディア容量は10メガバイトまでです", result.getFieldError("profileImage").getDefaultMessage());
+    }
+
 
     private UserForm createValidUserForm() {
         UserForm form = new UserForm();
@@ -271,8 +307,6 @@ public class UserFormUnitTest {
         form.setPasswordConfirmation("1aA".repeat(6));
         form.setUsername("TestUser");
         form.setProfile("テストプロフィール");
-        form.setCompany("TechCamp");
-        form.setRole("エンジニア");
         return form;
     }
 }

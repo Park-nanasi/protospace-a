@@ -38,7 +38,7 @@
           </div>
 
           <div class="field">
-            <label clas s="image">プロトタイプの画像</label><br />
+            <label class="image">プロトタイプの画像</label><br />
             <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" />
             <div th:if="${#fields.hasErrors('image')}" th:text="＊ + ${fieldErrors['image']}" class="error_message">
             </div>
