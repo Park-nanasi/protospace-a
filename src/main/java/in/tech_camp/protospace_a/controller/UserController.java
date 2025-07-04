@@ -178,10 +178,9 @@ public class UserController {
       return "users/edit";
     }
 
-    UserEntity user = new UserEntity();
+    UserEntity user = userRepository.findById(currentUser.getId());
     user.setId(userId);
     user.setUsername(userForm.getUsername());
-    user.setPassword(userForm.getPassword());
     user.setProfile(userForm.getProfile());
 
     MultipartFile imageFile = userForm.getProfileImage();

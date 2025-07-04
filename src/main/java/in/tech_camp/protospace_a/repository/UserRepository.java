@@ -35,7 +35,7 @@ public interface UserRepository {
     UserEntity findByUserId(Integer id);
 
 
-    @Update("UPDATE users SET username = #{username}, password = #{password}, profile = #{profile}, profile_image = #{profileImage} WHERE id = #{id}")
+    @Update("UPDATE users SET username = #{username}, profile = #{profile}, profile_image = #{profileImage} WHERE id = #{id}")
     void updateUser(UserEntity user);
 
 }
