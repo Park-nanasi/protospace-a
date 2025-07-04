@@ -3,11 +3,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  row-gap: 110px;
   justify-content: space-between;
 }
 
 .proto {
   width: calc(33.333% - 14px);
+  height: 350px;
   box-sizing: border-box;
   padding: 10px;
 }

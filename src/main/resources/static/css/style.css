@@ -874,7 +874,6 @@ form input[type="submit"].logout-btn:hover {
   padding: 30px 10%;
   background-color: white;
   flex-grow: 1;
-  overflow: auto;
   min-height: 100%;
 }
 
