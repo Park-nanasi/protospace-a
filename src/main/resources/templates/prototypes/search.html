@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/prototype.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
   </head>
 
@@ -15,7 +16,6 @@
 
     <div class="main_contents">
       <div class="greeting">
-
         <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
           <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
           <input type="submit" class="search-btn" value="検索" />
