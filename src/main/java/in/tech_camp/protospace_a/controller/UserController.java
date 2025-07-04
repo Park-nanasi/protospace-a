@@ -73,9 +73,12 @@ public class UserController {
     userEntity.setEmail(userForm.getEmail());
     userEntity.setPassword(userForm.getPassword());
     userEntity.setProfile(userForm.getProfile());
-
+    
     MultipartFile imageFile = userForm.getProfileImage();
-    if (imageFile != null && !imageFile.isEmpty()) {
+    if (imageFile == null || imageFile.isEmpty()) {
+      userEntity.setProfileImage(imageUrl.getUserProfileDefaultImageUrl());
+    }
+    else {
       try {
         String uploadDir = imageUrl.getUserProfileImageUrl();
 
