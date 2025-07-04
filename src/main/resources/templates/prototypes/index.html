@@ -15,14 +15,6 @@
 
     <div class="main_contents">
       <div class="greeting">
-        <p>
-          こんにちは
-          <span th:if="${#authorization.expression('isAuthenticated()')}">
-            <!-- <p class="author"> -->
-            、<a th:href="@{'/users/' + ${#authentication.principal.user.id}}"
-              th:text="${#authentication.principal.user.username} + さん"></a>
-          </span>
-        </p>
 
         <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
           <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
@@ -35,13 +27,25 @@
           <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
             <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
           </a>
-          <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-            <h2 class="title" th:text="${prototype.name}"></h2>
-          </a>
-          <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-          <p class="author">
-            <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
-          </p>
+          <div class="proto-user-profile">
+            <div>
+              <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+                <h2 class="title" th:text="${prototype.name}"></h2>
+              </a>
+              <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+            </div>
+  
+            <div class="proto-user-icon-profile">
+              <div class="user-profile-container">
+                <a th:href="@{'/users/' + ${prototype.user.id}}">
+                  <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
+                </a>
+              </div>
+              <a th:href="@{'/users/' + ${prototype.user.id}}">
+                <span style="margin-left: 10px; text-align: center;" th:text="' ' + ${prototype.user.username}"></span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

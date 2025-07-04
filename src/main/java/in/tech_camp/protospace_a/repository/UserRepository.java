@@ -24,16 +24,18 @@ public interface UserRepository {
     UserEntity findByEmail(String email);
 
     @Select("SELECT * FROM users WHERE id = #{id}")
-    @Results(value = {@Result(property = "id", column = "id"),
-            @Result(property = "prototypes", column = "id", many = @Many(
+    @Results(value = {
+        @Result(property = "id", column = "id"),
+        @Result(property = "profileImage", column = "profile_image"),
+        @Result(property = "prototypes", column = "id", many = @Many(
                     select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findByUserId"))})
     UserEntity findById(Integer id);
 
     @Select("SELECT * FROM users WHERE id = #{id}")
     UserEntity findByUserId(Integer id);
 
-    
-  @Update("UPDATE users SET username = #{username}, password = #{password}, profile = #{profile}, profile_image = #{profileImage} WHERE id = #{id}")
-  void updateUser(UserEntity user);
+
+    @Update("UPDATE users SET username = #{username}, password = #{password}, profile = #{profile}, profile_image = #{profileImage} WHERE id = #{id}")
+    void updateUser(UserEntity user);
 
 }
