@@ -939,3 +939,54 @@ form input[type="file"] {
   color:crimson;
   font-size: 12px;
 }
+
+.proto-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.proto-header .title {
+  margin: 0;
+}
+
+.like-section {
+  display: flex;
+  align-items: center;
+}
+
+.like-btn {
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #ccc;
+}
+
+.like-count {
+  margin-left: 2px;
+  
+ .proto-user-profile {
+  display: flex; 
+  justify-content: space-around;
+}
+
+.proto-user-icon-profile {
+  display: flex;
+  justify-content: start;
+}
+
+.user-profile-container {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.user-profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

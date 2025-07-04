@@ -45,11 +45,25 @@
             <a th:href="@{'/prototypes/' + ${prototype.id}}">
               <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
             </a>
-            <h2 class="title" th:text="${prototype.name}"></h2>
-            <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-            <p class="author">
-              <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
-            </p>
+                     <div class="proto-user-profile">
+            <div>
+              <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+                <h2 class="title" th:text="${prototype.name}"></h2>
+              </a>
+              <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+            </div>
+  
+            <div class="proto-user-icon-profile">
+              <div class="user-profile-container">
+                <a th:href="@{'/users/' + ${prototype.user.id}}">
+                  <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
+                </a>
+              </div>
+              <a th:href="@{'/users/' + ${prototype.user.id}}">
+                <span style="margin-left: 10px; text-align: center;" th:text="' ' + ${prototype.user.username}"></span>
+              </a>
+            </div>
+          </div>
           </div>
         </div>
       </div>

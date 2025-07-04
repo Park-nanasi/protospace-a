@@ -14,6 +14,7 @@ public class PrototypeEntity {
   private String image;
   private Timestamp created_at;
   private Timestamp updated_at;
+  private Integer count_likes;
   private UserEntity user;
   private List<CommentEntity> comments;
 }
