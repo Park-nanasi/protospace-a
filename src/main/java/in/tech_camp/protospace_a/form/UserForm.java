@@ -28,7 +28,6 @@ public class UserForm {
   }
 
   public void validateUpdateUserForm(BindingResult result) {
-    validatePassword(result);
     validateUsername(result);
     validateProfile(result);
     validateProfileImage(result);

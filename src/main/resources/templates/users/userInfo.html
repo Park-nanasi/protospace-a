@@ -17,23 +17,29 @@
       <div class="user_contents">
         <h2 th:text="${name} + 'さんの情報'"></h2>
 
-        
+        <div class="proto-btns"
+          th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == userId}">
+          <div class="proto-btn">
+            <a class="proto-btn-text" th:href="@{/users/{userId}/edit(userId = ${userId})}">編集する</a>
+          </div>
+        </div>
+
         <table class="table">
           <tbody>
             <tr>
               <th class="table_col1">名前</th>
               <td class="table_col2" th:text="${name}"></td>
             </tr>
-            
+
             <tr>
               <th class="table_col1">プロフィール</th>
               <td class="table_col2" th:text="${profile}"></td>
             </tr>
           </tbody>
         </table>
-        
+
         <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>
-        
+
         <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}"
           class="user-search-form">
           <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
@@ -45,25 +51,26 @@
             <a th:href="@{'/prototypes/' + ${prototype.id}}">
               <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
             </a>
-                     <div class="proto-user-profile">
-            <div>
-              <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-                <h2 class="title" th:text="${prototype.name}"></h2>
-              </a>
-              <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-            </div>
-  
-            <div class="proto-user-icon-profile">
-              <div class="user-profile-container">
+            <div class="proto-user-profile">
+              <div>
+                <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+                  <h2 class="title" th:text="${prototype.name}"></h2>
+                </a>
+                <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+              </div>
+
+              <div class="proto-user-icon-profile">
+                <div class="user-profile-container">
+                  <a th:href="@{'/users/' + ${prototype.user.id}}">
+                    <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
+                  </a>
+                </div>
                 <a th:href="@{'/users/' + ${prototype.user.id}}">
-                  <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
+                  <span style="margin-left: 10px; text-align: center;"
+                    th:text="' ' + ${prototype.user.username}"></span>
                 </a>
               </div>
-              <a th:href="@{'/users/' + ${prototype.user.id}}">
-                <span style="margin-left: 10px; text-align: center;" th:text="' ' + ${prototype.user.username}"></span>
-              </a>
             </div>
-          </div>
           </div>
         </div>
       </div>
