@@ -964,7 +964,8 @@ form input[type="file"] {
 
 .like-count {
   margin-left: 2px;
-  
+}
+
  .proto-user-profile {
   display: flex; 
   justify-content: space-around;
