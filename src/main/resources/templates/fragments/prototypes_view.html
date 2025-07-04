@@ -1,0 +1,36 @@
+<div th:fragment="prototypes_view">
+  <div class="protos">
+    <div class="proto" th:each="prototype : ${prototypes}">
+      <div class="proto_img_block">
+        <a class="proto_img_link" th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+          <img class="proto_img" th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+        </a>
+      </div>
+      <div class="proto-header">
+        <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+          <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
+        </a>
+        <span class="like-section" th:attr="data-prototypeid=${prototype.id}">
+          <!-- 未登録 -->
+          <span th:if="${not #authorization.expression('isAuthenticated()')}" class="like-btn not-logged-in">
+            &#9825;
+          </span>
+          <!-- 登録済み -->
+          <span th:if="${#authorization.expression('isAuthenticated()')}" class="like-btn">
+            &#9825;
+          </span>
+          <span id="like-count" th:text="${prototype.count_likes}">0</span>
+        </span>
+      </div>
+      <div>
+        <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+      </div>
+      <div class="proto-user-profile">
+        <a th:href="@{'/users/' + ${prototype.user.id}}" class="proto-user-link">
+          <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile" style="width:28px; height:28px; border-radius:50%; border:1px solid #ccc;">
+          <span class="user-name" th:text="${prototype.user.username}"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

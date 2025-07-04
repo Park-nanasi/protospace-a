@@ -38,41 +38,9 @@
           </tbody>
         </table>
 
-        <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>
-
-        <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}"
-          class="user-search-form">
-          <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
-          <input type="submit" class="search-btn" value="検索" />
-        </form>
-
-        <div class="protos">
-          <div class="proto" th:each="prototype : ${prototypes}">
-            <a th:href="@{'/prototypes/' + ${prototype.id}}">
-              <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
-            </a>
-            <div class="proto-user-profile">
-              <div>
-                <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-                  <h2 class="title" th:text="${prototype.name}"></h2>
-                </a>
-                <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-              </div>
-
-              <div class="proto-user-icon-profile">
-                <div class="user-profile-container">
-                  <a th:href="@{'/users/' + ${prototype.user.id}}">
-                    <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
-                  </a>
-                </div>
-                <a th:href="@{'/users/' + ${prototype.user.id}}">
-                  <span style="margin-left: 10px; text-align: center;"
-                    th:text="' ' + ${prototype.user.username}"></span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>       
+        <div th:replace="~{fragments/search_bar :: user_search_bar}"></div>
+        <div th:replace="~{fragments/prototypes_view :: prototypes_view}"></div>
       </div>
     </div>
 
