@@ -73,7 +73,7 @@ public class UserController {
     userEntity.setEmail(userForm.getEmail());
     userEntity.setPassword(userForm.getPassword());
     userEntity.setProfile(userForm.getProfile());
-    
+
     MultipartFile imageFile = userForm.getProfileImage();
     if (imageFile == null || imageFile.isEmpty()) {
       userEntity.setProfileImage(imageUrl.getUserProfileDefaultImageUrl());
@@ -208,7 +208,7 @@ public class UserController {
     }
 
     try {
-      userService.updateUserWithEncryptedPassword(user, currentUser);
+      userService.updateUser(user, currentUser);
     }
     catch (Exception e) {
       System.err.println("Error:" + e);

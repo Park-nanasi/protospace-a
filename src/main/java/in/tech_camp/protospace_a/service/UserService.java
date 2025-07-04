@@ -15,7 +15,8 @@ public class UserService {
 
   private final PasswordEncoder passwordEncoder;
 
-  public void createUserWithEncryptedPassword(UserEntity userEntity, CustomUserDetail customUser) {
+  public void createUserWithEncryptedPassword(UserEntity userEntity,
+      CustomUserDetail customUser) {
     String encodedPassword = encodePassword(userEntity.getPassword());
     userEntity.setPassword(encodedPassword);
     userRepository.insert(userEntity);
@@ -23,17 +24,18 @@ public class UserService {
       customUser.setProfileImage(userEntity.getProfileImage());
     }
   }
-  
-  public void updateUserWithEncryptedPassword(UserEntity userEntity,
-      CustomUserDetail customUser) {
-    String encodedPassword = encodePassword(userEntity.getPassword());
-    userEntity.setPassword(encodedPassword);
+
+  public void updateUser(UserEntity userEntity, CustomUserDetail customUser) {
+    // todo: パスワードの変更機能実装
+    // String encodedPassword =
+    // encodePassword(userEntity.getPassword());
+    // userEntity.setPassword(encodedPassword);
     userRepository.updateUser(userEntity);
     if (customUser != null) {
       updateCustomUser(customUser, userEntity);
     }
   }
-  
+
   public void loginCurrentUser(UserEntity userEntity,
       CustomUserDetail customUser) {
     customUser.setUsername(userEntity.getUsername());
@@ -47,7 +49,6 @@ public class UserService {
   private void updateCustomUser(CustomUserDetail customUser,
       UserEntity userEntity) {
     customUser.setUsername(userEntity.getUsername());
-    customUser.setPassword(userEntity.getPassword());
     customUser.setProfile(userEntity.getProfile());
     customUser.setProfileImage(userEntity.getProfileImage());
   }
