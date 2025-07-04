@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 public class ImageUrl {
   @Value("${image.url}")
   private String url;
+  
+  public String getUserProfileDefaultImageUrl() {
+    return "/uploads/user_profiles/default.png";
+  }
 
   public String getPrototypeImageUrl() {
     return url + "/prototypes/";
@@ -22,4 +26,5 @@ public class ImageUrl {
   public String getUserProfileImageUrl() {
     return url + "/user_profiles/";
   }
+
 }
