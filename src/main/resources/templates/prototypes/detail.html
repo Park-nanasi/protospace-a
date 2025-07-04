@@ -69,14 +69,11 @@
       <div class="proto-detail">
         <div class="proto_info">
           <h2 class="title" th:text="${prototype.name}"></h2>
-
-          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
-            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></a>
-
-          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
-            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')} + '　更新時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}">
-          </a>
-
+          <div>
+            <p th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></p>
+            <p th:if="prototype.updated_at != null"
+              th:text="'更新時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}"></p>
+          </div>
           <p class="author">
             <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
           </p>
@@ -137,13 +134,6 @@
                   </div>
                 </div>
               </div>  
-              <!--
-              <div class="comment_box">
-                <span class="comment_name" th:text="${comment.title}"></span>
-                <a class="read_more"
-                  th:href="@{'/prototypes/' + ${prototype.id} + '/comments/' + ${comment.id}}">詳細を見る</a>
-              </div>
-              -->
               <div class="comment_box">
 
                 <span th:id="'summary-' + ${comment.id}" 

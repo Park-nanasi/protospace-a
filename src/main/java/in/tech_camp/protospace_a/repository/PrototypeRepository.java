@@ -19,7 +19,7 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 @Mapper
 public interface PrototypeRepository {
 
-    @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id, created_at, updated_at) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id}, CURRENT_TIMESTAMP, '1970-01-01 00:00:01')")
+    @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id, created_at) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id}, CURRENT_TIMESTAMP)")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertPrototype(PrototypeEntity prototype);
 
@@ -54,18 +54,20 @@ public interface PrototypeRepository {
 
   @Select("SELECT * FROM prototypes WHERE id = #{id}")
   @Results(value = {
+    @Result(property = "name", column = "name"),
     @Result(property = "created_at", column = "created_at"),
     @Result(property = "updated_at", column = "updated_at"),
     @Result(property = "id", column = "id"),
     @Result(property = "user", column = "user_id",
-            one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById")),
+    one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById")),
     @Result(property = "comments", column = "id",
-            many = @Many(select = "in.tech_camp.protospace_a.repository.CommentRepository.findByPrototypeId"))
-  })
-  PrototypeEntity findById(Integer id);
+    many = @Many(select = "in.tech_camp.protospace_a.repository.CommentRepository.findByPrototypeId"))
+})
+PrototypeEntity findById(Integer id);
 
-  @Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
-  @Results(value = {
+@Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
+@Results(value = {
+    @Result(property = "name", column = "name"),
     @Result(property = "created_at", column = "created_at"),
     @Result(property = "updated_at", column = "updated_at"),
     @Result(property = "user", column = "user_id",

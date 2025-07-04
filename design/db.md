@@ -7,8 +7,7 @@
 | email | VARCHAR(128)    | NOT NULL UNIQUE |
 | password | VARCHAR(128)    | NOT NULL |
 | profile | VARCHAR(128)    | NOT NULL |
-| company | VARCHAR(50)    | NOT NULL |
-| role | VARCHAR(50)    | NOT NULL |
+| profile_image | VARCHAR(256) | |;
 
 
 ### Option
