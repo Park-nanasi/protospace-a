@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(data => updateLikeView(data.liked, data.count));
 
   function updateLikeView(liked, count) {
-      likeBtn.innerHTML = liked ? '❤' : '♡'; // 赤or空白
+      likeBtn.innerHTML = liked ? '&#9825' : '&#9825'; // 赤or空白
       likeBtn.style.color = liked ? 'red' : '#ccc';
       likeCountSpan.textContent = count;
       likeBtn.setAttribute('data-liked', liked);
