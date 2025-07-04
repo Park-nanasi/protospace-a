@@ -144,10 +144,10 @@ public class CommentController {
     }
     catch (Exception e) {
       System.out.println("Error：" + e);
-      return "redirect:/prototypes/" + prototypeId + "/comments/" + comment.getId();
+      return "redirect:/prototypes/" + prototypeId;
     }
 
-    return "redirect:/prototypes/" + prototypeId + "/comments/" + comment.getId();
+    return "redirect:/prototypes/" + prototypeId;
   }
 
   // コメントの更新処理
@@ -201,9 +201,9 @@ public class CommentController {
     }
     catch (Exception e) {
       System.err.println("Error: " + e);
-      return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId;
+      return "redirect:/prototypes/" + prototypeId;
     }
-    return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId;
+    return "redirect:/prototypes/" + prototypeId;
   }
 
   // コメント削除

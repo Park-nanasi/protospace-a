@@ -22,6 +22,27 @@
 
     <div th:insert="~{footer :: footer}"></div>
 
+
+  <script>
+    function updateCharCount(max = 1000) {
+      const content = document.getElementById('content');
+      const charCount = document.getElementById('charCount');
+      if (content && charCount) {
+        charCount.textContent = content.value.length + ' / ' + max + ' 文字';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      updateCharCount(1000);
+
+      const content = document.getElementById('content');
+      if (content) {
+        content.addEventListener('input', function () {
+          updateCharCount(1000);
+        });
+      }
+    });
+  </script>
   </body>
 
 </html>
