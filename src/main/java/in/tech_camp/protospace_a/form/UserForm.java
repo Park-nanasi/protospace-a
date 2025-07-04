@@ -18,6 +18,8 @@ public class UserForm {
   private String profile;
   private MultipartFile profileImage;
   private String passwordConfirmation;
+  private String x;
+  private String facebook;
 
   public void validateNewUserForm(BindingResult result) {
     validateEmail(result);
