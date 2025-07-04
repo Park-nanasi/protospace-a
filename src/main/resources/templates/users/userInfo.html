@@ -34,11 +34,7 @@
         
         <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>
         
-        <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}"
-          class="user-search-form">
-          <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
-          <input type="submit" class="search-btn" value="検索" />
-        </form>
+        <div th:replace="~{fragments/search_bar :: user_search_bar}"></div>
 
         <div th:replace="~{fragments/prototypes_view :: prototypes_view}"></div>
       </div>

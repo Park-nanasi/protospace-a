@@ -1,9 +1,11 @@
 <div th:fragment="prototypes_view">
   <div class="protos">
     <div class="proto" th:each="prototype : ${prototypes}">
-      <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-        <img class="proto_img" th:src="@{${prototype.image}}" alt="プロトタイプ画像">
-      </a>
+      <div class="proto_img_block">
+        <a class="proto_img_link" th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+          <img class="proto_img" th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+        </a>
+      </div>
       <div class="proto-header">
         <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
           <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
@@ -20,20 +22,14 @@
           <span id="like-count" th:text="${prototype.count_likes}">0</span>
         </span>
       </div>
-      <div class="proto-user-profile">
-        <div class="proto-user-icon-profile">
-          <div class="user-profile-container">
-            <a th:href="@{'/users/' + ${prototype.user.id}}">
-              <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
-            </a>
-          </div>
-          <a th:href="@{'/users/' + ${prototype.user.id}}">
-            <span style="margin-left: 10px; text-align: center;" th:text="' ' + ${prototype.user.username}"></span>
-          </a>
-        </div>
-      </div>
       <div>
         <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+      </div>
+      <div class="proto-user-profile">
+        <a th:href="@{'/users/' + ${prototype.user.id}}" class="proto-user-link">
+          <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile" style="width:28px; height:28px; border-radius:50%; border:1px solid #ccc;">
+          <span class="user-name" th:text="${prototype.user.username}"></span>
+        </a>
       </div>
     </div>
   </div>

@@ -39,6 +39,7 @@ html {
  * Remove default margin. */
 body {
   margin: 0;
+  font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
 }
 
 /* ==========================================================================
@@ -745,35 +746,6 @@ footer p {
   font-size: 10px;
 }
 
-.search-form {
-  text-align: center;
-  padding-top: 32px;
-}
-
-/* .user-search-form {
-  /* text-align: center; */
-  /* padding-bottom: 40px; */
-/* } */ */
-
-.search-form .search-input {
-  width: 30%;
-  margin-right: 10px;
-}
-
-.search-form .search-btn {
-  width: 10%;
-}
-
-.user-search-form .search-input {
-  width: 30%;
-  margin-right: 10px;
-}
-
-.user-search-form .search-btn {
-  width: 10%;
-}
-
-
 form input[type="submit"].delete-btn {
   padding: 4px 6px;
   background-color: #fff;
@@ -829,6 +801,8 @@ form input[type="submit"].logout-btn:hover {
 }
 
 .user-naves {
+  display: flex;
+  align-items: center;
   position: relative;
   top: 5px;
   display: flex;
@@ -875,11 +849,6 @@ form input[type="submit"].logout-btn:hover {
   background-color: white;
   flex-grow: 1;
   min-height: 100%;
-}
-
-.greeting a {
-  font-weight: bold;
-  text-decoration: underline;
 }
 
 /* フォーム関連 */
@@ -937,4 +906,58 @@ form input[type="file"] {
 .error_message {
   color:crimson;
   font-size: 12px;
+}
+
+/* ユーザープロフィール */
+.proto-user-profile {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.header .user-profile-container {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+
+.proto-user-icon-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.proto-user-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.user-profile-container {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.user-profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+}
+
+.user-name:hover {
+  text-decoration: underline;
 }

@@ -2,35 +2,77 @@
 .protos {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  row-gap: 110px;
-  justify-content: space-between;
+  gap: 30px;
+  row-gap: 50px;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .proto {
-  width: calc(33.333% - 14px);
-  height: 350px;
-  box-sizing: border-box;
+  width: calc(33.333% - 20px);
+  aspect-ratio: 4 / 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.proto:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5  );
+}
+
+.proto_img_link {
+  width: 100%;
+  height: 100%;
+}
+
+.proto_img_block {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 6px;
 }
 
 .proto_img {
   width: 100%;
-  height: 75%;
-  margin-bottom: 10px;
-  object-fit: scale-down;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px;
 }
 
 .proto .title {
-  color: black;
-  font-size: 20px;
-  margin: 8px 0 5px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.4;
+  margin: 6px 0 4px;
+  max-height: 2.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .proto .catchcopy {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  max-height: 3.0em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .proto .author {
@@ -41,40 +83,15 @@
 }
 
 .proto-header {
+  flex: 0 0 15%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  padding: 5px 0;
 }
 
 .proto-header .title {
   margin: 0;
-}
-
-.proto-user-profile {
-  display: flex; 
-  justify-content: space-around;
-}
-
-.proto-user-icon-profile {
-  display: flex;
-  justify-content: start;
-}
-
-.user-profile-container {
-  width: 50px;
-  height: 50px;
-  overflow: hidden;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.user-profile {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
 /* プロトタイプ詳細情報 */
@@ -163,4 +180,38 @@
 
 .like-count {
   margin-left: 2px;
+}
+
+/* 検索機能 */
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0;
+}
+
+.search-form .search-input {
+  width: 30%;
+  padding: 8px 12px;
+  margin: 0;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #42a5f5;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-btn:hover {
+  background-color: #1976d2;
 }
