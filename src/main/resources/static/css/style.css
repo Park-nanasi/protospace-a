@@ -1133,10 +1133,10 @@ footer p {
   padding-top: 32px;
 }
 
-.user-search-form {
-  text-align: center;
-  padding-bottom: 40px;
-}
+/* .user-search-form {
+  /* text-align: center; */
+  /* padding-bottom: 40px; */
+/* } */ */
 
 .search-form .search-input {
   width: 30%;
@@ -1386,6 +1386,16 @@ form input[type="submit"].logout-btn:hover {
   /* 縦中央（代替） */
 }
 
+.proto-user-profile {
+  display: flex; 
+  justify-content: space-around;
+}
+
+.proto-user-icon-profile {
+  display: flex;
+  justify-content: start;
+}
+
 .user-nav a.user-nav-text {
   display: inline-block;
   width: 100%;
@@ -1513,7 +1523,7 @@ form input[type="file"] {
 
 .comment_name {
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1522,18 +1532,19 @@ form input[type="file"] {
 }
 
 .read_more {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
   margin-left: 10px;
   color: #2B9ACF;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-.comment_box:hover .read_more {
-  color: #DAA520;
-}
-
 .read_more:hover {
   text-decoration: underline;
+  color: #DAA520;
 }
 
 .user_contents {
@@ -1547,6 +1558,22 @@ form input[type="file"] {
   font-weight: bold;
 
   padding-bottom: 30px;
+}
+
+.user-profile-container {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.user-profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .container_comment {
@@ -1646,6 +1673,57 @@ form input[type="file"] {
 
 }
 
+.comment_menu_wrapper {
+  position: relative;
+  margin-left: auto;
+}
+
+.menu_toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+.menu_dropdown {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+  
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.menu_item {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.menu_item:hover {
+  background-color: #f5f5f5;
+  color: #DAA520;
+}
+
+.comment_block_right {
+  display: flex;
+  align-items: center;
+}
+
 .proto-header {
   display: flex;
   align-items: center;
@@ -1670,4 +1748,3 @@ form input[type="file"] {
 
 .like-count {
   margin-left: 2px;
-}

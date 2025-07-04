@@ -71,7 +71,6 @@ public class PrototypeController {
       List<CommentEntity> sortedComments = prototype.getComments().stream()
           .sorted(Comparator.comparing(CommentEntity::getId).reversed())
           .collect(Collectors.toList());
-
       model.addAttribute("comments", sortedComments);
     }
     model.addAttribute("errorMessages", null);
@@ -110,26 +109,23 @@ public class PrototypeController {
     MultipartFile imageFile = prototypeForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
-
+        String uploadDir = imageUrl.getPrototypeImageUrl();
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
           Files.createDirectories(uploadDirPath);
         }
-
         String fileName = LocalDateTime.now()
             .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_"
             + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage("/uploads/" + fileName);
+        prototype.setImage("/uploads/prototypes/" + fileName);
       }
       catch (IOException e) {
         System.out.println("Error：" + e);
         return "prototypes/new";
       }
     }
-    // prototype.setImage(prototypeForm.getImage());
     prototype.setUser(userRepository.findByUserId(currentUser.getId()));
     try {
       prototypeRepository.insertPrototype(prototype);
@@ -210,7 +206,7 @@ public class PrototypeController {
     MultipartFile imageFile = prototypeForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getPrototypeImageUrl();
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
           Files.createDirectories(uploadDirPath);
@@ -220,7 +216,7 @@ public class PrototypeController {
             + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        prototype.setImage("/uploads/" + fileName);
+        prototype.setImage("/uploads/prototypes/" + fileName);
       }
       catch (IOException e) {
         System.out.println("Error：" + e);

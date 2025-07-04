@@ -113,7 +113,7 @@ public class CommentController {
     MultipartFile imageFile = commentForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getCommentImageUrl();
 
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
@@ -144,10 +144,10 @@ public class CommentController {
     }
     catch (Exception e) {
       System.out.println("Error：" + e);
-      return "redirect:/prototypes/" + prototypeId + "/comments/" + comment.getId();
+      return "redirect:/prototypes/" + prototypeId;
     }
 
-    return "redirect:/prototypes/" + prototypeId + "/comments/" + comment.getId();
+    return "redirect:/prototypes/" + prototypeId;
   }
 
   // コメントの更新処理
@@ -176,7 +176,7 @@ public class CommentController {
     MultipartFile imageFile = commentForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getCommentImageUrl();
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
           Files.createDirectories(uploadDirPath);
@@ -201,9 +201,9 @@ public class CommentController {
     }
     catch (Exception e) {
       System.err.println("Error: " + e);
-      return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId;
+      return "redirect:/prototypes/" + prototypeId;
     }
-    return "redirect:/prototypes/" + prototypeId + "/comments/" + commentId;
+    return "redirect:/prototypes/" + prototypeId;
   }
 
   // コメント削除

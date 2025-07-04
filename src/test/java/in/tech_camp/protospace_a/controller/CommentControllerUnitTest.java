@@ -89,7 +89,7 @@ public class CommentControllerUnitTest {
   assertThat(captured.getUser(), is(user));
 
   // IDが123で設定されたので、リダイレクト先もそのようにチェック
-  assertThat(viewName, is("redirect:/prototypes/" + prototypeId + "/comments/123"));
+  assertThat(viewName, is("redirect:/prototypes/" + prototypeId));
 }
 
   @Test

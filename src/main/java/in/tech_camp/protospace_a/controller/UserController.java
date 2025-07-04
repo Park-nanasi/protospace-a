@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
@@ -55,7 +55,7 @@ public class UserController {
   @PostMapping("/user")
   public String createUser(
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
-      BindingResult result, Model model) {
+      BindingResult result,  @AuthenticationPrincipal CustomUserDetail currentUser, RedirectAttributes redirectAttributes, Model model) {
     userForm.validateNewUserForm(result);
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
@@ -66,8 +66,6 @@ public class UserController {
       return "users/signUp";
     }
 
-    System.out.println("password: " + userForm.getPassword());
-
     UserEntity userEntity = new UserEntity();
     userEntity.setUsername(userForm.getUsername());
     userEntity.setEmail(userForm.getEmail());
@@ -77,7 +75,7 @@ public class UserController {
     MultipartFile imageFile = userForm.getProfileImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getUserProfileImageUrl();
 
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
@@ -89,7 +87,7 @@ public class UserController {
             + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        userEntity.setProfileImage("/uploads/userprofiles" + fileName);
+        userEntity.setProfileImage("/uploads/user_profiles/" + fileName);
       }
       catch (IOException e) {
         System.out.println("Error：" + e);
@@ -98,13 +96,15 @@ public class UserController {
     }
 
     try {
-      userService.createUserWithEncryptedPassword(userEntity);
+      userService.createUserWithEncryptedPassword(userEntity, currentUser);
     }
     catch (Exception e) {
       System.out.println("エラー：" + e);
+      redirectAttributes.addFlashAttribute("profileImage",
+          userEntity.getProfileImage());
       return "redirect:/";
     }
-
+    redirectAttributes.addFlashAttribute("profileImage", userEntity.getProfileImage());
     return "redirect:/";
   }
 
@@ -130,16 +130,20 @@ public class UserController {
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
     model.addAttribute("name", user.getUsername());
     model.addAttribute("profile", user.getProfile());
+    model.addAttribute("profileImage", user.getProfileImage());
     model.addAttribute("prototypes", prototypes);
     return "users/userInfo";
   }
 
   @GetMapping("/users/{userId}/edit")
   public String editMypage(@PathVariable("userId") Integer userId,
-      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+      @AuthenticationPrincipal CustomUserDetail currentUser,
+      RedirectAttributes redirectAttributes, Model model) {
     if (!currentUser.getId().equals(userId)) {
       // todo: トップページに画面表示
       System.err.println("Error: 他のユーザーのプロフィールは編集できません");
+      redirectAttributes.addFlashAttribute("profileImage",
+          currentUser.getProfileImage());
       return "redirect:/";
     }
     UserEntity user = userRepository.findById(userId);
@@ -153,7 +157,9 @@ public class UserController {
   @PostMapping("/users/{userId}/update")
   public String updateMyPage(@PathVariable("userId") Integer userId,
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
-      BindingResult result, Model model) {
+      BindingResult result, RedirectAttributes redirectAttributes,
+      @AuthenticationPrincipal CustomUserDetail currentUser,
+      Model model) {
     userForm.validateUpdateUserForm(result);
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
@@ -161,7 +167,6 @@ public class UserController {
               FieldError::getDefaultMessage, (msg1, msg2) -> msg1));
       model.addAttribute("fieldErrors", fieldErrors);
       model.addAttribute("userForm", userForm);
-      System.err.println("Error: /users/update");
       fieldErrors.forEach((field, error) -> System.err
           .println("Field: " + field + " - Error: " + error));
       return "users/edit";
@@ -176,7 +181,7 @@ public class UserController {
     MultipartFile imageFile = userForm.getProfileImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getUserProfileImageUrl();
 
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
@@ -188,7 +193,7 @@ public class UserController {
             + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
-        user.setProfileImage("/uploads/userprofiles" + fileName);
+        user.setProfileImage("/uploads/user_profiles/" + fileName);
       }
       catch (IOException e) {
         System.out.println("Error：" + e);
@@ -197,12 +202,16 @@ public class UserController {
     }
 
     try {
-      userService.updateUserWithEncryptedPassword(user);
+      userService.updateUserWithEncryptedPassword(user, currentUser);
     }
     catch (Exception e) {
       System.err.println("Error:" + e);
+      redirectAttributes.addFlashAttribute("profileImage",
+          user.getProfileImage());
       return "redirect:/";
     }
+    redirectAttributes.addFlashAttribute("profileImage",
+        user.getProfileImage());
     return "redirect:/";
   }
 
@@ -223,6 +232,8 @@ public class UserController {
         .findByUserIdAndNameContaining(userId, searchForm.getName());
 
     model.addAttribute("name", user.getUsername());
+    model.addAttribute("profile", user.getProfile());
+    model.addAttribute("profileImage", user.getProfileImage());
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
     return "users/userInfo";
