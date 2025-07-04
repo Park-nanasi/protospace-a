@@ -55,7 +55,9 @@ public class UserController {
   @PostMapping("/user")
   public String createUser(
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
-      BindingResult result,  @AuthenticationPrincipal CustomUserDetail currentUser, RedirectAttributes redirectAttributes, Model model) {
+      BindingResult result,
+      @AuthenticationPrincipal CustomUserDetail currentUser,
+      RedirectAttributes redirectAttributes, Model model) {
     userForm.validateNewUserForm(result);
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
@@ -104,7 +106,8 @@ public class UserController {
           userEntity.getProfileImage());
       return "redirect:/";
     }
-    redirectAttributes.addFlashAttribute("profileImage", userEntity.getProfileImage());
+    redirectAttributes.addFlashAttribute("profileImage",
+        userEntity.getProfileImage());
     return "redirect:/";
   }
 
@@ -132,6 +135,7 @@ public class UserController {
     model.addAttribute("profile", user.getProfile());
     model.addAttribute("profileImage", user.getProfileImage());
     model.addAttribute("prototypes", prototypes);
+    model.addAttribute("userId", user.getId());
     return "users/userInfo";
   }
 
@@ -158,8 +162,7 @@ public class UserController {
   public String updateMyPage(@PathVariable("userId") Integer userId,
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
       BindingResult result, RedirectAttributes redirectAttributes,
-      @AuthenticationPrincipal CustomUserDetail currentUser,
-      Model model) {
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     userForm.validateUpdateUserForm(result);
     if (result.hasErrors()) {
       Map<String, String> fieldErrors = result.getFieldErrors().stream()
@@ -236,6 +239,7 @@ public class UserController {
     model.addAttribute("profileImage", user.getProfileImage());
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
+    model.addAttribute("userId", user.getId());
     return "users/userInfo";
   }
 }
