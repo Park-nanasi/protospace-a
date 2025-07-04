@@ -803,7 +803,7 @@ form input[type="submit"].logout-btn:hover {
 .header-bar {
   display: flex;
   justify-content: space-between;
-  padding: 0 17%;
+  padding: 0 5%;
   align-items: center;
 }
 
@@ -871,7 +871,7 @@ form input[type="submit"].logout-btn:hover {
 
 /* メインコンテンツ */
 .main_contents {
-  padding: 30px 16%;
+  padding: 30px 10%;
   background-color: white;
   flex-grow: 1;
   overflow: auto;
