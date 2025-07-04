@@ -1723,3 +1723,28 @@ form input[type="file"] {
   display: flex;
   align-items: center;
 }
+
+.proto-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.proto-header .title {
+  margin: 0;
+}
+
+.like-section {
+  display: flex;
+  align-items: center;
+}
+
+.like-btn {
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #ccc;
+}
+
+.like-count {
+  margin-left: 2px;

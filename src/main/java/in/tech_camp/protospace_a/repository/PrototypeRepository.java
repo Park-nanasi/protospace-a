@@ -23,7 +23,7 @@ public interface PrototypeRepository {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertPrototype(PrototypeEntity prototype);
 
-  @Select("SELECT p.id, p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name, u.profile_image AS profile_image " +
+  @Select("SELECT p.id, p.name, p.catchphrase, p.image, p.count_likes, u.id AS user_id, u.username AS user_name, u.profile_image AS profile_image " +
           "FROM prototypes p " +
           "JOIN users u ON p.user_id = u.id " +
           "ORDER BY p.created_at DESC")
@@ -34,6 +34,7 @@ public interface PrototypeRepository {
       @Result(property = "image", column = "image"),
       @Result(property = "created_at", column = "created_at"),
       @Result(property = "updated_at", column = "updated_at"),
+      @Result(property = "count_likes", column = "count_likes"),
       @Result(property = "user.id", column = "user_id"),
       @Result(property = "user.username", column = "user_name"),
       @Result(property = "user.profileImage", column = "profile_image")
@@ -102,5 +103,17 @@ PrototypeEntity findById(Integer id);
     List<PrototypeEntity> findByUserIdAndNameContaining(
             @Param("userId") Integer userId, @Param("name") String name);
 
+    //   「いいね」数＋１
+    @Update("UPDATE prototypes SET count_likes = count_likes + 1 WHERE id = #{prototypeId}")
+    @Results(value = {
+        @Result(property = "count_likes", column = "count_likes")
+      })
+    int incrementLikeCount(@Param("prototypeId") Integer prototypeId);
 
+    // 「いいね」数ー１
+    @Update("UPDATE prototypes SET count_likes = count_likes - 1 WHERE id = #{prototypeId}")
+    @Results(value = {
+        @Result(property = "count_likes", column = "count_likes")
+      })
+    int decrementLikeCount(@Param("prototypeId") Integer prototypeId);
 }

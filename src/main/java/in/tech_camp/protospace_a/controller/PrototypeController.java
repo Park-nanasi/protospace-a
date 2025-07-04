@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,8 @@ import in.tech_camp.protospace_a.form.SearchForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import lombok.AllArgsConstructor;
+
+import org.springframework.security.core.Authentication;
 
 @Controller
 @AllArgsConstructor
@@ -71,6 +74,7 @@ public class PrototypeController {
       model.addAttribute("comments", sortedComments);
     }
     model.addAttribute("errorMessages", null);
+ 
     return "prototypes/detail";
   }
 

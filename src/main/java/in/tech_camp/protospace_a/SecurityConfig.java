@@ -27,7 +27,8 @@ public class SecurityConfig {
             .requestMatchers("/css/**", "/test/**", "/uploads/**", "/",
                 "/users/sign_up", "/users/login", "/prototypes/{id:[0-9]+}",
                 "/users/{id:[0-9]+}", "/prototypes/search",
-                "/users/{id:[0-9]+}/search", "/prototypes/{prototypesId:[0-9]+}/comments/{commentsId:[0-9]+}")
+                "/users/{id:[0-9]+}/search", "/prototypes/{prototypesId:[0-9]+}/comments/{commentsId:[0-9]+}",
+                "/prototypes/{prototypeId:[0-9]+}/likes/info")
             .permitAll().requestMatchers(HttpMethod.POST, "/user").permitAll()
             .anyRequest().authenticated())
         .formLogin(login -> login.loginProcessingUrl("/login")

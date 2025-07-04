@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
   <head>
+    <script th:inline="javascript">
+  window.isLoggedIn = /*[[${isLoggedIn}]]*/ false;
+</script>
+
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
@@ -67,11 +71,14 @@
       <div class="proto-detail">
         <div class="proto_info">
           <h2 class="title" th:text="${prototype.name}"></h2>
-          <div>
-            <p th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></p>
-            <p th:if="prototype.updated_at != null"
-              th:text="'更新時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}"></p>
-          </div>
+
+          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
+            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></a>
+
+          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
+            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')} + '　更新時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}">
+          </a>
+
           <p class="author">
             <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
           </p>
@@ -92,6 +99,20 @@
           <h2 class="sub-title">コンセプト</h2>
           <p class="concept" th:text="${prototype.concept}"></p>
         </div>
+
+<!-- 評価機能 -->
+        <div id="like-section">
+          <span 
+            id="like-btn" 
+            th:attr="data-prototypeid=${prototype.id}"
+            style="cursor:pointer; font-size:2em; color:#ccc; transition:color 0.2s;">
+            &#9825; <!-- 空心 Unicode -->
+          </span>
+          <span id="like-count">0</span>
+      </div>
+    <script src="/js/like.js"></script>   
+    
+<!-- 評価機能 -->
 
         <div class="container_comment">
           <div class="comment_top">
