@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
@@ -34,7 +36,10 @@ import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
+
 import org.springframework.web.bind.annotation.RequestBody;
+
+import in.tech_camp.protospace_a.entity.SnsLinkEntity;
 
 
 @Controller
@@ -99,6 +104,11 @@ public class UserController {
         return "users/new";
       }
     }
+
+    SnsLinkEntity snsLinks = new SnsLinkEntity();
+    snsLinks.setX(userForm.getX());
+    snsLinks.setFacebook(userForm.getFacebook());
+    System.out.println("snslinks: " + snsLinks);
 
     try {
       userService.createUserWithEncryptedPassword(userEntity, currentUser);
