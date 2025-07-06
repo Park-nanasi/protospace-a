@@ -33,10 +33,11 @@ import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.CommentEntity;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
+import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.CommentForm;
 import in.tech_camp.protospace_a.form.PrototypeForm;
 import in.tech_camp.protospace_a.form.SearchForm;
-
+import in.tech_camp.protospace_a.repository.PrototypeLikeRepository;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -49,20 +50,32 @@ public class PrototypeController {
 
   private final UserRepository userRepository;
   private final PrototypeRepository prototypeRepository;
+  private final PrototypeLikeRepository prototypeLikeRepository;
   private final ImageUrl imageUrl;
 
   @GetMapping("/")
-  public String showAllPrototypes(Model model) {
+  public String showAllPrototypes(Model model, @AuthenticationPrincipal CustomUserDetail currentUser) {
     List<PrototypeEntity> prototypes = prototypeRepository.findAllPrototypes();
     SearchForm searchForm = new SearchForm();
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
+
+    Map<Integer, Boolean> likeStatusMap = new HashMap<>();
+    if(currentUser != null) {
+        Integer userId = currentUser.getId();
+        for(PrototypeEntity p : prototypes) {
+            boolean liked = prototypeLikeRepository.existsByUserAndPrototype(userId, p.getId()) > 0;
+            likeStatusMap.put(p.getId(), liked);
+        }
+    }
+    System.out.println("likeStatusMap内容：" + likeStatusMap); 
+    model.addAttribute("likeStatusMap", likeStatusMap);
     return "prototypes/index";
   }
 
   @GetMapping("/prototypes/{prototypeId}")
   public String showTargetPrototype(
-      @PathVariable("prototypeId") Integer prototypeId, Model model) {
+      @PathVariable("prototypeId") Integer prototypeId, Model model, @AuthenticationPrincipal CustomUserDetail currentUser) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     CommentForm commentForm = new CommentForm();
     model.addAttribute("prototype", prototype);
@@ -75,6 +88,13 @@ public class PrototypeController {
       model.addAttribute("comments", sortedComments);
     }
     model.addAttribute("errorMessages", null);
+
+    boolean liked = false;
+    if(currentUser != null) {
+        Integer userId = currentUser.getId();
+        liked = prototypeLikeRepository.existsByUserAndPrototype(userId, prototype.getId()) > 0;
+    }
+    model.addAttribute("liked", liked);
  
     return "prototypes/detail";
   }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Param;
+import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.PrototypeLikeEntity;
 
 
@@ -58,5 +59,7 @@ public interface PrototypeLikeRepository {
   @Select("SELECT * FROM prototype_likes WHERE user_id = #{userId} AND prototype_id = #{prototypeId} LIMIT 1")
   PrototypeLikeEntity selectByUserAndPrototype(@Param("userId") Integer userId, @Param("prototypeId") Integer prototypeId);
 
-
+  // ユーザーが「いいね」をしたprototypeを取り出す
+  @Select("SELECT p.* FROM prototypes p INNER JOIN prototype_likes pl ON p.id = pl.prototype_id WHERE pl.user_id = #{userId}")
+  List<PrototypeEntity> findLikedPrototypesByUser(@Param("userId") Integer userId);
 }

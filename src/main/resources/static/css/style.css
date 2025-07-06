@@ -1668,6 +1668,10 @@ form input[type="file"] {
   color: #ccc;
 }
 
+.like-btn.liked {
+  color: red;
+}
+
 .like-count {
   margin-left: 2px;
 }

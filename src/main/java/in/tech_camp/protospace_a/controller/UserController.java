@@ -29,6 +29,7 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.SearchForm;
 import in.tech_camp.protospace_a.form.UserForm;
+import in.tech_camp.protospace_a.repository.PrototypeLikeRepository;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @AllArgsConstructor
 public class UserController {
 
+  private final PrototypeLikeRepository prototypeLikeRepository;
   private final PrototypeRepository prototypeRepository;
   private final UserRepository userRepository;
   private final UserService userService;
@@ -226,5 +228,16 @@ public class UserController {
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
     return "users/userInfo";
+  }
+
+  // ユーザーが「いいね」を押したページ
+  @GetMapping("/users/{userId}/likes")
+  public String likePrototypes(@PathVariable("userId") Integer userId, 
+      @ModelAttribute("searchForm") SearchForm searchForm,Model model) {
+    UserEntity user = userRepository.findById(userId);
+    List<PrototypeEntity> likedPrototypes = prototypeLikeRepository.findLikedPrototypesByUser(userId);
+    model.addAttribute("name", user.getUsername());
+    model.addAttribute("likedPrototypes", likedPrototypes);
+    return "users/likedPrototypes";
   }
 }

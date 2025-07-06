@@ -12,7 +12,7 @@
       document.querySelectorAll('.like-btn.not-logged-in').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
           e.preventDefault();
-          alert('ログインしてから、いいねを押してね！！');
+          alert('ログインしてから、いいねを押してね！');
           window.location.href = 'users/login';
         });
       });
@@ -58,9 +58,12 @@
                 &#9825;
               </span>
               <!-- 登録済み -->
-              <span th:if="${#authorization.expression('isAuthenticated()')}" class="like-btn">
-                &#9825;
-              </span>
+              <span th:if="${#authorization.expression('isAuthenticated()')}"
+                th:classappend="${likeStatusMap[prototype.id]} ? 'liked' : ''"
+                class="like-btn"
+                th:text="${likeStatusMap[prototype.id]} ? '♥' : '♡'">♡
+            </span>
+
               <span id="like-count" th:text="${prototype.count_likes}">0</span>
             </span>
             
