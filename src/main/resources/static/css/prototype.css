@@ -1,0 +1,111 @@
+/* プロトタイプ一覧 */
+.protos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.proto {
+  width: calc(33.333% - 14px);
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.proto img {
+  width: 100%;
+  height: 75%;
+  margin-bottom: 10px;
+  object-fit: scale-down;
+}
+
+.proto .title {
+  color: black;
+  font-size: 20px;
+  margin: 8px 0 5px;
+}
+
+.proto .catchcopy {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.proto .author {
+  font-size: 10px;
+  color: #666;
+  text-align: right;
+  text-decoration: underline;
+}
+
+/* プロトタイプ詳細情報 */
+.proto_info {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+.proto_info img {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+
+.proto_info .title,
+.proto_info .sub-title,
+.proto_info .catchcopy,
+.proto_info .concept,
+.proto_info .author {
+  margin: 10px 0;
+}
+
+.proto_info .title {
+  font-size: 20px;
+  color: rgb(56, 56, 56);
+}
+
+.proto_info .author a {
+  text-decoration: underline;
+  color: #cacaca;
+  font-weight: 700;
+}
+
+.proto_info .sub-title {
+  font-size: 20px;
+  color: rgb(56, 56, 56);
+}
+
+/* プロトタイプ操作ボタン */
+.proto-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.proto-btn {
+  border: 1px solid #cacaca;
+  border-radius: 3px;
+  text-align: center;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: background-color 0.3s;
+}
+
+.proto-btn a.proto-btn-text {
+  font-size: 12px;
+  color: #cacaca;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  line-height: 30px;
+}
+

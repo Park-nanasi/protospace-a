@@ -26,24 +26,6 @@
           </div>
 
           <div class="field">
-            <label for="password">パスワード</label><em>(6文字以上)</em><br />
-            <input type="password" id="password" th:field="*{password}" />
-          </div>
-
-          <div class='field'>
-            <div class='field-label'>
-              <label for="password_confirmation">パスワード再入力</label>
-            </div>
-            <div class='field-input'>
-              <input type="password" th:field="*{passwordConfirmation}" id="password_confirmation" autocomplete="off" />
-            </div>
-            <div th:if="${#fields.hasErrors('password')}" th:text="＊ + ${fieldErrors['password']}"
-              class="error_message"></div>
-            <div th:if="${#fields.hasErrors('passwordConfirmation')}"
-              th:text="＊ + ${fieldErrors['passwordConfirmation']}" class="error_message"></div>
-          </div>
-
-          <div class="field">
             <label class="profile">プロフィール</label><br />
             <textarea th:field="*{profile}" class="text" id="profile" name="text"></textarea>
             <div th:if="${#fields.hasErrors('profile')}" th:text="＊ + ${fieldErrors['profile']}" class="error_message">

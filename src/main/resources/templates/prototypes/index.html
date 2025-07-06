@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/prototype.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
   </head>
 
@@ -27,14 +28,6 @@
 
     <div class="main_contents">
       <div class="greeting">
-        <p>
-          <span th:if="${#authorization.expression('isAuthenticated()')}">
-            <!-- <p class="author"> -->
-              こんにちは、<a th:href="@{'/users/' + ${#authentication.principal.user.id}}"
-              th:text="${#authentication.principal.user.username} + さん"></a>
-          </span>
-        </p>
-
         <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
           <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
           <input type="submit" class="search-btn" value="検索" />
@@ -47,31 +40,40 @@
             <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
           </a>
 
-          <div class="proto-header">
-            <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-              <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
-            </a>
-            
-            <span class="like-section" th:attr="data-prototypeid=${prototype.id}">
-              <!-- 未登録 -->
-              <span th:if="${not #authorization.expression('isAuthenticated()')}" class="like-btn not-logged-in">
-                &#9825;
-              </span>
-              <!-- 登録済み -->
+          <div class="proto-user-profile">
+            <div class="proto-header">
+              <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+                <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
+              </a>
+              <span class="like-section" th:attr="data-prototypeid=${prototype.id}">
+                <!-- 未登録 -->
+                <span th:if="${not #authorization.expression('isAuthenticated()')}" class="like-btn not-logged-in">
+                  &#9825;
+                </span>
+                 <!-- 登録済み -->
               <span th:if="${#authorization.expression('isAuthenticated()')}"
                 th:classappend="${likeStatusMap[prototype.id]} ? 'liked' : ''"
                 class="like-btn"
                 th:text="${likeStatusMap[prototype.id]} ? '♥' : '♡'">♡
             </span>
+                
+                 <span id="like-count" th:text="${prototype.count_likes}">0</span>
+              </span>
+              <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+            </div>
+  
+            <div class="proto-user-icon-profile">
+              <div class="user-profile-container">
+                <a th:href="@{'/users/' + ${prototype.user.id}}">
+                  <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
+                </a>
+              </div>
+              <a th:href="@{'/users/' + ${prototype.user.id}}">
+                <span style="margin-left: 10px; text-align: center;" th:text="' ' + ${prototype.user.username}"></span>
+              </a>
+            </div>
 
-              <span id="like-count" th:text="${prototype.count_likes}">0</span>
-            </span>
-            
           </div>
-          <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-          <p class="author">
-            <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
-          </p>
         </div>
       </div>
     </div>
