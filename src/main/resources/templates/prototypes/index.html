@@ -27,50 +27,9 @@
 
 
     <div class="main_contents">
-      <div class="greeting">
-        <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
-          <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
-          <input type="submit" class="search-btn" value="検索" />
-        </form>
-
-      </div>
-      <div class="protos">
-        <div class="proto" th:each="prototype : ${prototypes}">
-          <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-            <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
-          </a>
-          <div class="proto-user-profile">
-            <div class="proto-header">
-              <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-                <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
-              </a>
-              <span class="like-section" th:attr="data-prototypeid=${prototype.id}">
-                <!-- 未登録 -->
-                <span th:if="${not #authorization.expression('isAuthenticated()')}" class="like-btn not-logged-in">
-                  &#9825;
-                </span>
-                <!-- 登録済み -->
-                <span th:if="${#authorization.expression('isAuthenticated()')}" class="like-btn">
-                  &#9825;
-                </span>
-                <span id="like-count" th:text="${prototype.count_likes}">0</span>
-              </span>
-              <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-            </div>
-  
-            <div class="proto-user-icon-profile">
-              <div class="user-profile-container">
-                <a th:href="@{'/users/' + ${prototype.user.id}}">
-                  <img th:src="@{${prototype.user.profileImage}}" alt="プロフィール画像" class="user-profile">
-                </a>
-              </div>
-              <a th:href="@{'/users/' + ${prototype.user.id}}">
-                <span style="margin-left: 10px; text-align: center;" th:text="' ' + ${prototype.user.username}"></span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      
+      <div th:replace="~{fragments/search_bar :: search_bar}"></div>
+      <div th:replace="~{fragments/prototypes_view :: prototypes_view}"></div>
     </div>
     <script src="/js/like.js"></script>   
     <!-- <div th:insert="~{fragments/modal :: modal}"></div> -->
