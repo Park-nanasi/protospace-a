@@ -77,4 +77,20 @@ public interface PrototypeLikeRepository {
     @Result(property = "user.username", column = "u_username")
 })
   List<PrototypeEntity> findLikedPrototypesByUser(@Param("userId") Integer userId);
+
+  @Select("""
+  SELECT p.*, u.id as user_id, u.username as u_username FROM prototypes p
+  INNER JOIN prototype_likes pl ON p.id = pl.prototype_id
+  INNER JOIN users u ON p.user_id = u.id
+  WHERE pl.user_id = #{userId} AND p.name LIKE CONCAT('%', #{name}, '%')
+""")
+@Results({
+  @Result(property = "id", column = "id"),
+  @Result(property = "name", column = "name"),
+  @Result(property = "image", column = "image"),
+  @Result(property = "catchphrase", column = "catchphrase"),
+  @Result(property = "user.id", column = "u_id"),
+  @Result(property = "user.username", column = "u_username")
+})
+List<PrototypeEntity> findLikedPrototypesByUserAndName(@Param("userId") Integer userId, @Param("name") String name);
 }
