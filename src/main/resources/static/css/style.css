@@ -1073,3 +1073,25 @@ form input[type="file"] {
   font-weight: bold;
   cursor: pointer;
 }
+
+/* likeのcss */
+
+.like-section {
+  display: flex;
+  align-items: center;
+}
+
+.like-btn {
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #ccc;
+}
+
+.like-btn.liked {
+  color: red;
+}
+
+.like-count {
+  margin-left: 2px;
+}
+

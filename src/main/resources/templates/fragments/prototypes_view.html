@@ -15,9 +15,11 @@
           <span th:if="${not #authorization.expression('isAuthenticated()')}" class="like-btn not-logged-in">
             &#9825;
           </span>
-          <!-- 登録済み -->
-          <span th:if="${#authorization.expression('isAuthenticated()')}" class="like-btn">
-            &#9825;
+           <!-- 登録済み -->
+          <span th:if="${#authorization.expression('isAuthenticated()')}"
+                th:classappend="${likeStatusMap[prototype.id]} ? 'liked' : ''"
+                class="like-btn"
+                th:text="${likeStatusMap[prototype.id]} ? '♥' : '♡'">♡
           </span>
           <span id="like-count" th:text="${prototype.count_likes}">0</span>
         </span>

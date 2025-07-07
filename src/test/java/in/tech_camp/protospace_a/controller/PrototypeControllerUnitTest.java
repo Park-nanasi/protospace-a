@@ -2,6 +2,7 @@ package in.tech_camp.protospace_a.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -17,8 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
-
+import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
+import in.tech_camp.protospace_a.entity.UserEntity;
+import in.tech_camp.protospace_a.repository.PrototypeLikeRepository;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,12 +34,24 @@ public class PrototypeControllerUnitTest {
     @InjectMocks
     private PrototypeController prototypeController;
 
+    @Mock
+    private PrototypeLikeRepository prototypeLikeRepository;
+
     @Test
     public void 投稿一覧ページにアクセスするとprototypes_indexのビューが返されること() {
         Model model = new ExtendedModelMap();
 
-        String viewName = prototypeController.showAllPrototypes(model);
-
+        UserEntity user = new UserEntity();
+        user.setId(123);
+        user.setUsername("unittest_user");
+        user.setEmail("test@example.com");
+        user.setPassword("securepassword");
+        user.setProfile("profile");
+        user.setProfileImage("test.jpg");
+        
+        CustomUserDetail userDetail = new CustomUserDetail(user);
+        String viewName = prototypeController.showAllPrototypes(model, userDetail);
+        
         assertThat(viewName, is("prototypes/index"));
     }
 
@@ -55,10 +70,21 @@ public class PrototypeControllerUnitTest {
 
         // モックのリポジトリの戻り値を定義
         when(prototypeRepository.findAllPrototypes()).thenReturn(expectedPrototypes);
+        when(prototypeLikeRepository.existsByUserAndPrototype(anyInt(), anyInt())).thenReturn(1);
 
         Model model = new ExtendedModelMap();
 
-        prototypeController.showAllPrototypes(model);
+        UserEntity user = new UserEntity();
+        user.setId(123);
+        user.setUsername("unittest_user");
+        user.setEmail("test@example.com");
+        user.setPassword("securepassword");
+        user.setProfile("profile");
+        user.setProfileImage("test.jpg");
+        
+        CustomUserDetail userDetail = new CustomUserDetail(user);
+
+        prototypeController.showAllPrototypes(model, userDetail);
 
         // モデルに設定された属性が期待通りか検証
         assertThat(model.getAttribute("prototypes"), is(expectedPrototypes));
