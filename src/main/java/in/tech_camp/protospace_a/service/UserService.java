@@ -4,7 +4,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_a.entity.SnsLinkEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
+import in.tech_camp.protospace_a.repository.SnsLinksRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
@@ -12,12 +14,15 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
+  private final SnsLinksRepository snsLinksRepository;
 
   private final PasswordEncoder passwordEncoder;
 
-  public void createUserWithEncryptedPassword(UserEntity userEntity, CustomUserDetail customUser) {
+  public void createUserWithEncryptedPassword(UserEntity userEntity, SnsLinkEntity snsLinkEntity, CustomUserDetail customUser) {
     String encodedPassword = encodePassword(userEntity.getPassword());
     userEntity.setPassword(encodedPassword);
+    snsLinksRepository.insertSnsLink(snsLinkEntity);
+    userEntity.setSnsLinksId(snsLinkEntity.getId());
     userRepository.insert(userEntity);
     if (customUser != null) {
       customUser.setProfileImage(userEntity.getProfileImage());
