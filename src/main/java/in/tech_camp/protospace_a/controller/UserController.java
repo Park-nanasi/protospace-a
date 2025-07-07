@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
+import in.tech_camp.protospace_a.entity.SnsLinkEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.SearchForm;
 import in.tech_camp.protospace_a.form.UserForm;
@@ -36,10 +36,6 @@ import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
-
-import org.springframework.web.bind.annotation.RequestBody;
-
-import in.tech_camp.protospace_a.entity.SnsLinkEntity;
 
 
 @Controller
@@ -108,15 +104,12 @@ public class UserController {
     SnsLinkEntity snsLinks = new SnsLinkEntity();
     snsLinks.setX(userForm.getX());
     snsLinks.setFacebook(userForm.getFacebook());
-    System.out.println("snslinks: " + snsLinks);
 
     try {
-      userService.createUserWithEncryptedPassword(userEntity, currentUser);
+      userService.createUserWithEncryptedPassword(userEntity, snsLinks, currentUser);
     }
     catch (Exception e) {
       System.out.println("エラー：" + e);
-      redirectAttributes.addFlashAttribute("profileImage",
-          userEntity.getProfileImage());
       return "redirect:/";
     }
     redirectAttributes.addFlashAttribute("profileImage",

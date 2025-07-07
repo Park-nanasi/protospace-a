@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class SnsLinkEntity {
+  private Integer id;
   private String x;
   private String facebook;
 }
