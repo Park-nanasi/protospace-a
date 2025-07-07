@@ -26,6 +26,7 @@ public interface UserRepository {
     @Select("SELECT * FROM users WHERE id = #{id}")
     @Results(value = {
         @Result(property = "id", column = "id"),
+        @Result(property = "snsLinksId", column = "sns_links_id"),
         @Result(property = "profileImage", column = "profile_image"),
         @Result(property = "prototypes", column = "id", many = @Many(
                     select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findByUserId"))})

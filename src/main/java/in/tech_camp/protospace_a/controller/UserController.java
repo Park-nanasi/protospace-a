@@ -32,6 +32,7 @@ import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.SearchForm;
 import in.tech_camp.protospace_a.form.UserForm;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
+import in.tech_camp.protospace_a.repository.SnsLinksRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
@@ -43,6 +44,7 @@ import lombok.AllArgsConstructor;
 public class UserController {
 
   private final PrototypeRepository prototypeRepository;
+  private final SnsLinksRepository snsLinksRepository;
   private final UserRepository userRepository;
   private final UserService userService;
   private final ImageUrl imageUrl;
@@ -142,6 +144,9 @@ public class UserController {
     model.addAttribute("profileImage", user.getProfileImage());
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("userId", user.getId());
+
+    SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
+    model.addAttribute("snsLinks", snsLinks);
     return "users/userInfo";
   }
 
@@ -245,6 +250,9 @@ public class UserController {
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
     model.addAttribute("userId", user.getId());
+
+    SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
+    model.addAttribute("snsLinks", snsLinks.getX());
     return "users/userInfo";
   }
 }
