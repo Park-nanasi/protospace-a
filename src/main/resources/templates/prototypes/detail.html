@@ -71,51 +71,75 @@
 
     <div class="main_contents">
       <div class="proto-detail">
-        <div class="proto_info">
-          <h2 class="title" th:text="${prototype.name}"></h2>
+        <div class="proto-detail-layout">
+          <h1 class="proto-title" th:text="${prototype.name}"></h1>
 
-          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
-            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></a>
-
-          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
-            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')} + '　更新時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}">
-          </a>
-
-          <p class="author">
-            <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
-          </p>
-          <div class="proto-btns"
-            th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
-            <div class="proto-btn">
-              <a class="proto-btn-text"
-                th:href="@{/prototypes/{prototypeId}/edit(prototypeId = ${prototype.id})}">編集する</a>
+          <div class="proto-meta">
+            <div class="proto-meta-left">
+              <span class="author">
+                <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
+              </span>
+              <span class="timestamp">
+                <span th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
+                      th:text="${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></span>
+                <span th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
+                      th:text="${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')} + ' ／ 更新：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}"></span>
+              </span>
             </div>
-            <div class="proto-btn">
-              <a class="proto-btn-text"
-                th:href="@{/prototypes/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
+
+            <div class="proto-meta-right"
+                th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
+              <div class="dropdown-wrapper">
+                <button class="menu_toggle" type="button" th:attr="onclick='toggleMenu(' + ${prototype.id} + ')'">⋯</button>
+                <div class="menu_dropdown" th:id="'menu-' + ${prototype.id}" style="display: none;">
+                  <a class="menu_item" th:href="@{/prototypes/{prototypeId}/edit(prototypeId = ${prototype.id})}">編集</a>
+                  <a class="menu_item" th:href="@{/prototypes/{prototypeId}/delete(prototypeId = ${prototype.id})}">削除</a>
+                </div>
+              </div>
             </div>
           </div>
-          <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
-          <h2 class="sub-title">キャッチコピー</h2>
-          <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-          <h2 class="sub-title">コンセプト</h2>
-          <p class="concept" th:text="${prototype.concept}"></p>
-        </div>
 
-<!-- 評価機能 -->
-        <div id="like-section">
-          <span 
-            id="like-btn" 
-            th:attr="data-prototypeid=${prototype.id}"
-            style="cursor:pointer; font-size:2em; color:#ccc; transition:color 0.2s;">
-            &#9825; <!-- 空心 Unicode -->
-          </span>
-          <span id="like-count">0</span>
+
+          <div class="proto-image-large">
+            <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+          </div>
+
+          <div class="proto-body-text">
+            <h2 class="sub-title">キャッチコピー</h2>
+            <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+          </div>
+          <div class="proto-body-text">
+            <h2 class="sub-title">コンセプト</h2>
+            <p class="concept" th:text="${prototype.concept}"></p>
+          </div>
+        </div> 
+
+    <div class="user-profile-box">
+      <div class="user-profile-header">
+        <a th:href="@{'/users/' + ${prototype.user.id}}" class="user-profile-link">
+          <img th:src="@{${prototype.user.profileImage}}"
+              alt="プロフィール画像"
+              class="user-profile-img">
+        </a>
+        <a th:href="@{'/users/' + ${prototype.user.id}}" class="user-profile-name" th:text="${prototype.user.username}"></a>
       </div>
-    <script src="/js/like.js"></script>   
+      <p class="user-profile-bio" th:text="${prototype.user.profile}"></p>
+    </div>
+
     
 <!-- 評価機能 -->
+    <div id="like-section">
+      <span 
+        id="like-btn" 
+        th:attr="data-prototypeid=${prototype.id}"
+        style="cursor:pointer; font-size:2em; color:#ccc; transition:color 0.2s;">
+        &#9825; <!-- 空心 Unicode -->
+      </span>
+      <span id="like-count">0</span>
+    </div>
+    <script src="/js/like.js"></script>  
 
+    <!-- コメント -->
         <div class="container_comment">
           <div class="comment_top">
             <p>コメント</p>
@@ -126,6 +150,8 @@
               </p>
             </div>
           </div>
+
+
 
           <ul class="comments_lists">
             <li class="container_comment_detail" th:each="comment : ${comments}">
