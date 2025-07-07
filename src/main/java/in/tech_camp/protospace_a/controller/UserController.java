@@ -238,7 +238,8 @@ public class UserController {
   // 検索機能
   @GetMapping("/users/{userId}/search")
   public String searchPrototypes(@PathVariable("userId") Integer userId,
-      @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+      @ModelAttribute("searchForm") SearchForm searchForm, 
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     // 名前の長さ判定、50以上だったら、プリントアウト
     if (searchForm.getName() != null && searchForm.getName().length() > 50) {
       System.out.println(String.format("検索に入力した名前の文字数：%d、50を超えています!!",
@@ -256,6 +257,18 @@ public class UserController {
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
     model.addAttribute("userId", user.getId());
+
+    Map<Integer, Boolean> likeStatusMap = new HashMap<>();
+    if(currentUser != null) {
+        // Integer userId = currentUser.getId();
+        for(PrototypeEntity p : prototypes) {
+            boolean liked = prototypeLikeRepository.existsByUserAndPrototype(userId, p.getId()) > 0;
+            likeStatusMap.put(p.getId(), liked);
+        }
+    }
+    System.out.println("likeStatusMap内容：" + likeStatusMap); 
+    model.addAttribute("likeStatusMap", likeStatusMap);
+
     return "users/userInfo";
   }
 
