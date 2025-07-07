@@ -107,8 +107,6 @@
           <div class="proto-body-text">
             <h2 class="sub-title">キャッチコピー</h2>
             <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-          </div>
-          <div class="proto-body-text">
             <h2 class="sub-title">コンセプト</h2>
             <p class="concept" th:text="${prototype.concept}"></p>
           </div>
@@ -155,51 +153,52 @@
 
           <ul class="comments_lists">
             <li class="container_comment_detail" th:each="comment : ${comments}">
-              <div class="comment_user">
-                <span class="comment_user_author_block">
-                  <a class="comment_user_author" th:href="@{/users/{userId}(userId = ${comment.user.id})}"
-                    th:text="${comment.user.username}"></a>
-                </span>
-                <div class="comment_block_right">
-                  <a class="comment_time" th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}"></a>
-                  <div class="comment_menu_wrapper"
-                      th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
-                    <button class="menu_toggle" type="button"
-                            th:attr="onclick='toggleMenu(' + ${comment.id} + ')'">⋯</button>
+              <div class="comment_user_outer">
+                <a class="comment_user_profile" th:href="@{/users/{userId}(userId = ${comment.user.id})}">
+                  <img class="comment_user_icon" th:src="@{${comment.user.profileImage}}" alt="ユーザーアイコン">
+                  <span class="comment_user_name" th:text="${comment.user.username}"></span>
+                </a>
+              </div>
 
-                    <div class="menu_dropdown" th:id="'menu-' + ${comment.id}" style="display: none;">
-                      <a class="menu_item"
-                        th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}">
-                        編集
-                      </a>
-                      <a class="menu_item"
-                        th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}">
-                        削除
-                      </a>
+              <!-- コメント内容 -->
+              <div class="comment_inner_box">
+                <div class="comment_header">
+                  <span class="comment_title" th:text="${comment.title}">タイトル</span>
+                  <div class="comment_block_right">
+                    <span class="comment_time" th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}"></span>
+
+                    <div class="comment_menu_wrapper"
+                      th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
+                      <button class="menu_toggle" type="button"
+                        th:attr="onclick='toggleMenu(' + ${comment.id} + ')'">⋯</button>
+
+                      <div class="menu_dropdown" th:id="'menu-' + ${comment.id}" style="display: none;">
+                        <a class="menu_item"
+                          th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}">
+                          編集
+                        </a>
+                        <a class="menu_item"
+                          th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}">
+                          削除
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>  
-              <div class="comment_box">
 
-                <span th:id="'summary-' + ${comment.id}" 
-                      class="comment_name"
-                      th:text="${#strings.length(comment.content) > 80 ? comment.content.substring(0, 80) + '...' : comment.content}">
-                </span>
+                <div class="comment_box">
+                  <span th:id="'summary-' + ${comment.id}" class="comment_summary"
+                    th:text="${#strings.length(comment.content) > 80 ? comment.content.substring(0, 80) + '...' : comment.content}">
+                  </span>
 
-                <span th:id="'full-' + ${comment.id}" 
-                      class="comment_text" 
-                      th:text="${comment.content}" 
-                      style="display: none;">
-                </span>
+                  <span th:id="'full-' + ${comment.id}" class="comment_text" th:text="${comment.content}" style="display: none;">
+                  </span>
 
-                <button type="button"
-                        class="read_more"
-                        th:id="'readmore-' + ${comment.id}"
-                        th:if="${#strings.length(comment.content) > 80}"
-                        th:attr="onclick='toggleComment(' + ${comment.id} + ')'">
-                  詳細を見る
-                </button>
+                  <button type="button" class="read_more" th:id="'readmore-' + ${comment.id}"
+                    th:if="${#strings.length(comment.content) > 80}" th:attr="onclick='toggleComment(' + ${comment.id} + ')'">
+                    続きを読む
+                  </button>
+                </div>
               </div>
             </li>
           </ul>
