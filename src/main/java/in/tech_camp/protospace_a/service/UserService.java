@@ -29,8 +29,7 @@ public class UserService {
     }
   }
   
-  public void updateUser(UserEntity userEntity,
-      CustomUserDetail customUser) {
+  public void updateUser(UserEntity userEntity, CustomUserDetail customUser) {
     // todo: パスワードの変更機能実装
     // String encodedPassword = encodePassword(userEntity.getPassword());
     // userEntity.setPassword(encodedPassword);

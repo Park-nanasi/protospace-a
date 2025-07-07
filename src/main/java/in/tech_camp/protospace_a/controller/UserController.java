@@ -157,8 +157,6 @@ public class UserController {
     if (!currentUser.getId().equals(userId)) {
       // todo: トップページに画面表示
       System.err.println("Error: 他のユーザーのプロフィールは編集できません");
-      redirectAttributes.addFlashAttribute("profileImage",
-          currentUser.getProfileImage());
       return "redirect:/";
     }
     UserEntity user = userRepository.findById(userId);
@@ -214,6 +212,11 @@ public class UserController {
       }
     }
 
+    SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
+    snsLinks.setX(userForm.getX());
+    snsLinks.setFacebook(userForm.getFacebook());
+    snsLinksRepository.updateSnsLink(snsLinks);
+
     try {
       userService.updateUser(user, currentUser);
     }
@@ -252,7 +255,7 @@ public class UserController {
     model.addAttribute("userId", user.getId());
 
     SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
-    model.addAttribute("snsLinks", snsLinks.getX());
+    model.addAttribute("snsLinks", snsLinks);
     return "users/userInfo";
   }
 }
