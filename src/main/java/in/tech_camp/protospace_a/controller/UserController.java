@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -133,9 +134,20 @@ public class UserController {
 
   @GetMapping("/users/{userId}")
   public String showMypage(@PathVariable("userId") Integer userId,
-      @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+      @ModelAttribute("searchForm") SearchForm searchForm, 
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
+
+    Map<Integer, Boolean> likeStatusMap = new HashMap<>();
+    if (currentUser != null) {
+        for (PrototypeEntity prototype : prototypes) {
+            boolean liked = prototypeLikeRepository.existsByUserAndPrototype(currentUser.getId(), prototype.getId()) > 0;
+            likeStatusMap.put(prototype.getId(), liked);
+        }
+    }
+
+    model.addAttribute("likeStatusMap", likeStatusMap);
     model.addAttribute("name", user.getUsername());
     model.addAttribute("profile", user.getProfile());
     model.addAttribute("profileImage", user.getProfileImage());
@@ -250,11 +262,20 @@ public class UserController {
   // ユーザーが「いいね」を押したページ
   @GetMapping("/users/{userId}/likes")
   public String likePrototypes(@PathVariable("userId") Integer userId, 
-      @ModelAttribute("searchForm") SearchForm searchForm,Model model) {
+      @ModelAttribute("searchForm") SearchForm searchForm,
+      @AuthenticationPrincipal CustomUserDetail currentUser, 
+      Model model) {
+
+    if (currentUser == null || !userId.equals(currentUser.getUser().getId())) {
+      return  "redirect:/"; 
+    }
+  
     UserEntity user = userRepository.findById(userId);
-    List<PrototypeEntity> likedPrototypes = prototypeLikeRepository.findLikedPrototypesByUser(userId);
+    List<PrototypeEntity> prototypes = prototypeLikeRepository.findLikedPrototypesByUser(userId);
     model.addAttribute("name", user.getUsername());
-    model.addAttribute("likedPrototypes", likedPrototypes);
+    model.addAttribute("prototypes", prototypes);
+    model.addAttribute("userId", user.getId());
+
     return "users/likedPrototypes";
   }
 }

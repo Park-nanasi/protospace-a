@@ -56,7 +56,6 @@
                 class="like-btn"
                 th:text="${likeStatusMap[prototype.id]} ? '♥' : '♡'">♡
             </span>
-                
                  <span id="like-count" th:text="${prototype.count_likes}">0</span>
               </span>
               <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
@@ -70,6 +69,8 @@
               </div>
               <a th:href="@{'/users/' + ${prototype.user.id}}">
                 <span style="margin-left: 10px; text-align: center;" th:text="' ' + ${prototype.user.username}"></span>
+                <a th:href="@{'/users/' + ${prototype.user.id} + '/likes'}">
+                  <span style="margin-left: 10px; text-align: center;" th:text="good"></span>
               </a>
             </div>
 
@@ -77,9 +78,7 @@
         </div>
       </div>
     </div>
-    <script src="/js/like.js"></script>   
-    <!-- <div th:insert="~{fragments/modal :: modal}"></div> -->
-
+    
     <!-- フッター -->
     <div th:insert="~{footer :: footer}"></div>
 
