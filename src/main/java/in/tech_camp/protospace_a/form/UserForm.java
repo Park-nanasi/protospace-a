@@ -2,7 +2,7 @@ package in.tech_camp.protospace_a.form;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-
+import org.springframework.web.multipart.MultipartFile;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.validation.ValidationPriority1;
@@ -16,24 +16,24 @@ public class UserForm {
   private String password;
   private String username;
   private String profile;
-
-  @NotBlank(message = "Company can't be blank",
-      groups = ValidationPriority1.class)
-  private String company;
-
-  @NotBlank(message = "Role can't be blank", groups = ValidationPriority1.class)
-  private String role;
-
+  private MultipartFile profileImage;
   private String passwordConfirmation;
 
-  public void validateUserForm(BindingResult result) {
+  public void validateNewUserForm(BindingResult result) {
     validateEmail(result);
     validatePassword(result);
     validateUsername(result);
     validateProfile(result);
+    validateProfileImage(result);
   }
 
-  public void validateUsername(BindingResult result) {
+  public void validateUpdateUserForm(BindingResult result) {
+    validateUsername(result);
+    validateProfile(result);
+    validateProfileImage(result);
+  }
+
+  private void validateUsername(BindingResult result) {
     if (username == null || username.isEmpty()) {
       result.rejectValue("username", "username", "ユーザー名を入力してください");
       return;
@@ -44,7 +44,7 @@ public class UserForm {
     }
   }
 
-  public void validateEmail(BindingResult result) {
+  private void validateEmail(BindingResult result) {
     if (email == null || email.isEmpty()) {
       result.rejectValue("email", "email", "メールアドレスを入力してください");
       return;
@@ -88,7 +88,7 @@ public class UserForm {
     // }
   }
 
-  public void validatePassword(BindingResult result) {
+  private void validatePassword(BindingResult result) {
     if (password == null || password.isEmpty()) {
       result.rejectValue("password", "password", "パスワードを入力してください");
       return;
@@ -127,7 +127,7 @@ public class UserForm {
     }
   }
 
-  public void validateProfile(BindingResult result) {
+  private void validateProfile(BindingResult result) {
     if (profile == null || profile.isEmpty()) {
       result.rejectValue("profile", "profile", "プロフィールを入力してください");
       return;
@@ -135,6 +135,24 @@ public class UserForm {
 
     if (140 < profile.length()) {
       result.rejectValue("profile", "profile", "プロフィールの文字数は140字以内で入力してください");
+    }
+  }
+
+  private void validateProfileImage(BindingResult result) {
+    if (profileImage == null || profileImage.isEmpty()) {
+      System.out.println("Warning: Profile Image is null");
+      return;
+    }
+
+    if (256 < profileImage.getOriginalFilename().length()) {
+      result.rejectValue("profileImage", "profileImage",
+          "画像URLは 256 文字以内で入力してください");
+      return;
+    }
+
+    if (10 * 1024 * 1024 < profileImage.getSize()) {
+      result.rejectValue("profileImage", "profileImage",
+          "画像の最大メディア容量は10メガバイトまでです");
     }
   }
 }

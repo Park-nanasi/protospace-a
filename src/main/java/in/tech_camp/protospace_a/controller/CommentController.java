@@ -82,6 +82,7 @@ public class CommentController {
     CommentForm commentForm = new CommentForm();
     commentForm.setTitle(comment.getTitle());
     commentForm.setContent(comment.getContent());
+    comment.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
     model.addAttribute("commentForm", commentForm);
     model.addAttribute("prototypeId", prototypeId);
@@ -112,7 +113,7 @@ public class CommentController {
     MultipartFile imageFile = commentForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getCommentImageUrl();
 
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
@@ -175,7 +176,7 @@ public class CommentController {
     MultipartFile imageFile = commentForm.getImage();
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
-        String uploadDir = imageUrl.getImageUrl();
+        String uploadDir = imageUrl.getCommentImageUrl();
         Path uploadDirPath = Paths.get(uploadDir);
         if (!Files.exists(uploadDirPath)) {
           Files.createDirectories(uploadDirPath);

@@ -4,6 +4,8 @@
   <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/prototypes.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/comment.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
   </head>
 
@@ -18,34 +20,32 @@
           <p class="author">
             <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
           </p>
-          <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
-          <h2 class="sub-title">キャッチコピー</h2>
-          <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-          <h2 class="sub-title">コンセプト</h2>
-          <p class="concept" th:text="${prototype.concept}"></p>
+          <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
+            <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+          </a>
         </div>
 
         <div class="container_comment">
-          <span class="comment_btn_group"
-            th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
-            <a class="comment_btn"
-              th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
-              th:text="編集">
-            </a>
-            <a class="comment_btn"
-              th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
-              th:text="削除">
-            </a>
-          </span>
+          <div class="comment_top">
+            <p class="comment_author">
+              <a th:href="@{/users/{userId}(userId = ${comment.user.id})}"
+                th:text="${comment.user.username} + ' さんのコメント'"></a>
+            </p>
+            <span class="comment_btn_group"
+              th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
+              <a class="comment_btn"
+                th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+                th:text="編集">
+              </a>
+              <a class="comment_btn"
+                th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}"
+                th:text="削除">
+              </a>
+            </span>
+          </div>
           <div class="container_comment_detail">
             <div class="comment_title">
-              <p th:text="${comment.title}"></p>
-
-              <p class="comment_author">
-                <a th:href="@{/users/{userId}(userId = ${comment.user.id})}"
-                  th:text="'by ' + ${comment.user.username}"></a>
-              </p>
-
+              <p th:text="${comment.title}"></p>  
             </div>
             <span class="comment_text" th:text="${comment.content}"></span>
           </div>
@@ -57,5 +57,4 @@
     <!-- フッター -->
     <div th:insert="~{footer :: footer}"></div>
   </body>
-
 </html>

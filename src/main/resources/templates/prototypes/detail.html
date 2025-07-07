@@ -2,9 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
   <head>
+    <script th:inline="javascript">
+  window.isLoggedIn = /*[[${isLoggedIn}]]*/ false;
+</script>
+
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/prototype.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/comment.css}" rel="stylesheet" type="text/css">
     <title>ProtoSpace</title>
+    <script>
+      function toggleComment(commentId) {
+        const summaries = document.querySelectorAll('[id^="summary-"]');
+        const fulls = document.querySelectorAll('[id^="full-"]');
+        const buttons = document.querySelectorAll('[id^="readmore-"]');
+
+        summaries.forEach(el => el.style.display = 'inline');
+        fulls.forEach(el => el.style.display = 'none');
+        buttons.forEach(btn => btn.style.display = 'inline');
+
+        const summary = document.getElementById('summary-' + commentId);
+        const full = document.getElementById('full-' + commentId);
+        const button = document.getElementById('readmore-' + commentId);
+
+        if (summary && full) {
+          summary.style.display = 'none';
+          full.style.display = 'inline';
+        }
+        if (button) {
+          button.style.display = 'none';
+        }
+      }
+
+      function toggleMenu(commentId) {
+        const allMenus = document.querySelectorAll('[id^="menu-"]');
+        const targetMenu = document.getElementById('menu-' + commentId);
+
+        allMenus.forEach(menu => {
+          if (menu !== targetMenu) {
+            menu.style.display = 'none';
+          }
+        });
+
+        if (targetMenu) {
+          const isVisible = targetMenu.style.display === 'block';
+          targetMenu.style.display = isVisible ? 'none' : 'block';
+        }
+      }
+
+      document.addEventListener('click', function (event) {
+        const isMenuClick = event.target.closest('.menu_dropdown');
+        const isButtonClick = event.target.closest('.menu_toggle');
+
+        if (!isMenuClick && !isButtonClick) {
+          const allMenus = document.querySelectorAll('[id^="menu-"]');
+          allMenus.forEach(menu => {
+            menu.style.display = 'none';
+          });
+        }
+      });
+    </script>
   </head>
 
   <body>
@@ -14,41 +71,73 @@
 
     <div class="main_contents">
       <div class="proto-detail">
-        <div class="proto_info">
-          <h2 class="title" th:text="${prototype.name}"></h2>
+        <div class="proto-detail-layout">
+          <h1 class="proto-title" th:text="${prototype.name}"></h1>
 
-          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
-            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></a>
-
-          <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
-            th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')} + '　更新時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}">
-          </a>
-
-          <!-- <a th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
-        th:text="'作成時間：' + ${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"
-        th:text="'更新時間：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}"></a> -->
-
-          <p class="author">
-            <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
-          </p>
-          <div class="proto-btns"
-            th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
-            <div class="proto-btn">
-              <a class="proto-btn-text"
-                th:href="@{/prototypes/{prototypeId}/edit(prototypeId = ${prototype.id})}">編集する</a>
+          <div class="proto-meta">
+            <div class="proto-meta-left">
+              <span class="author">
+                <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
+              </span>
+              <span class="timestamp">
+                <span th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
+                      th:text="${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></span>
+                <span th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
+                      th:text="${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')} + ' ／ 更新：' + ${#dates.format(prototype.updated_at, 'yyyy/M/d HH:mm')}"></span>
+              </span>
             </div>
-            <div class="proto-btn">
-              <a class="proto-btn-text"
-                th:href="@{/prototypes/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
+
+            <div class="proto-meta-right"
+                th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == prototype.user.id}">
+              <div class="dropdown-wrapper">
+                <button class="menu_toggle" type="button" th:attr="onclick='toggleMenu(' + ${prototype.id} + ')'">⋯</button>
+                <div class="menu_dropdown" th:id="'menu-' + ${prototype.id}" style="display: none;">
+                  <a class="menu_item" th:href="@{/prototypes/{prototypeId}/edit(prototypeId = ${prototype.id})}">編集</a>
+                  <a class="menu_item" th:href="@{/prototypes/{prototypeId}/delete(prototypeId = ${prototype.id})}">削除</a>
+                </div>
+              </div>
             </div>
           </div>
-          <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
-          <h2 class="sub-title">キャッチコピー</h2>
-          <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-          <h2 class="sub-title">コンセプト</h2>
-          <p class="concept" th:text="${prototype.concept}"></p>
-        </div>
 
+
+          <div class="proto-image-large">
+            <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
+          </div>
+
+          <div class="proto-body-text">
+            <h2 class="sub-title">キャッチコピー</h2>
+            <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
+            <h2 class="sub-title">コンセプト</h2>
+            <p class="concept" th:text="${prototype.concept}"></p>
+          </div>
+        </div> 
+
+    <div class="user-profile-box">
+      <div class="user-profile-header">
+        <a th:href="@{'/users/' + ${prototype.user.id}}" class="user-profile-link">
+          <img th:src="@{${prototype.user.profileImage}}"
+              alt="プロフィール画像"
+              class="user-profile-img">
+        </a>
+        <a th:href="@{'/users/' + ${prototype.user.id}}" class="user-profile-name" th:text="${prototype.user.username}"></a>
+      </div>
+      <p class="user-profile-bio" th:text="${prototype.user.profile}"></p>
+    </div>
+
+    
+<!-- 評価機能 -->
+    <div id="like-section">
+      <span 
+        id="like-btn" 
+        th:attr="data-prototypeid=${prototype.id}"
+        style="cursor:pointer; font-size:2em; color:#ccc; transition:color 0.2s;">
+        &#9825; <!-- 空心 Unicode -->
+      </span>
+      <span id="like-count">0</span>
+    </div>
+    <script src="/js/like.js"></script>  
+
+    <!-- コメント -->
         <div class="container_comment">
           <div class="comment_top">
             <p>コメント</p>
@@ -60,22 +149,56 @@
             </div>
           </div>
 
+
+
           <ul class="comments_lists">
             <li class="container_comment_detail" th:each="comment : ${comments}">
-              <p class="comment_user">
-                <span class="comment_user_author_block">
-                  <a class="comment_user_author" th:href="@{/users/{userId}(userId = ${comment.user.id})}"
-                    th:text="${comment.user.username}">
-                  </a>
-                </span>
+              <div class="comment_user_outer">
+                <a class="comment_user_profile" th:href="@{/users/{userId}(userId = ${comment.user.id})}">
+                  <img class="comment_user_icon" th:src="@{${comment.user.profileImage}}" alt="ユーザーアイコン">
+                  <span class="comment_user_name" th:text="${comment.user.username}"></span>
+                </a>
+              </div>
 
-                <a class="comment_time" th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}"></a>
+              <!-- コメント内容 -->
+              <div class="comment_inner_box">
+                <div class="comment_header">
+                  <span class="comment_title" th:text="${comment.title}">タイトル</span>
+                  <div class="comment_block_right">
+                    <span class="comment_time" th:text="${#dates.format(comment.created_at, 'yyyy/M/d HH:mm')}"></span>
 
-              </p>
-              <div class="comment_box">
-                <span class="comment_name" th:text="${comment.title}"></span>
-                <a class="read_more"
-                  th:href="@{'/prototypes/' + ${prototype.id} + '/comments/' + ${comment.id}}">詳細を見る</a>
+                    <div class="comment_menu_wrapper"
+                      th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == comment.user.id}">
+                      <button class="menu_toggle" type="button"
+                        th:attr="onclick='toggleMenu(' + ${comment.id} + ')'">⋯</button>
+
+                      <div class="menu_dropdown" th:id="'menu-' + ${comment.id}" style="display: none;">
+                        <a class="menu_item"
+                          th:href="@{/prototypes/{prototypeId}/comments/{commentId}/edit(prototypeId = ${prototype.id}, commentId = ${comment.id})}">
+                          編集
+                        </a>
+                        <a class="menu_item"
+                          th:href="@{/prototypes/{prototypeId}/comments/{commentId}/delete(prototypeId = ${prototype.id}, commentId = ${comment.id})}">
+                          削除
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="comment_box">
+                  <span th:id="'summary-' + ${comment.id}" class="comment_summary"
+                    th:text="${#strings.length(comment.content) > 80 ? comment.content.substring(0, 80) + '...' : comment.content}">
+                  </span>
+
+                  <span th:id="'full-' + ${comment.id}" class="comment_text" th:text="${comment.content}" style="display: none;">
+                  </span>
+
+                  <button type="button" class="read_more" th:id="'readmore-' + ${comment.id}"
+                    th:if="${#strings.length(comment.content) > 80}" th:attr="onclick='toggleComment(' + ${comment.id} + ')'">
+                    続きを読む
+                  </button>
+                </div>
               </div>
             </li>
           </ul>

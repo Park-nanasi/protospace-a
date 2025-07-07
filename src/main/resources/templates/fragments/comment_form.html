@@ -10,7 +10,13 @@
 
     <div class="field">
       <label class="column-content">コメント内容</label><br />
-      <textarea rows="10" th:field="*{content}" class="longText" id="content" name="content"></textarea>
+      <textarea rows="10"
+                th:field="*{content}"
+                class="longText"
+                id="content"
+                name="content"
+                maxlength="1000" oninput="updateCharCount(1000)"></textarea>
+      <div id="charCount">0 / 1000 文字</div>
       <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error-message"></div>
     </div>
 

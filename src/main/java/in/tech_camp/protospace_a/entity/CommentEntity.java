@@ -11,7 +11,8 @@ public class CommentEntity {
   private String content;
   private Timestamp created_at;
   private UserEntity user;
-  private Timestamp createdAt;
+  // private Timestamp createdAt;
+  private Timestamp updated_at;
   private String title;
   private String image;
   private PrototypeEntity prototype;

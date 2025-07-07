@@ -19,11 +19,11 @@ import in.tech_camp.protospace_a.entity.PrototypeEntity;
 @Mapper
 public interface PrototypeRepository {
 
-    @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id, created_at, updated_at) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id}, CURRENT_TIMESTAMP, '1970-01-01 00:00:01')")
+    @Insert("INSERT INTO prototypes (name, catchphrase, concept, image, user_id, created_at) VALUES (#{name}, #{catchphrase}, #{concept}, #{image}, #{user.id}, CURRENT_TIMESTAMP)")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertPrototype(PrototypeEntity prototype);
 
-  @Select("SELECT p.id, p.name, p.catchphrase, p.image, u.id AS user_id, u.username AS user_name " +
+  @Select("SELECT p.id, p.name, p.catchphrase, p.image, p.count_likes, u.id AS user_id, u.username AS user_name, u.profile_image AS profile_image " +
           "FROM prototypes p " +
           "JOIN users u ON p.user_id = u.id " +
           "ORDER BY p.created_at DESC")
@@ -34,8 +34,10 @@ public interface PrototypeRepository {
       @Result(property = "image", column = "image"),
       @Result(property = "created_at", column = "created_at"),
       @Result(property = "updated_at", column = "updated_at"),
+      @Result(property = "count_likes", column = "count_likes"),
       @Result(property = "user.id", column = "user_id"),
-      @Result(property = "user.username", column = "user_name")
+      @Result(property = "user.username", column = "user_name"),
+      @Result(property = "user.profileImage", column = "profile_image")
   })
   List<PrototypeEntity> findAllPrototypes();
 
@@ -54,18 +56,20 @@ public interface PrototypeRepository {
 
   @Select("SELECT * FROM prototypes WHERE id = #{id}")
   @Results(value = {
+    @Result(property = "name", column = "name"),
     @Result(property = "created_at", column = "created_at"),
     @Result(property = "updated_at", column = "updated_at"),
     @Result(property = "id", column = "id"),
     @Result(property = "user", column = "user_id",
-            one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById")),
+    one = @One(select = "in.tech_camp.protospace_a.repository.UserRepository.findById")),
     @Result(property = "comments", column = "id",
-            many = @Many(select = "in.tech_camp.protospace_a.repository.CommentRepository.findByPrototypeId"))
-  })
-  PrototypeEntity findById(Integer id);
+    many = @Many(select = "in.tech_camp.protospace_a.repository.CommentRepository.findByPrototypeId"))
+})
+PrototypeEntity findById(Integer id);
 
-  @Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
-  @Results(value = {
+@Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
+@Results(value = {
+    @Result(property = "name", column = "name"),
     @Result(property = "created_at", column = "created_at"),
     @Result(property = "updated_at", column = "updated_at"),
     @Result(property = "user", column = "user_id",
@@ -99,5 +103,17 @@ public interface PrototypeRepository {
     List<PrototypeEntity> findByUserIdAndNameContaining(
             @Param("userId") Integer userId, @Param("name") String name);
 
+    //   「いいね」数＋１
+    @Update("UPDATE prototypes SET count_likes = count_likes + 1 WHERE id = #{prototypeId}")
+    @Results(value = {
+        @Result(property = "count_likes", column = "count_likes")
+      })
+    int incrementLikeCount(@Param("prototypeId") Integer prototypeId);
 
+    // 「いいね」数ー１
+    @Update("UPDATE prototypes SET count_likes = count_likes - 1 WHERE id = #{prototypeId}")
+    @Results(value = {
+        @Result(property = "count_likes", column = "count_likes")
+      })
+    int decrementLikeCount(@Param("prototypeId") Integer prototypeId);
 }
