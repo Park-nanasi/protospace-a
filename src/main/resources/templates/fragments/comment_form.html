@@ -20,11 +20,6 @@
       <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error-message"></div>
     </div>
 
-    <div class="field">
-      <label class="image">添付画像</label><br />
-      <input th:field="*{image}" type="file" name="image" id="image" accept="image/*" />
-    </div>
-
     <div class="actions">
       <input type="submit" value="保存する">
     </div>
