@@ -82,7 +82,7 @@ public interface PrototypeLikeRepository {
   SELECT p.*, u.id as user_id, u.username as u_username FROM prototypes p
   INNER JOIN prototype_likes pl ON p.id = pl.prototype_id
   INNER JOIN users u ON p.user_id = u.id
-  WHERE pl.user_id = #{userId} AND p.name LIKE CONCAT('%', #{name}, '%')
+  WHERE pl.user_id = #{userId} AND p.name ILIKE CONCAT('%', #{name}, '%')
 """)
 @Results({
   @Result(property = "id", column = "id"),
