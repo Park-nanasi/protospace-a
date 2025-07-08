@@ -953,7 +953,7 @@ form input[type="file"] {
 
 .sns-btn {
   display: flex;
-  margin-top: 20px;
+  align-items: center;
 }
 
 .sns-btn li {
@@ -1012,7 +1012,7 @@ form input[type="file"] {
 .user-info-table td {
   padding: 16px 20px;
   text-align: left;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .user-info-table th {
@@ -1027,6 +1027,12 @@ form input[type="file"] {
   background-color: #ffffff;
   color: #555;
   border-bottom: 1px solid #f0f0f0;
+}
+
+.user-info-table td > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .user-info-table tr:last-child th,

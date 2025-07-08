@@ -10,7 +10,7 @@
         <a class="logout user-nav-text" th:href="@{/logout}">ログアウト</a>
       </div>
       <div class="user-nav">
-        <a class="post user-nav-text" th:href="@{/prototypes/new}">New Proto</a>
+        <a class="post user-nav-text" th:href="@{/prototypes/new}">新規投稿</a>
       </div>
       <div class="user-profile-container">
         <a th:if="${#authentication.principal.user.id}" th:href="@{'/users/' + ${#authentication.principal.user.id}}">

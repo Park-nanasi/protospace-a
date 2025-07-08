@@ -46,11 +46,11 @@ public interface CommentRepository {
           select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findById"))})
   CommentEntity findById(Integer id);
 
-  @Insert("INSERT INTO comments (title, image, content, user_id, prototype_id, created_at) VALUES (#{title}, #{image}, #{content}, #{user.id}, #{prototype.id}, now())")
+  @Insert("INSERT INTO comments (title, content, user_id, prototype_id, created_at) VALUES (#{title}, #{content}, #{user.id}, #{prototype.id}, now())")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insert(CommentEntity comment);
 
-  @Update("UPDATE comments SET title = #{title}, content = #{content}, image = #{image}, created_at = #{created_at}, updated_at = CURRENT_TIMESTAMP WHERE id = #{id}")
+  @Update("UPDATE comments SET title = #{title}, content = #{content}, created_at = #{created_at}, updated_at = CURRENT_TIMESTAMP WHERE id = #{id}")
   void update(CommentEntity comment);
 
   @Delete("DELETE FROM comments WHERE id = #{id}")
