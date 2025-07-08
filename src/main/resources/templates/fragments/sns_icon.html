@@ -1,0 +1,14 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="snsIcon(snsLinks)">
+  <ul class="sns-btn">
+    <li>
+      <a th:href="@{${snsLinks.x}}">
+        <img th:src="@{/images/logo-black.png}" alt="X">
+      </a>
+    </li>
+    <li>
+      <a th:href="@{${snsLinks.facebook}}">
+        <img th:src="@{/images/Facebook_Logo_Primary.png}" alt="Facebook">
+      </a>
+    </li>
+  </ul>
+</div>

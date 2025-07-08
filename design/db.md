@@ -3,6 +3,7 @@
 | Column   | Type   | Options  |
 | -------- | ------ | -------- |
 | id       | SERIAL | NOT NULL, PRIMARY KEY |
+| sns_links_id       | SERIAL | NOT NULL |
 | username | VARCHAR(50)    | NOT NULL |
 | email | VARCHAR(128)    | NOT NULL UNIQUE |
 | password | VARCHAR(128)    | NOT NULL |
@@ -12,6 +13,7 @@
 
 ### Option
 - PRIMARY KEY (id)
+- FOREIGN KEY (sns_links_id) REFERENCES sns_links(id) ON DELETE CASCADE
 
 
 ## prototypes table
@@ -45,3 +47,13 @@
 - PRIMARY KEY(id)
 - FOREIGN KEY (user_id) REFERENCES users(id)
 - FOREIGN KEY (prototype_id) REFERENCES prototypes(id) ON DELETE CASCADE
+
+## sns links table
+| Column | Type | Options |
+| ------ | ------ | ------ |
+| id     | SERIAL | NOT NULL|
+| x_url   | String | |
+| facebook_url     | String  | |
+
+### Option
+- PRIMARY KEY(id)

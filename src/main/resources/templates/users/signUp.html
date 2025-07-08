@@ -15,7 +15,8 @@
       <div class="container_Form">
         <h2>ユーザー新規登録</h2>
         <div class="form">
-          <form th:action="@{/user}" th:method="post" th:object="${userForm}" enctype="multipart/form-data" class="new_user">
+          <form th:action="@{/user}" th:method="post" th:object="${userForm}" enctype="multipart/form-data"
+            class="new_user">
 
             <div class="field">
               <label for="email">メールアドレス</label><br />
@@ -59,8 +60,27 @@
             <div class="field">
               <label for="profileImage" class="image">プロフィール画像</label><br />
               <input th:field="*{profileImage}" type="file" name="profileImage" id="profileImage" accept="image/*" />
-              <!-- <div th:if="${#fields.hasErrors('profileImage')}" th:text="＊ + ${fieldErrors['profileImage']}" class="error_message">
-              </div> -->
+            </div>
+
+            <div class="field">
+              <div class='field-label'>
+                <label for="url">X URL</label><br />
+              </div>
+              <input style='width:26em' th:field="*{x}" type="url" name="url" id="url"
+                placeholder="https://x.com/'＜your-account-name＞'" pattern="https://.*" />
+              <div th:if="${#fields.hasErrors('x')}" th:text="＊ + ${fieldErrors['x']}" class="error_message">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class='field-label'>
+                <label for="url">Facebook URL</label><br />
+              </div>
+              <input style='width:26em' th:field="*{facebook}" type="url" name="url" id="url"
+                placeholder="https://www.facebook.com/'＜your-account-name＞'" pattern="https://.*" />
+              <div th:if="${#fields.hasErrors('facebook')}" th:text="＊ + ${fieldErrors['facebook']}"
+                class="error_message">
+              </div>
             </div>
             <div class="actions">
               <input type="submit" value="Sign up">

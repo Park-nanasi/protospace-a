@@ -40,6 +40,28 @@
             </div>
           </div>
 
+          <div class="field">
+            <div class='field-label'>
+              <label for="url">X URL</label><br />
+            </div>
+            <input style='width:26em' th:field="*{x}" type="url" name="url" id="url"
+              placeholder="https://x.com/'＜your-account-name＞'" pattern="https://.*" />
+            <div th:if="${#fields.hasErrors('x')}" th:text="＊ + ${fieldErrors['x']}" class="error_message">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class='field-label'>
+              <label for="url">Facebook URL</label><br />
+            </div>
+            <input style='width:26em' th:field="*{facebook}" type="url" name="url" id="url"
+              placeholder="https://www.facebook.com/'＜your-account-name＞'" pattern="https://.*" />
+            <div th:if="${#fields.hasErrors('facebook')}" th:text="＊ + ${fieldErrors['facebook']}"
+              class="error_message">
+            </div>
+          </div>
+
+
           <div class="actions">
             <input type="submit" value="保存する">
           </div>
