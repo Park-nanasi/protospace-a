@@ -12,7 +12,7 @@ public class ImageUrl {
   private String url;
   
   public String getUserProfileDefaultImageUrl() {
-    return "/uploads/user_profiles/default.png";
+    return "/images/default.png";
   }
 
   public String getPrototypeImageUrl() {
