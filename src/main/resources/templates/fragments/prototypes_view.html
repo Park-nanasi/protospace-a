@@ -10,9 +10,9 @@
         <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
           <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
         </a>
-        <a th:href="@{'/users/' + ${prototype.user.id} + '/likes'}">
+        <!-- <a th:href="@{'/users/' + ${prototype.user.id} + '/likes'}">
           <span style="margin-left: 10px; text-align: center;" th:text="good"></span>
-        </a>
+        </a> -->
         <span class="like-section">
           <!-- 未登録 -->
           <span th:if="${not #authorization.expression('isAuthenticated()')}" class="like-btn not-logged-in">
