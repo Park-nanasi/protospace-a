@@ -8,12 +8,12 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import in.tech_camp.protospace_a.entity.PrototypeEntity;
+
 import in.tech_camp.protospace_a.entity.UserEntity;
 
 @Mapper
 public interface UserRepository {
-    @Insert("INSERT INTO users (username, email, password, profile, profile_image) VALUES (#{username}, #{email}, #{password}, #{profile}, #{profileImage})")
+    @Insert("INSERT INTO users (sns_links_id, username, email, password, profile, profile_image) VALUES (#{snsLinksId}, #{username}, #{email}, #{password}, #{profile}, #{profileImage})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(UserEntity user);
 
@@ -26,6 +26,7 @@ public interface UserRepository {
     @Select("SELECT * FROM users WHERE id = #{id}")
     @Results(value = {
         @Result(property = "id", column = "id"),
+        @Result(property = "snsLinksId", column = "sns_links_id"),
         @Result(property = "profileImage", column = "profile_image"),
         @Result(property = "prototypes", column = "id", many = @Many(
                     select = "in.tech_camp.protospace_a.repository.PrototypeRepository.findByUserId"))})

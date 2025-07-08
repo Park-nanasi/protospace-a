@@ -1,3 +1,0 @@
-ALTER TABLE users
-DROP COLUMN company,
-DROP COLUMN role;

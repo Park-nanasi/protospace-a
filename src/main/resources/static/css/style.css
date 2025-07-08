@@ -21,11 +21,6 @@ summary {
   display: block;
 }
 
-
-
-
-
-
 html {
   font-family: sans-serif;
   /* 1 */
@@ -954,6 +949,17 @@ form input[type="file"] {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.sns-btn {
+  display: flex;
+  margin-top: 20px;
+}
+
+.sns-btn li {
+  width: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .user-name {
