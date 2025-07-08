@@ -81,6 +81,7 @@
                 <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="${prototype.user.username}"></a>
               </span>
               <span class="timestamp">
+                作成：
                 <span th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') == '1970-01-01 00:00:01'}"
                       th:text="${#dates.format(prototype.created_at, 'yyyy/M/d HH:mm')}"></span>
                 <span th:if="${#dates.format(prototype.updated_at, 'yyyy-MM-dd HH:mm:ss') != '1970-01-01 00:00:01'}"
