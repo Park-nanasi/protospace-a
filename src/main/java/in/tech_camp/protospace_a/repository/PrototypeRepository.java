@@ -111,7 +111,7 @@ PrototypeEntity findById(Integer id);
     int incrementLikeCount(@Param("prototypeId") Integer prototypeId);
 
     // 「いいね」数ー１
-    @Update("UPDATE prototypes SET count_likes = count_likes - 1 WHERE id = #{prototypeId}")
+    @Update("UPDATE prototypes SET count_likes = GREATEST(count_likes - 1, 0) WHERE id = #{prototypeId}")
     @Results(value = {
         @Result(property = "count_likes", column = "count_likes")
       })

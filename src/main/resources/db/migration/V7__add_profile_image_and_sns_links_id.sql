@@ -1,0 +1,3 @@
+ALTER TABLE users
+ADD COLUMN profile_image VARCHAR(256),
+ADD COLUMN sns_links_id INT NOT NULL;
