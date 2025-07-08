@@ -1,7 +1,5 @@
 package in.tech_camp.protospace_a.form;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -15,6 +13,4 @@ public class CommentForm {
   @NotBlank(message = "コメント内容を入力してください。")
   @Size(max = 1000, message = "コメント内容は1000文字以内で入力してください。")
   private String content;
-
-  private MultipartFile image;
 }
