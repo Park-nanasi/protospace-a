@@ -1,89 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
-  <head>
-    <meta charset="UTF-8">
-    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
-    <title>ProtoSpace</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+  <link th:href="@{/css/prototype.css}" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>ProtoSpace</title>
+</head>
 
   <body>
 
     <!-- ヘッダー -->
     <div th:insert="~{header :: header}"></div>
-
-
     <div class="main_contents">
       <div class="user_contents">
-        <h2 th:text="${name} + 'さんの情報'"></h2>
+        <h2 class="user-info-heading">
+          <span th:text="${name} + 'さんの情報'"></span>
 
-        <div class="proto-btns"
-          th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == userId}">
-          <div class="proto-btn">
-            <a class="proto-btn-text" th:href="@{/users/{userId}/edit(userId = ${userId})}">編集する</a>
-          </div>
-        </div>
+          <a th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.id == userId}"
+            th:href="@{/users/{userId}/edit(userId = ${userId})}"
+            class="edit-icon-link"
+            title="編集">
+            <i class="fas fa-pencil-alt"></i>
+          </a>
+        </h2>
 
-        <table class="table">
+        <table class="user-info-table">
           <tbody>
             <tr>
-              <th class="table_col1">名前</th>
-              <td class="table_col2" th:text="${name}"></td>
+              <th>名前</th>
+              <td th:text="${name}"></td>
             </tr>
 
             <tr>
-              <th class="table_col1">プロフィール</th>
-              <td class="table_col2" th:text="${profile}"></td>
+              <th>プロフィール画像</th>
+              <td>
+                <img th:src="@{${profileImage}}" 
+                    alt="プロフィール画像" 
+                    class="profile-image"
+                    onclick="openModal(this.src)">
+              </td>
+            </tr>
+
+            <!-- モーダル画像表示用 -->
+            <div id="imageModal" class="image-modal" onclick="closeModal()">
+              <span class="modal-close">×</span>
+              <img class="modal-content" id="modalImage">
+            </div>
+
+            <tr>
+              <th>プロフィール</th>
+              <td th:text="${profile}"></td>
             </tr>
           </tbody>
         </table>
 
         <h2 th:text="${name} + 'さんが「いいね」を押したプロトタイプ'"></h2>
-
-        <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}"
-          class="user-search-form">
-          <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
-          <input type="submit" class="search-btn" value="検索" />
-        </form>
-
-      </div>
-      <div class="protos">
-        <div class="proto" th:each="prototype : ${prototypes}">
-          <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-            <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
-          </a>
-
-          <div class="proto-header">
-            <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
-              <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
-            </a>
-            <style>
-              #like-section {
-                text-align: right;
-              }
-            </style>
-              <div id="like-section">
-                <span 
-                  id="like-btn" 
-                  th:attr="data-prototypeid=${prototype.id}"
-                  style="cursor:pointer; font-size:2em; color:red; transition:color 0.2s;">
-                  ♥</span><span id="like-count"th:text="${prototype.count_likes}">0</span>
-            </div>
-          <script src="/js/like.js"></script>   
-
-        </div>
-        <p class="catchcopy" th:text="${prototype.catchphrase}"></p>
-        <p class="author">
-          <a th:href="@{'/users/' + ${prototype.user.id}}" th:text="'by ' + ${prototype.user.username}"></a>
-        </p>
+        <div th:replace="~{fragments/search_bar :: user_likes_search_bar}"></div>
+        <div th:replace="~{fragments/prototypes_view :: prototypes_view}"></div>
       </div>
     </div>
-  </div>
-  <script src="/js/likedPrototypes.js"></script>
 
   <!-- フッター -->
   <div th:insert="~{footer :: footer}"></div>
 
+  <script>
+    function openModal(imageSrc) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = 'flex';
+      modalImg.src = imageSrc;
+      document.body.style.overflow = 'hidden'; // ページスクロール防止
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('imageModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = ''; // スクロール復帰
+    }
+  </script>
 </body>
 
 </html>

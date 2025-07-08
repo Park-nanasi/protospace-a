@@ -10,7 +10,10 @@
         <a th:href="@{/prototypes/{prototypeId}(prototypeId = ${prototype.id})}">
           <h2 class="title" th:text="${prototype.name}" style="margin:0;"></h2>
         </a>
-        <span class="like-section" th:attr="data-prototypeid=${prototype.id}">
+        <a th:href="@{'/users/' + ${prototype.user.id} + '/likes'}">
+          <span style="margin-left: 10px; text-align: center;" th:text="good"></span>
+        </a>
+        <span class="like-section">
           <!-- 未登録 -->
           <span th:if="${not #authorization.expression('isAuthenticated()')}" class="like-btn not-logged-in">
             &#9825;
@@ -19,6 +22,7 @@
           <span th:if="${#authorization.expression('isAuthenticated()')}"
                 th:classappend="${likeStatusMap[prototype.id]} ? 'liked' : ''"
                 class="like-btn"
+                th:attr="data-prototypeid=${prototype.id}"
                 th:text="${likeStatusMap[prototype.id]} ? '♥' : '♡'">♡
           </span>
           <span id="like-count" th:text="${prototype.count_likes}">0</span>
