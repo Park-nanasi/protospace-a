@@ -50,6 +50,7 @@
 | id     | SERIAL | NOT NULL|
 | content    | text | NULL|
 | user_id     | INT | NOT NULL|
+| title     | text | NOT NULL|
 | prototype_id     | INT | NOT NULL|
 | created_at     | TIMESTAMP  | NOT NULL|
 
