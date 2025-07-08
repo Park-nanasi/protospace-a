@@ -87,7 +87,7 @@ PrototypeEntity findById(Integer id);
   void deleteByPrototypeId(Integer id);
 
     // prototype一覧ページに検索機能表示
-    @Select("SELECT * FROM prototypes WHERE name LIKE CONCAT('%', #{name}, '%')")
+    @Select("SELECT * FROM prototypes WHERE name ILIKE CONCAT('%', #{name}, '%')")
     @Results(value = {@Result(property = "user", column = "user_id", one = @One(
             select = "in.tech_camp.protospace_a.repository.UserRepository.findById"))})
     List<PrototypeEntity> findByNameContaining(String name);
@@ -95,7 +95,7 @@ PrototypeEntity findById(Integer id);
     // ユーザーの詳細ページにて検索機能
     @Select("SELECT p.*, u.id as user_id, u.username as user_name "
             + "FROM prototypes p " + "LEFT JOIN users u ON p.user_id = u.id "
-            + "WHERE p.user_id = #{userId} AND p.name LIKE CONCAT('%', #{name}, '%')")
+            + "WHERE p.user_id = #{userId} AND p.name ILIKE CONCAT('%', #{name}, '%')")
     @Results({@Result(property = "id", column = "id"),
             @Result(property = "name", column = "name"),
             @Result(property = "user.id", column = "user_id"),
