@@ -1,0 +1,22 @@
+<div th:fragment="search_bar">
+  <form th:action="@{/prototypes/search}" method="get" th:object="${searchForm}" class="search-form">
+    <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+    <button type="submit" class="search-btn">検索 ▶</button>
+  </form>
+</div>
+
+<div th:fragment="user_search_bar">
+  <form th:action="@{/users/{userId}/search(userId = ${userId})}" method="get" th:object="${searchForm}"
+    class="search-form" style="justify-content: flex-start;">
+    <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+    <button type="submit" class="search-btn">検索 ▶</button>
+  </form>
+</div>
+
+<div th:fragment="user_likes_search_bar">
+  <form th:action="@{/users/{userId}/likes/search(userId = ${userId})}" method="get" th:object="${searchForm}"
+    class="search-form" style="justify-content: flex-start;">
+    <input type="text" th:field="*{name}" name="name" placeholder="投稿を検索する" class="search-input" />
+    <button type="submit" class="search-btn">検索 ▶</button>
+  </form>
+</div>

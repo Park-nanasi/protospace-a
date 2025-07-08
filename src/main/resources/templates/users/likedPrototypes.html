@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
-  <head>
-    <meta charset="UTF-8">
-    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/css/prototype.css}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <title>ProtoSpace</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+  <link th:href="@{/css/prototype.css}" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>ProtoSpace</title>
+</head>
 
   <body>
 
+    <!-- ヘッダー -->
     <div th:insert="~{header :: header}"></div>
-
-
     <div class="main_contents">
       <div class="user_contents">
         <h2 class="user-info-heading">
@@ -57,16 +56,14 @@
           </tbody>
         </table>
 
-        <div th:replace="~{fragments/sns_icon :: snsIcon(${snsLinks})}">
-        </div>
-
-        <h2 th:text="${name} + 'さんのプロトタイプ'"></h2>       
-        <div th:replace="~{fragments/search_bar :: user_search_bar}"></div>
+        <h2 th:text="${name} + 'さんが「いいね」を押したプロトタイプ'"></h2>
+        <div th:replace="~{fragments/search_bar :: user_likes_search_bar}"></div>
         <div th:replace="~{fragments/prototypes_view :: prototypes_view}"></div>
       </div>
     </div>
 
-    <div th:insert="~{footer :: footer}"></div>
+  <!-- フッター -->
+  <div th:insert="~{footer :: footer}"></div>
 
   <script>
     function openModal(imageSrc) {
@@ -83,6 +80,6 @@
       document.body.style.overflow = ''; // スクロール復帰
     }
   </script>
-  </body>
+</body>
 
 </html>

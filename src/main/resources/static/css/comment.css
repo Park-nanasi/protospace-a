@@ -94,6 +94,7 @@
   padding-bottom: 30px;
 }
 
+
 /* コメントフォーム・コメント詳細コンテナ */
 .container_comment {
   margin: 20px 0;
@@ -136,8 +137,8 @@
 
 .container_comment_detail {
   position: relative;
-  margin: 20px 0;
-  padding: 0 30px 10px 30px;
+  margin: 30px 0;
+  padding: 30px;
   background-color: white;
   box-sizing: border-box;
   border: 1px solid rgb(211, 211, 211);
@@ -148,7 +149,7 @@
   content: "";
   position: absolute;
   top: -10px;
-  left: 10px; 
+  left: 30px; 
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
@@ -172,11 +173,13 @@
 .comment_title {
   display: flex;
   justify-content: space-between;
-  border-bottom: #333 1px solid;
+  align-items: center;
+  padding: 0.5em 10px;
+  line-height: 1.2;
   font-size: 20px;
-  margin-bottom: 2em;
   font-weight: bold;
   color: #000;
+  text-decoration: none;
 }
 
 .comment_author a {
@@ -194,6 +197,14 @@
   white-space: normal;
   line-height: 1.5;
   padding-bottom: 10px;
+}
+
+.comment_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: #b6b6b6 1px solid;
 }
 
 .comment_time {
@@ -252,3 +263,39 @@
   display: flex;
   align-items: center;
 }
+
+/* ユーザー情報ブロック（コメント外側の左上） */
+.comment_user_outer {
+  position: absolute;
+  top: -20px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.comment_user_profile {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.comment_user_icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.comment_user_name {
+  margin-left: 6px;
+}
+

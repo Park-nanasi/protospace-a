@@ -6,11 +6,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,25 +29,30 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import in.tech_camp.protospace_a.ImageUrl;
 import in.tech_camp.protospace_a.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_a.entity.PrototypeEntity;
-import in.tech_camp.protospace_a.entity.SnsLinkEntity;
 import in.tech_camp.protospace_a.entity.UserEntity;
 import in.tech_camp.protospace_a.form.SearchForm;
 import in.tech_camp.protospace_a.form.UserForm;
+import in.tech_camp.protospace_a.repository.PrototypeLikeRepository;
 import in.tech_camp.protospace_a.repository.PrototypeRepository;
-import in.tech_camp.protospace_a.repository.SnsLinksRepository;
 import in.tech_camp.protospace_a.repository.UserRepository;
 import in.tech_camp.protospace_a.service.UserService;
 import in.tech_camp.protospace_a.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
+
+import org.springframework.web.bind.annotation.RequestBody;
+
+import in.tech_camp.protospace_a.entity.SnsLinkEntity;
+import in.tech_camp.protospace_a.repository.SnsLinksRepository;
 
 
 @Controller
 @AllArgsConstructor
 public class UserController {
 
+  private final PrototypeLikeRepository prototypeLikeRepository;
   private final PrototypeRepository prototypeRepository;
-  private final SnsLinksRepository snsLinksRepository;
   private final UserRepository userRepository;
+  private final SnsLinksRepository snsLinksRepository;
   private final UserService userService;
   private final ImageUrl imageUrl;
 
@@ -108,10 +115,13 @@ public class UserController {
     snsLinks.setFacebook(userForm.getFacebook());
 
     try {
-      userService.createUserWithEncryptedPassword(userEntity, snsLinks, currentUser);
+      userService.createUserWithEncryptedPassword(userEntity, snsLinks,
+          currentUser);
     }
     catch (Exception e) {
       System.out.println("エラー：" + e);
+      redirectAttributes.addFlashAttribute("profileImage",
+          userEntity.getProfileImage());
       return "redirect:/";
     }
     redirectAttributes.addFlashAttribute("profileImage",
@@ -136,15 +146,26 @@ public class UserController {
 
   @GetMapping("/users/{userId}")
   public String showMypage(@PathVariable("userId") Integer userId,
-      @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+      @ModelAttribute("searchForm") SearchForm searchForm,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
+
+    Map<Integer, Boolean> likeStatusMap = new HashMap<>();
+    if (currentUser != null) {
+      for (PrototypeEntity prototype : prototypes) {
+        boolean liked = prototypeLikeRepository.existsByUserAndPrototype(
+            currentUser.getId(), prototype.getId()) > 0;
+        likeStatusMap.put(prototype.getId(), liked);
+      }
+    }
+
+    model.addAttribute("likeStatusMap", likeStatusMap);
     model.addAttribute("name", user.getUsername());
     model.addAttribute("profile", user.getProfile());
     model.addAttribute("profileImage", user.getProfileImage());
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("userId", user.getId());
-
     SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
     model.addAttribute("snsLinks", snsLinks);
     return "users/userInfo";
@@ -157,6 +178,8 @@ public class UserController {
     if (!currentUser.getId().equals(userId)) {
       // todo: トップページに画面表示
       System.err.println("Error: 他のユーザーのプロフィールは編集できません");
+      redirectAttributes.addFlashAttribute("profileImage",
+          currentUser.getProfileImage());
       return "redirect:/";
     }
     UserEntity user = userRepository.findById(userId);
@@ -168,6 +191,7 @@ public class UserController {
   }
 
   @PostMapping("/users/{userId}/update")
+
   public String updateMyPage(@PathVariable("userId") Integer userId,
       @ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
       BindingResult result, RedirectAttributes redirectAttributes,
@@ -235,7 +259,8 @@ public class UserController {
   // 検索機能
   @GetMapping("/users/{userId}/search")
   public String searchPrototypes(@PathVariable("userId") Integer userId,
-      @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+      @ModelAttribute("searchForm") SearchForm searchForm,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     // 名前の長さ判定、50以上だったら、プリントアウト
     if (searchForm.getName() != null && searchForm.getName().length() > 50) {
       System.out.println(String.format("検索に入力した名前の文字数：%d、50を超えています!!",
@@ -253,9 +278,96 @@ public class UserController {
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
     model.addAttribute("userId", user.getId());
-
     SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
     model.addAttribute("snsLinks", snsLinks);
+
+    Map<Integer, Boolean> likeStatusMap = new HashMap<>();
+    if (currentUser != null) {
+      // Integer userId = currentUser.getId();
+      for (PrototypeEntity p : prototypes) {
+        boolean liked = prototypeLikeRepository.existsByUserAndPrototype(userId,
+            p.getId()) > 0;
+        likeStatusMap.put(p.getId(), liked);
+      }
+    }
+    System.out.println("likeStatusMap内容：" + likeStatusMap);
+    model.addAttribute("likeStatusMap", likeStatusMap);
+
     return "users/userInfo";
+  }
+
+  // いいねページの検索機能
+  @GetMapping("/users/{userId}/likes/search")
+  public String searchlikedPrototypes(@PathVariable("userId") Integer userId,
+      @ModelAttribute("searchForm") SearchForm searchForm,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    // 名前の長さ判定、50以上だったら、プリントアウト
+    if (searchForm.getName() != null && searchForm.getName().length() > 50) {
+      System.out.println(String.format("検索に入力した名前の文字数：%d、50を超えています!!",
+          searchForm.getName().length()));
+
+    }
+
+    UserEntity user = userRepository.findById(userId);
+    List<PrototypeEntity> prototypes = prototypeLikeRepository
+        .findLikedPrototypesByUserAndName(userId, searchForm.getName());
+    model.addAttribute("name", user.getUsername());
+    model.addAttribute("profile", user.getProfile());
+    model.addAttribute("profileImage", user.getProfileImage());
+    model.addAttribute("prototypes", prototypes);
+    model.addAttribute("searchForm", searchForm);
+    model.addAttribute("userId", user.getId());
+    SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
+    model.addAttribute("snsLinks", snsLinks);
+
+    Map<Integer, Boolean> likeStatusMap = new HashMap<>();
+    if (currentUser != null) {
+      // Integer userId = currentUser.getId();
+      for (PrototypeEntity p : prototypes) {
+        boolean liked = prototypeLikeRepository.existsByUserAndPrototype(userId,
+            p.getId()) > 0;
+        likeStatusMap.put(p.getId(), liked);
+      }
+    }
+    System.out.println("likeStatusMap内容：" + likeStatusMap);
+    model.addAttribute("likeStatusMap", likeStatusMap);
+    model.addAttribute("profileImage", user.getProfileImage());
+    return "users/likedPrototypes";
+  }
+
+  // ユーザーが「いいね」を押したページ
+  @GetMapping("/users/{userId}/likes")
+  public String likePrototypes(@PathVariable("userId") Integer userId,
+      @ModelAttribute("searchForm") SearchForm searchForm,
+      @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+
+    if (currentUser == null || !userId.equals(currentUser.getUser().getId())) {
+      return "redirect:/";
+    }
+
+    UserEntity user = userRepository.findById(userId);
+    List<PrototypeEntity> prototypes =
+        prototypeLikeRepository.findLikedPrototypesByUser(userId);
+    model.addAttribute("name", user.getUsername());
+    model.addAttribute("prototypes", prototypes);
+    model.addAttribute("userId", user.getId());
+    SnsLinkEntity snsLinks = snsLinksRepository.findById(user.getSnsLinksId());
+    model.addAttribute("snsLinks", snsLinks);
+
+    Map<Integer, Boolean> likeStatusMap = new HashMap<>();
+    if (currentUser != null) {
+      // Integer userId = currentUser.getId();
+      for (PrototypeEntity p : prototypes) {
+        boolean liked = prototypeLikeRepository.existsByUserAndPrototype(userId,
+            p.getId()) > 0;
+        likeStatusMap.put(p.getId(), liked);
+      }
+    }
+    System.out.println("likeStatusMap内容：" + likeStatusMap);
+    model.addAttribute("likeStatusMap", likeStatusMap);
+    model.addAttribute("profileImage", user.getProfileImage());
+
+
+    return "users/likedPrototypes";
   }
 }
