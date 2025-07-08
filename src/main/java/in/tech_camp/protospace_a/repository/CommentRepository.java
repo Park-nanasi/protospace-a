@@ -50,7 +50,7 @@ public interface CommentRepository {
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insert(CommentEntity comment);
 
-  @Update("UPDATE comments SET title = #{title}, content = #{content}, created_at = #{created_at}, updated_at = CURRENT_TIMESTAMP WHERE id = #{id}")
+  @Update("UPDATE comments SET title = #{title}, content = #{content}, created_at = #{created_at} WHERE id = #{id}")
   void update(CommentEntity comment);
 
   @Delete("DELETE FROM comments WHERE id = #{id}")
